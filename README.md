@@ -1,2 +1,2 @@
-# Brisa-PMS-Demo
-Cloud-Based Property Management System (PMS) for small to medium hotels. Built with C#/.NET 10 using Clean Architecture.
+# Description
+Brisa is a Cloud-native Property Management System (PMS) that helps small to medium hotels manage daily room status, cleaning schedules, and team assignments, all from one platform.
