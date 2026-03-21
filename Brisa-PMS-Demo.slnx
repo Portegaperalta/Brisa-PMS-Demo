@@ -1,1 +1,15 @@
-<Solution />
+<Solution>
+  <Folder Name="/API/">
+    <Project Path="BrisaPMS.API/BrisaPMS.API.csproj" />
+  </Folder>
+  <Folder Name="/Core/">
+    <Project Path="BrisaPMS.Application/BrisaPMS.Application.csproj" />
+    <Project Path="BrisaPMS.Domain/BrisaPMS.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="BrisaPMS.Persistence/BrisaPMS.Persistence.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="BrisaPMS.UnitTests/BrisaPMS.UnitTests.csproj" />
+  </Folder>
+</Solution>
