@@ -5,22 +5,22 @@ namespace BrisaPMS.Domain.Entities;
 public class User
 {
     // Attributes
-    public required Guid Id { get; init; }
-    public required string FirstName { get; set; }
-    public required string LastName { get; set; }
-    public required string Email { get; set; }
-    public required string PasswordHash {get; set;}
-    public string? PhoneNumber { get; set; }
-    public required string PreferredLanguage { get; set; }
-    public required bool IsOnline { get; set; }
-    public required bool IsActive { get; set; }
-    public required bool IsEmailConfirmed { get; set; }
-    public required int FailedLoginAttempts { get; set; }
-    public DateTime? LockoutExpiresAt { get; set; }
-    public DateTime? LastLoginAt { get; set; }
-    public DateTime? PasswordChangedAt { get; set; }
-    public required DateTime CreatedAt { get; set; }
-    public required DateTime UpdatedAt { get; set; }
+    public Guid Id { get; private set; }
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
+    public string Email { get; private set; }
+    public string PasswordHash {get; private set; }
+    public string? PhoneNumber { get; private set; }
+    public string PreferredLanguage { get; private set; }
+    public bool IsOnline { get; private set; }
+    public bool IsActive { get; private set; }
+    public bool IsEmailConfirmed { get; private set; }
+    public int FailedLoginAttempts { get; private set; }
+    public DateTime? LockoutExpiresAt { get; private set; }
+    public DateTime? LastLoginAt { get; private set; }
+    public DateTime? PasswordChangedAt { get; private set; }
+    public DateTime CreatedAt { get; private set; }
+    public DateTime UpdatedAt { get; private set; }
     
     //Constructor
 
