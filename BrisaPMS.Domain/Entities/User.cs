@@ -1,3 +1,5 @@
+using BrisaPMS.Domain.Exceptions;
+
 namespace BrisaPMS.Domain.Entities;
 
 public class User
@@ -26,20 +28,20 @@ public class User
         string passwordHash, string? phoneNumber, string preferredLanguage,
         bool isActive = true)
     {
-        if (string.IsNullOrWhiteSpace(firstName) is true )
-            throw new ArgumentException("First name cannot be empty");
+        if (string.IsNullOrWhiteSpace(firstName) is true)
+            throw new EmptyFirstNameException();
         
         if (string.IsNullOrWhiteSpace(lastName) is true )
-            throw new ArgumentException("Last name cannot be empty");
-        
-        if (string.IsNullOrWhiteSpace(email) is true ) 
-            throw new ArgumentException("Email cannot be empty");
-        
-        if (string.IsNullOrWhiteSpace(passwordHash) is true )
-            throw new ArgumentException("Password hash cannot be empty");
+            throw new EmptyLastNameException();
+
+        if (string.IsNullOrWhiteSpace(email) is true)
+            throw new EmptyEmailException();
+
+        if (string.IsNullOrWhiteSpace(passwordHash) is true)
+            throw new EmptyPasswordHashException();
         
         if (string.IsNullOrWhiteSpace(preferredLanguage) == true)
-            throw new ArgumentException("Preferred language cannot be empty");
+            throw new EmptyPreferredLanguageException();
         
         FirstName = firstName;
         LastName = lastName;
