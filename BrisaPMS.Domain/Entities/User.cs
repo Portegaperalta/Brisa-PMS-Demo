@@ -93,8 +93,11 @@ public class User
         PasswordHash = newPasswordHash;
     }
 
-    public void ChangePhoneNumber(string newPhoneNumber) 
-        => PhoneNumber =  newPhoneNumber;
+    public void ChangePhoneNumber(string newPhoneNumber)
+    {
+        if (string.IsNullOrWhiteSpace(newPhoneNumber) is true)
+            throw new EmptyPhoneNumberException();
+    }
 
     public void ChangePreferredLanguage(string newPreferredLanguage)
     {
