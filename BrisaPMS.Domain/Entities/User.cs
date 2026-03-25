@@ -59,4 +59,48 @@ public class User
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
     }
+    
+    // Behavioral Methods
+    public void ChangeFirstName(string newFirstName)
+    {
+        if (string.IsNullOrWhiteSpace(newFirstName) is true)
+            throw new EmptyFirstNameException();
+        
+        FirstName = newFirstName;
+    }
+
+    public void ChangeLastName(string newLastName)
+    {
+        if(string.IsNullOrWhiteSpace(newLastName) is true)
+            throw new EmptyLastNameException();
+        
+        LastName = newLastName;
+    }
+
+    public void ChangeEmail(string newEmail)
+    {
+        if(string.IsNullOrWhiteSpace(newEmail) is true)
+            throw new EmptyEmailException();
+        
+        Email = newEmail;
+    }
+
+    public void ChangePasswordHash(string newPasswordHash)
+    {
+        if(string.IsNullOrWhiteSpace(newPasswordHash) is true)
+            throw new EmptyPasswordHashException();
+        
+        PasswordHash = newPasswordHash;
+    }
+
+    public void ChangePhoneNumber(string newPhoneNumber) 
+        => PhoneNumber =  newPhoneNumber;
+
+    public void ChangePreferredLanguage(string newPreferredLanguage)
+    {
+        if (string.IsNullOrWhiteSpace(newPreferredLanguage) is true)
+            throw new EmptyPreferredLanguageException();
+        
+        PreferredLanguage = newPreferredLanguage;
+    }
 }
