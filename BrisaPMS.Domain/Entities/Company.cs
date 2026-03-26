@@ -98,7 +98,9 @@ public class Company
             throw new EmptyRncException();
         
         if (newRnc.Length > 11)
-            throw new ArgumentException("Rnc cannot exceed 11 characters");
+            throw new MaxCharacterLimitException(11, "Rnc");
+        
+        Rnc = newRnc;
     }
 
     public void ChangeBusinessEmail(string newBusinessEmail)
