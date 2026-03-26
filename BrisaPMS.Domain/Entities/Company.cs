@@ -1,4 +1,5 @@
 using System;
+using BrisaPMS.Domain.Exceptions;
 
 namespace BrisaPMS.Domain.Entities;
 
@@ -31,31 +32,31 @@ public class Company
         string zipCode)
     {
         if (string.IsNullOrEmpty(legalName) is true)
-            throw new ArgumentException("Legal name cannot be empty.");
+            throw new EmptyLegalNameException();
         
         if (string.IsNullOrWhiteSpace(commercialName) is true)
-            throw new ArgumentException("Commercial name cannot be empty.");
+            throw new EmptyCommercialNameException();
         
         if (string.IsNullOrWhiteSpace(rnc) is true)
             throw new ArgumentException("Rnc cannot be empty.");
         
         if (string.IsNullOrWhiteSpace(businessEmail) is true)
-            throw new ArgumentException("Business email cannot be empty.");
+            throw new EmptyEmailException();
         
         if (string.IsNullOrWhiteSpace(businessPhone) is true)
-            throw new ArgumentException("Business phone number cannot be empty.");
+            throw new EmptyPhoneNumberException();
         
         if (string.IsNullOrWhiteSpace(address1) is true)
-            throw new ArgumentException("Address 1 cannot be empty.");
+            throw new EmptyAddress1Exception();
         
         if (string.IsNullOrWhiteSpace(city) is true)
-            throw new ArgumentException("City cannot be empty.");
+            throw new EmptyCityFieldException();
         
         if (string.IsNullOrWhiteSpace(province) is true)
-            throw new ArgumentException("Province cannot be empty.");
+            throw new EmptyProvinceFieldException();
         
         if (string.IsNullOrWhiteSpace(zipCode) is true)
-            throw new ArgumentException("Zip code cannot be empty.");
+            throw new EmptyZipCodeException();
         
         LegalName = legalName;
         CommercialName = commercialName;
