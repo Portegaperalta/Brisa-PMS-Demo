@@ -26,8 +26,12 @@ public class User
 
     //Constructor
 
-    public User(string firstName, string lastName, string email,
-        string passwordHash, string? phoneNumber, string preferredLanguage,
+    public User(string firstName, 
+        string lastName, 
+        string email,
+        string passwordHash,
+        string? phoneNumber,
+        string preferredLanguage,
         bool isActive = true)
     {
         if (string.IsNullOrWhiteSpace(firstName) is true)
