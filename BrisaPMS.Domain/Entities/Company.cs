@@ -10,7 +10,7 @@ public class Company
     public Guid Id { get; private init; } =  Guid.NewGuid();
     public string LegalName {get; private set;}
     public string CommercialName {get; private set;}
-    public string Rnc {get; private init;}
+    public string Rnc {get; private set;}
     public string BusinessEmail { get; private set; }
     public string BusinessPhone { get; private set; }
     public string? LogoUrl  { get; private set; }
