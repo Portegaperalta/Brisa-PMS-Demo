@@ -16,8 +16,8 @@ public class User
     public bool IsActive { get; private set; }
     public bool IsEmailConfirmed { get; private set; }
     public int FailedLoginAttempts { get; private set; }
-    public TimeSpan? LockoutDuration { get; private set; }
-    public DateTimeOffset? LockoutEnd { get; private set; }
+    public TimeSpan? LockOutDuration { get; private set; }
+    public DateTimeOffset? LockOutEnd { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
     public DateTime? PasswordChangedAt { get; private set; }
     public DateTime CreatedAt { get; private set; }
@@ -54,8 +54,8 @@ public class User
         IsActive = isActive;
         IsEmailConfirmed = false;
         FailedLoginAttempts = 0;
-        LockoutDuration = null;
-        LockoutEnd = null;
+        LockOutDuration = null;
+        LockOutEnd = null;
         LastLoginAt = null;
         PasswordChangedAt = null;
         CreatedAt = DateTime.UtcNow;
@@ -127,7 +127,7 @@ public class User
 
     public void IncreaseFailedLoginAttempts() => FailedLoginAttempts++;
 
-    public void SetLockoutDuration(TimeSpan lockoutDuration) => LockoutDuration = lockoutDuration;
+    public void SetLockoutDuration(TimeSpan lockoutDuration) => LockOutDuration = lockoutDuration;
 
     public void SetLockoutEnd(DateTimeOffset lockOutEnd)
     {
@@ -136,7 +136,7 @@ public class User
         if (lockOutEnd < currentTime)
             throw new ExpiredLockoutEndDateException();
 
-        LockoutEnd = lockOutEnd;
+        LockOutEnd = lockOutEnd;
     }
 
     public void UpdateLastLoginTime() => LastLoginAt = DateTime.UtcNow;
