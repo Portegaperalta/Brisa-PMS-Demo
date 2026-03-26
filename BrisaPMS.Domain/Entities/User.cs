@@ -6,7 +6,7 @@ namespace BrisaPMS.Domain.Entities;
 public class User
 {
     // Attributes
-    public Guid Id { get; private init; } = Guid.NewGuid();
+    public Guid Id { get; private init; } = Guid.CreateVersion7();
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public string Email { get; private set; }
