@@ -99,6 +99,8 @@ public class User
     {
         if (string.IsNullOrWhiteSpace(newPhoneNumber) is true)
             throw new EmptyPhoneNumberException();
+
+        PhoneNumber = newPhoneNumber;
     }
 
     public void ChangePreferredLanguage(string newPreferredLanguage)
