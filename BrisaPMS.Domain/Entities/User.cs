@@ -6,7 +6,7 @@ namespace BrisaPMS.Domain.Entities;
 public class User
 {
     // Attributes
-    public Guid Id { get; private set; }
+    public Guid Id { get; private init; } = Guid.NewGuid();
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public string Email { get; private set; }
@@ -21,7 +21,7 @@ public class User
     public DateTimeOffset? LockOutEnd { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
     public DateTime? PasswordChangedAt { get; private set; }
-    public DateTime CreatedAt { get; private set; }
+    public DateTime CreatedAt { get; private init; }
     public DateTime UpdatedAt { get; private set; }
 
     //Constructor
