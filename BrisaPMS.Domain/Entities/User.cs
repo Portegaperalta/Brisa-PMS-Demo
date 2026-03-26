@@ -134,7 +134,7 @@ public class User
         var currentTime = DateTimeOffset.UtcNow;
 
         if (lockOutEnd < currentTime)
-            throw new ArgumentException("Lockout end cannot be older than the current date");
+            throw new ExpiredLockoutEndDateException();
 
         LockoutEnd = lockOutEnd;
     }
