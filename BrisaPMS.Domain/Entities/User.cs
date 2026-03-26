@@ -9,7 +9,7 @@ public class User
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public string Email { get; private set; }
-    public string PasswordHash {get; private set; }
+    public string PasswordHash { get; private set; }
     public string? PhoneNumber { get; private set; }
     public string PreferredLanguage { get; private set; }
     public bool IsOnline { get; private set; }
@@ -22,17 +22,17 @@ public class User
     public DateTime? PasswordChangedAt { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime UpdatedAt { get; private set; }
-    
+
     //Constructor
 
-    public User(string firstName, string lastName, string email, 
+    public User(string firstName, string lastName, string email,
         string passwordHash, string? phoneNumber, string preferredLanguage,
         bool isActive = true)
     {
         if (string.IsNullOrWhiteSpace(firstName) is true)
             throw new EmptyFirstNameException();
-        
-        if (string.IsNullOrWhiteSpace(lastName) is true )
+
+        if (string.IsNullOrWhiteSpace(lastName) is true)
             throw new EmptyLastNameException();
 
         if (string.IsNullOrWhiteSpace(email) is true)
@@ -40,10 +40,10 @@ public class User
 
         if (string.IsNullOrWhiteSpace(passwordHash) is true)
             throw new EmptyPasswordHashException();
-        
+
         if (string.IsNullOrWhiteSpace(preferredLanguage) == true)
             throw new EmptyPreferredLanguageException();
-        
+
         FirstName = firstName;
         LastName = lastName;
         Email = email;
@@ -61,37 +61,37 @@ public class User
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
     }
-    
+
     // Behavioral Methods
     public void ChangeFirstName(string newFirstName)
     {
         if (string.IsNullOrWhiteSpace(newFirstName) is true)
             throw new EmptyFirstNameException();
-        
+
         FirstName = newFirstName;
     }
 
     public void ChangeLastName(string newLastName)
     {
-        if(string.IsNullOrWhiteSpace(newLastName) is true)
+        if (string.IsNullOrWhiteSpace(newLastName) is true)
             throw new EmptyLastNameException();
-        
+
         LastName = newLastName;
     }
 
     public void ChangeEmail(string newEmail)
     {
-        if(string.IsNullOrWhiteSpace(newEmail) is true)
+        if (string.IsNullOrWhiteSpace(newEmail) is true)
             throw new EmptyEmailException();
-        
+
         Email = newEmail;
     }
 
     public void ChangePasswordHash(string newPasswordHash)
     {
-        if(string.IsNullOrWhiteSpace(newPasswordHash) is true)
+        if (string.IsNullOrWhiteSpace(newPasswordHash) is true)
             throw new EmptyPasswordHashException();
-        
+
         PasswordHash = newPasswordHash;
     }
 
@@ -107,7 +107,7 @@ public class User
     {
         if (string.IsNullOrWhiteSpace(newPreferredLanguage) is true)
             throw new EmptyPreferredLanguageException();
-        
+
         PreferredLanguage = newPreferredLanguage;
     }
 
