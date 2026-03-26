@@ -38,7 +38,7 @@ public class Company
             throw new EmptyCommercialNameException();
         
         if (string.IsNullOrWhiteSpace(rnc) is true)
-            throw new ArgumentException("Rnc cannot be empty.");
+            throw new EmptyRncException();
         
         if (string.IsNullOrWhiteSpace(businessEmail) is true)
             throw new EmptyEmailException();
