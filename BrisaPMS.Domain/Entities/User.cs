@@ -16,7 +16,8 @@ public class User
     public bool IsActive { get; private set; }
     public bool IsEmailConfirmed { get; private set; }
     public int FailedLoginAttempts { get; private set; }
-    public DateTime? LockoutExpiresAt { get; private set; }
+    public TimeSpan? LockoutDuration { get; private set; }
+    public DateTimeOffset? LockoutEnd { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
     public DateTime? PasswordChangedAt { get; private set; }
     public DateTime CreatedAt { get; private set; }
@@ -106,4 +107,41 @@ public class User
         
         PreferredLanguage = newPreferredLanguage;
     }
+
+    public void EnableOnlineStatus()
+    {
+        if (IsOnline is false)
+            IsOnline = true;
+    }
+
+    public void DisableOnlineStatus()
+    {
+        if (IsOnline is true)
+        {
+            IsOnline = false;
+        }
+    }
+
+    public void SetEmailAsConfirmed() => IsEmailConfirmed = true;
+
+    public void IncreaseFailedLoginAttempts() => FailedLoginAttempts++;
+
+    public void SetLockoutDuration(TimeSpan lockoutDuration) 
+        => LockoutDuration = lockoutDuration;
+
+    public void SetLockoutEnd(DateTimeOffset lockOutEnd)
+    {
+        var currentTime = DateTimeOffset.UtcNow;
+
+        if (lockOutEnd < currentTime)
+            throw new ArgumentException("Lockout end cannot be older than the current date");
+
+        LockoutEnd = lockOutEnd;
+    }
+
+    public void UpdateLastLoginTime() => LastLoginAt = DateTime.UtcNow;
+
+    public void UpdatedLastPasswordChangeTime() => PasswordChangedAt = DateTime.UtcNow;
+
+    public void UpdatedLastProfileUpdateTime() => UpdatedAt = DateTime.UtcNow;
 }
