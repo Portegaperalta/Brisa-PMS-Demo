@@ -54,7 +54,8 @@ public class User
         IsActive = isActive;
         IsEmailConfirmed = false;
         FailedLoginAttempts = 0;
-        LockoutExpiresAt = null;
+        LockoutDuration = null;
+        LockoutEnd = null;
         LastLoginAt = null;
         PasswordChangedAt = null;
         CreatedAt = DateTime.UtcNow;
@@ -126,8 +127,7 @@ public class User
 
     public void IncreaseFailedLoginAttempts() => FailedLoginAttempts++;
 
-    public void SetLockoutDuration(TimeSpan lockoutDuration) 
-        => LockoutDuration = lockoutDuration;
+    public void SetLockoutDuration(TimeSpan lockoutDuration) => LockoutDuration = lockoutDuration;
 
     public void SetLockoutEnd(DateTimeOffset lockOutEnd)
     {
