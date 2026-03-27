@@ -53,7 +53,7 @@ public class User
             throw new MaxCharacterLimitException(LastNameMaxLength, "Last name");
 
         if (string.IsNullOrWhiteSpace(passwordHash) is true)
-            throw new EmptyPasswordHashException();
+            throw new EmptyPasswordException();
 
         if (!Enum.IsDefined<PreferredLanguage>(preferredLanguage))
             throw new LanguageNotSupportedException();
@@ -105,7 +105,7 @@ public class User
     public void ChangePasswordHash(string newPasswordHash)
     {
         if (string.IsNullOrWhiteSpace(newPasswordHash) is true)
-            throw new EmptyPasswordHashException();
+            throw new EmptyPasswordException();
 
         PasswordHash = newPasswordHash;
     }
