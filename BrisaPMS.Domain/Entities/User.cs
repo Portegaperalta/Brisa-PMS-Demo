@@ -26,6 +26,9 @@ public class User
     public DateTime CreatedAt { get; private init; }
     public DateTime? UpdatedAt { get; private set; }
 
+    private readonly int FirstNameMaxLength = 250;
+    private readonly int LastNameMaxLength = 250;
+
     //Constructor
 
     public User(string firstName, 
@@ -41,6 +44,12 @@ public class User
 
         if (string.IsNullOrWhiteSpace(lastName) is true)
             throw new EmptyLastNameException();
+
+        if (firstName.Length > FirstNameMaxLength)
+            throw new MaxCharacterLimitException(FirstNameMaxLength, "First name");
+
+        if (lastName.Length > LastNameMaxLength)
+            throw new MaxCharacterLimitException(LastNameMaxLength, "Last name");
 
         if (string.IsNullOrWhiteSpace(passwordHash) is true)
             throw new EmptyPasswordHashException();
@@ -73,6 +82,9 @@ public class User
         if (string.IsNullOrWhiteSpace(newFirstName) is true)
             throw new EmptyFirstNameException();
 
+        if (newFirstName.Length > FirstNameMaxLength)
+            throw new MaxCharacterLimitException(FirstNameMaxLength, "First name");
+
         FirstName = newFirstName;
     }
 
@@ -80,6 +92,9 @@ public class User
     {
         if (string.IsNullOrWhiteSpace(newLastName) is true)
             throw new EmptyLastNameException();
+
+        if (newLastName.Length > LastNameMaxLength)
+            throw new MaxCharacterLimitException(LastNameMaxLength, "Last name");
 
         LastName = newLastName;
     }
