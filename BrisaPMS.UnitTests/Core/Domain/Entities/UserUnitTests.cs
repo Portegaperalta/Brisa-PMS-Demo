@@ -119,7 +119,7 @@ namespace BrisaPMS.UnitTests.Core.Domain.Entities
             Action act = () => new User("Jane", "Doe", "jane.doe@email.com", invalidPasswordHash!, "8095551234", "en");
 
             // Assert
-            act.Should().Throw<EmptyPasswordHashException>();
+            act.Should().Throw<EmptyPasswordException>();
         }
 
         [Theory]
@@ -258,7 +258,7 @@ namespace BrisaPMS.UnitTests.Core.Domain.Entities
             Action act = () => user.ChangePasswordHash(invalidPasswordHash!);
 
             // Assert
-            act.Should().Throw<EmptyPasswordHashException>();
+            act.Should().Throw<EmptyPasswordException>();
         }
 
         [Fact]

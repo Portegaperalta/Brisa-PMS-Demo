@@ -11,13 +11,13 @@ namespace BrisaPMS.Domain.ValueObjects
         public Url(string raw)
         {
             if (string.IsNullOrWhiteSpace(raw))
-                throw new EmptyUrlException();
+                throw new EmptyRequiredFieldException("Url");
 
             if (!Uri.TryCreate(raw.Trim(), UriKind.Absolute, out var uri))
-                throw new InvalidUrlException();
+                throw new InvalidFieldException("Url", "must have a valid URL format");
 
             if (uri.Scheme != Uri.UriSchemeHttps && uri.Scheme != Uri.UriSchemeHttp)
-                throw new InvalidUrlException();
+                throw new InvalidFieldException("Url", "must use http or https");
 
             Uri = uri;
         }

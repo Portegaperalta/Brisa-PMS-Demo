@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using BrisaPMS.Domain.Exceptions;
+using System.Text.RegularExpressions;
 
 namespace BrisaPMS.Domain.ValueObjects
 {
@@ -15,15 +15,15 @@ namespace BrisaPMS.Domain.ValueObjects
         public Rnc(string rawRnc)
         {
             if (string.IsNullOrWhiteSpace(rawRnc) is true)
-                throw new EmptyRncException();
+                throw new EmptyRequiredFieldException("Rnc");
 
             var digits = DigitsOnly.Replace(rawRnc.Trim(), "");
 
             if (digits.All(char.IsDigit) is false)
-                throw new InvalidRncException();
+                throw new InvalidFieldException("Rnc", "must contain digits only.");
 
             if (digits.Length != PersonRncLength && digits.Length != BusinessRncLength)
-                throw new InvalidRncException();
+                throw new InvalidFieldException("Rnc", "must be between 9 (Business) and 11 (Person) digits.");
 
             Value = digits;
         }

@@ -1,6 +1,5 @@
 using System;
 using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
 using BrisaPMS.Domain.ValueObjects;
 
 namespace BrisaPMS.Domain.Entities;
@@ -15,46 +14,20 @@ public class Company
     public Email BusinessEmail { get; private set; }
     public PhoneNumber BusinessPhone { get; private set; }
     public Url? LogoUrl  { get; private set; }
-    public string Address1 { get; private set; }
-    public string Address2 { get; private set; }
-    public string City { get; private set; }
-    public string Province { get; private set; }
-    public string ZipCode {get; private set;}
+    public Address Address { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
     private readonly int MaxLegalNameLength = 250;
     private readonly int MaxCommercialNameLength = 250;
 
     // Constructor
-    public Company(string legalName, 
-        string commercialName, 
-        Rnc rnc,
-        Email businessEmail, 
-        PhoneNumber businessPhone, 
-        Url logoUrl, 
-        string address1,
-        string address2, 
-        string city, 
-        string province, 
-        string zipCode)
+    public Company(string legalName,  string commercialName, Rnc rnc, Email businessEmail,  PhoneNumber businessPhone, Url logoUrl, Address address)
     {
         if (string.IsNullOrEmpty(legalName) is true)
-            throw new EmptyLegalNameException();
-        
+            throw new EmptyRequiredFieldException("Legal Name");
+
         if (string.IsNullOrWhiteSpace(commercialName) is true)
-            throw new EmptyCommercialNameException();
-        
-        if (string.IsNullOrWhiteSpace(address1) is true)
-            throw new EmptyAddress1Exception();
-        
-        if (string.IsNullOrWhiteSpace(city) is true)
-            throw new EmptyCityFieldException();
-        
-        if (string.IsNullOrWhiteSpace(province) is true)
-            throw new EmptyProvinceFieldException();
-        
-        if (string.IsNullOrWhiteSpace(zipCode) is true)
-            throw new EmptyZipCodeException();
+            throw new EmptyRequiredFieldException("Commercial Name");
 
         if (legalName.Length > MaxLegalNameLength)
             throw new MaxCharacterLimitException(MaxLegalNameLength, "Legal Name");
@@ -68,11 +41,7 @@ public class Company
         BusinessEmail = businessEmail;
         BusinessPhone = businessPhone;
         LogoUrl = logoUrl;
-        Address1 = address1;
-        Address2 = address2;
-        City = city;
-        Province = province;
-        ZipCode = zipCode;
+        Address = address;
         UpdatedAt = null;
     }
 
@@ -80,7 +49,7 @@ public class Company
     public void ChangeLegalName(string newLegalName)
     {
         if (string.IsNullOrWhiteSpace(newLegalName))
-            throw new EmptyLegalNameException();
+            throw new EmptyRequiredFieldException("Legal Name");
 
         if (newLegalName.Length > MaxLegalNameLength)
             throw new MaxCharacterLimitException(MaxLegalNameLength, "Legal Name");
@@ -91,7 +60,7 @@ public class Company
     public void ChangeCommercialName(string newCommercialName)
     {
         if (string.IsNullOrWhiteSpace(newCommercialName))
-            throw new EmptyCommercialNameException();
+            throw new EmptyRequiredFieldException("Commercial Name");
 
         if (newCommercialName.Length > MaxCommercialNameLength)
             throw new MaxCharacterLimitException(MaxCommercialNameLength, "Commercial Name");
@@ -107,39 +76,7 @@ public class Company
 
     public void ChangeLogoUrl(Url newLogoUrl) => LogoUrl = newLogoUrl;
 
-    public void ChangeAddress1(string newAddress1)
-    {
-        if (string.IsNullOrWhiteSpace(newAddress1))
-            throw new EmptyAddress1Exception();
-        
-        Address1 = newAddress1;
-    }
-    
-    public void ChangeAddress2(string newAddress2) => Address2 = newAddress2;
-
-    public void ChangeCity(string newCity)
-    {
-        if (string.IsNullOrWhiteSpace(newCity))
-            throw new EmptyCityFieldException();
-        
-        City = newCity;
-    }
-
-    public void ChangeProvince(string newProvince)
-    {
-        if (string.IsNullOrWhiteSpace(newProvince))
-            throw new EmptyProvinceFieldException();
-        
-        Province = newProvince;
-    }
-
-    public void ChangeZipCode(string newZipCode)
-    {
-        if (string.IsNullOrWhiteSpace(newZipCode))
-            throw new EmptyZipCodeException();
-        
-        ZipCode = newZipCode;
-    }
+    public void ChangeAddress(Address newAddress) => Address = newAddress;
     
     public void UpdateLastProfileUpdateTime() => UpdatedAt = DateTime.UtcNow;
 }

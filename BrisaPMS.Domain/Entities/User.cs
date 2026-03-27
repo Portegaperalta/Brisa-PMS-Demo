@@ -1,7 +1,6 @@
 using System;
 using BrisaPMS.Domain.Enums;
 using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
 using BrisaPMS.Domain.ValueObjects;
 
 namespace BrisaPMS.Domain.Entities;
@@ -13,7 +12,7 @@ public class User
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public Email Email { get; private set; }
-    public string PasswordHash { get; private set; }
+    public Password PasswordHash { get; private set; }
     public PhoneNumber? PhoneNumber { get; private set; }
     public PreferredLanguage PreferredLanguage { get; private set; }
     public bool IsOnline { get; private set; }
@@ -35,25 +34,22 @@ public class User
     public User(string firstName, 
         string lastName, 
         Email email,
-        string passwordHash,
+        Password password,
         PhoneNumber? phoneNumber,
         PreferredLanguage preferredLanguage,
         bool isActive = true)
     {
         if (string.IsNullOrWhiteSpace(firstName) is true)
-            throw new EmptyFirstNameException();
+            throw new EmptyRequiredFieldException("First Name");
 
         if (string.IsNullOrWhiteSpace(lastName) is true)
-            throw new EmptyLastNameException();
+            throw new EmptyRequiredFieldException("Last Name");
 
         if (firstName.Length > FirstNameMaxLength)
             throw new MaxCharacterLimitException(FirstNameMaxLength, "First name");
 
         if (lastName.Length > LastNameMaxLength)
             throw new MaxCharacterLimitException(LastNameMaxLength, "Last name");
-
-        if (string.IsNullOrWhiteSpace(passwordHash) is true)
-            throw new EmptyPasswordHashException();
 
         if (!Enum.IsDefined<PreferredLanguage>(preferredLanguage))
             throw new LanguageNotSupportedException();
@@ -62,7 +58,7 @@ public class User
         FirstName = firstName;
         LastName = lastName;
         Email = email;
-        PasswordHash = passwordHash;
+        PasswordHash = password;
         PhoneNumber = phoneNumber;
         PreferredLanguage = preferredLanguage;
         IsOnline = false;
@@ -81,7 +77,7 @@ public class User
     public void ChangeFirstName(string newFirstName)
     {
         if (string.IsNullOrWhiteSpace(newFirstName) is true)
-            throw new EmptyFirstNameException();
+            throw new EmptyRequiredFieldException("First Name");
 
         if (newFirstName.Length > FirstNameMaxLength)
             throw new MaxCharacterLimitException(FirstNameMaxLength, "First name");
@@ -92,7 +88,7 @@ public class User
     public void ChangeLastName(string newLastName)
     {
         if (string.IsNullOrWhiteSpace(newLastName) is true)
-            throw new EmptyLastNameException();
+            throw new EmptyRequiredFieldException("Last Name");
 
         if (newLastName.Length > LastNameMaxLength)
             throw new MaxCharacterLimitException(LastNameMaxLength, "Last name");
@@ -102,13 +98,7 @@ public class User
 
     public void ChangeEmail(Email newEmail) => Email = newEmail;
 
-    public void ChangePasswordHash(string newPasswordHash)
-    {
-        if (string.IsNullOrWhiteSpace(newPasswordHash) is true)
-            throw new EmptyPasswordHashException();
-
-        PasswordHash = newPasswordHash;
-    }
+    public void ChangePassword(Password newPassword) => PasswordHash = newPassword;
 
     public void ChangePhoneNumber(PhoneNumber newPhoneNumber) => PhoneNumber = newPhoneNumber;
 

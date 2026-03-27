@@ -1,8 +1,0 @@
-using System;
-
-namespace BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
-
-public class EmptyPreferredLanguageException : Exception
-{
-    public EmptyPreferredLanguageException() : base("Preferred language cannot be empty") { }   
-}
