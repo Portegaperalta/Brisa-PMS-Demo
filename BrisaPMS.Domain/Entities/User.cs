@@ -13,7 +13,7 @@ public class User
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public Email Email { get; private set; }
-    public string PasswordHash { get; private set; }
+    public Password PasswordHash { get; private set; }
     public PhoneNumber? PhoneNumber { get; private set; }
     public PreferredLanguage PreferredLanguage { get; private set; }
     public bool IsOnline { get; private set; }
@@ -35,7 +35,7 @@ public class User
     public User(string firstName, 
         string lastName, 
         Email email,
-        string passwordHash,
+        Password password,
         PhoneNumber? phoneNumber,
         PreferredLanguage preferredLanguage,
         bool isActive = true)
@@ -52,9 +52,6 @@ public class User
         if (lastName.Length > LastNameMaxLength)
             throw new MaxCharacterLimitException(LastNameMaxLength, "Last name");
 
-        if (string.IsNullOrWhiteSpace(passwordHash) is true)
-            throw new EmptyPasswordException();
-
         if (!Enum.IsDefined<PreferredLanguage>(preferredLanguage))
             throw new LanguageNotSupportedException();
 
@@ -62,7 +59,7 @@ public class User
         FirstName = firstName;
         LastName = lastName;
         Email = email;
-        PasswordHash = passwordHash;
+        PasswordHash = password;
         PhoneNumber = phoneNumber;
         PreferredLanguage = preferredLanguage;
         IsOnline = false;
@@ -102,13 +99,7 @@ public class User
 
     public void ChangeEmail(Email newEmail) => Email = newEmail;
 
-    public void ChangePasswordHash(string newPasswordHash)
-    {
-        if (string.IsNullOrWhiteSpace(newPasswordHash) is true)
-            throw new EmptyPasswordException();
-
-        PasswordHash = newPasswordHash;
-    }
+    public void ChangePassword(Password newPassword) => PasswordHash = newPassword;
 
     public void ChangePhoneNumber(PhoneNumber newPhoneNumber) => PhoneNumber = newPhoneNumber;
 
