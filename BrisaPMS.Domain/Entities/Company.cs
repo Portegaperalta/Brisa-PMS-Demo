@@ -10,7 +10,7 @@ public class Company
     public Guid Id { get; private init; } =  Guid.CreateVersion7();
     public string LegalName {get; private set;}
     public string CommercialName {get; private set;}
-    public string Rnc {get; private set;}
+    public Rnc Rnc {get; private set;}
     public Email BusinessEmail { get; private set; }
     public PhoneNumber BusinessPhone { get; private set; }
     public string? LogoUrl  { get; private set; }
@@ -27,7 +27,7 @@ public class Company
     // Constructor
     public Company(string legalName, 
         string commercialName, 
-        string rnc,
+        Rnc rnc,
         Email businessEmail, 
         PhoneNumber businessPhone, 
         string logoUrl, 
@@ -42,9 +42,6 @@ public class Company
         
         if (string.IsNullOrWhiteSpace(commercialName) is true)
             throw new EmptyCommercialNameException();
-        
-        if (string.IsNullOrWhiteSpace(rnc) is true)
-            throw new EmptyRncException();
         
         if (string.IsNullOrWhiteSpace(address1) is true)
             throw new EmptyAddress1Exception();
@@ -101,16 +98,7 @@ public class Company
         CommercialName = newCommercialName;
     }
 
-    public void ChangeRnc(string newRnc)
-    {
-        if (string.IsNullOrWhiteSpace(newRnc))
-            throw new EmptyRncException();
-        
-        if (newRnc.Length > 11)
-            throw new MaxCharacterLimitException(11, "Rnc");
-        
-        Rnc = newRnc;
-    }
+    public void ChangeRnc(Rnc newRnc) => Rnc = newRnc;
 
     public void ChangeBusinessEmail(Email newBusinessEmail)  => BusinessEmail = newBusinessEmail;
 
