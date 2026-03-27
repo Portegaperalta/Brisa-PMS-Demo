@@ -5,6 +5,7 @@ namespace BrisaPMS.Domain.ValueObjects
     public record Email
     {
         public string Value { get; }
+        private readonly int MaxCharacterLimit = 254;
 
         public Email(string email)
         {
@@ -13,6 +14,9 @@ namespace BrisaPMS.Domain.ValueObjects
 
             if (email.Contains('@') != true && email.Contains('.') != true)
                 throw new InvalidEmailAddressException();
+
+            if (email.Length > 254)
+                throw new MaxCharacterLimitException(MaxCharacterLimit, "Email");
 
             Value = email;
         }
