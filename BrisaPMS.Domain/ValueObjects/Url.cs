@@ -1,6 +1,5 @@
 ﻿using System;
 using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.InvalidValueExceptions;
 
 namespace BrisaPMS.Domain.ValueObjects
 {
@@ -15,10 +14,10 @@ namespace BrisaPMS.Domain.ValueObjects
                 throw new EmptyRequiredFieldException("Url");
 
             if (!Uri.TryCreate(raw.Trim(), UriKind.Absolute, out var uri))
-                throw new InvalidUrlException();
+                throw new InvalidFieldException("Url", "must have a valid URL format");
 
             if (uri.Scheme != Uri.UriSchemeHttps && uri.Scheme != Uri.UriSchemeHttp)
-                throw new InvalidUrlException();
+                throw new InvalidFieldException("Url", "must use http or https");
 
             Uri = uri;
         }

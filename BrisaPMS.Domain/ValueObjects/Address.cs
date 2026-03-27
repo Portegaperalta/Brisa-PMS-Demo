@@ -47,7 +47,7 @@ namespace BrisaPMS.Domain.ValueObjects
                 throw new MaxCharacterLimitException(MaxZipcodeCharacterLimit, "Zip Code");
 
             if (zipcode.All(char.IsDigit) is not true)
-                throw new ArgumentException("Zip code can only contain numeric values");
+                throw new InvalidFieldException("Zip Code", "Zip code can only contain numeric values");
 
             Address1 = address1;
             Address2 = address2;

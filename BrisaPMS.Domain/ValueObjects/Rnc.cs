@@ -1,6 +1,5 @@
 ﻿using System;
 using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.InvalidValueExceptions;
 using System.Text.RegularExpressions;
 
 namespace BrisaPMS.Domain.ValueObjects
@@ -21,10 +20,10 @@ namespace BrisaPMS.Domain.ValueObjects
             var digits = DigitsOnly.Replace(rawRnc.Trim(), "");
 
             if (digits.All(char.IsDigit) is false)
-                throw new InvalidRncException();
+                throw new InvalidFieldException("Rnc", "must contain digits only.");
 
             if (digits.Length != PersonRncLength && digits.Length != BusinessRncLength)
-                throw new InvalidRncException();
+                throw new InvalidFieldException("Rnc", "must be between 9 (Business) and 11 (Person) digits.");
 
             Value = digits;
         }

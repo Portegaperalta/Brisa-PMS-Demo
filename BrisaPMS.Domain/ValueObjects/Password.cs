@@ -1,6 +1,5 @@
 ﻿using System;
 using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.InvalidValueExceptions;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
@@ -24,13 +23,13 @@ namespace BrisaPMS.Domain.ValueObjects
                 throw new EmptyRequiredFieldException("Password");
 
             if (password.Length < MinCharacterLimit)
-                throw new InvalidPasswordException();
+                throw new InvalidFieldException("Password", "Password must be at least 8 characters long");
 
             if (SpecialCharRegex.IsMatch(password) is false)
-                throw new InvalidPasswordException();
+                throw new InvalidFieldException("Password", "Password must include at least one special character.");
 
             if (password.Any(char.IsUpper) is false)
-                throw new InvalidPasswordException();
+                throw new InvalidFieldException("Password", "Password must include an uppercase letter.");
 
             Value = Hash(password);
         }

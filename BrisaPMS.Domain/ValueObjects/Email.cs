@@ -1,6 +1,5 @@
 ﻿using System;
 using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.InvalidValueExceptions;
 
 namespace BrisaPMS.Domain.ValueObjects
 {
@@ -15,7 +14,7 @@ namespace BrisaPMS.Domain.ValueObjects
                 throw new EmptyRequiredFieldException("Email");
 
             if (email.Contains('@') != true && email.Contains('.') != true)
-                throw new InvalidEmailAddressException();
+                throw new InvalidFieldException("Email", "The email must be a valid email address");
 
             if (email.Length > 254)
                 throw new MaxCharacterLimitException(MaxCharacterLimit, "Email");
