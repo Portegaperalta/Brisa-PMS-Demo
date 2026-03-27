@@ -1,4 +1,4 @@
-﻿namespace BrisaPMS.Domain.Exceptions
+﻿namespace BrisaPMS.Domain.Exceptions.InvalidValueExceptions
 {
     public class InvalidEmailAddressException : Exception
     {

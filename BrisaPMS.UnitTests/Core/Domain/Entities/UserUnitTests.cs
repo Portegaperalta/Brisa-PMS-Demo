@@ -1,5 +1,6 @@
 ﻿using BrisaPMS.Domain.Entities;
 using BrisaPMS.Domain.Exceptions;
+using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.Entities

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BrisaPMS.Domain.Exceptions
+namespace BrisaPMS.Domain.Exceptions.EmptyValueExceptions
 {
     public class EmptyUrlException : Exception
     {

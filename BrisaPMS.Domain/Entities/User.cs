@@ -1,6 +1,7 @@
 using System;
 using BrisaPMS.Domain.Enums;
 using BrisaPMS.Domain.Exceptions;
+using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
 using BrisaPMS.Domain.ValueObjects;
 
 namespace BrisaPMS.Domain.Entities;
