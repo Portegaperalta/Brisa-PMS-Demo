@@ -4,7 +4,7 @@ using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.ValueObjects;
 
-public class EmailUnitTests
+public class EmailTests
 {
     [Fact]
     public void Constructor_ShouldCreateEmail_WhenEmailIsValid()
