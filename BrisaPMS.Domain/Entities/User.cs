@@ -1,4 +1,5 @@
 using System;
+using BrisaPMS.Domain.Enums;
 using BrisaPMS.Domain.Exceptions;
 
 namespace BrisaPMS.Domain.Entities;
@@ -12,7 +13,7 @@ public class User
     public string Email { get; private set; }
     public string PasswordHash { get; private set; }
     public string? PhoneNumber { get; private set; }
-    public string PreferredLanguage { get; private set; }
+    public PreferredLanguage PreferredLanguage { get; private set; }
     public bool IsOnline { get; private set; }
     public bool IsActive { get; private set; }
     public bool IsEmailConfirmed { get; private set; }
@@ -31,7 +32,7 @@ public class User
         string email,
         string passwordHash,
         string? phoneNumber,
-        string preferredLanguage,
+        PreferredLanguage preferredLanguage,
         bool isActive = true)
     {
         if (string.IsNullOrWhiteSpace(firstName) is true)
@@ -45,9 +46,6 @@ public class User
 
         if (string.IsNullOrWhiteSpace(passwordHash) is true)
             throw new EmptyPasswordHashException();
-
-        if (string.IsNullOrWhiteSpace(preferredLanguage) == true)
-            throw new EmptyPreferredLanguageException();
 
         FirstName = firstName;
         LastName = lastName;
@@ -108,11 +106,8 @@ public class User
         PhoneNumber = newPhoneNumber;
     }
 
-    public void ChangePreferredLanguage(string newPreferredLanguage)
+    public void ChangePreferredLanguage(PreferredLanguage newPreferredLanguage)
     {
-        if (string.IsNullOrWhiteSpace(newPreferredLanguage) is true)
-            throw new EmptyPreferredLanguageException();
-
         PreferredLanguage = newPreferredLanguage;
     }
 
