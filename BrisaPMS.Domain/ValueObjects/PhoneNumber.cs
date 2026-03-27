@@ -1,5 +1,4 @@
 ﻿using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
 using System;
 
 namespace BrisaPMS.Domain.ValueObjects
@@ -13,7 +12,7 @@ namespace BrisaPMS.Domain.ValueObjects
         public PhoneNumber(string phoneNumber)
         {
             if (string.IsNullOrWhiteSpace(phoneNumber) is true)
-                throw new EmptyPhoneNumberException();
+                throw new EmptyRequiredFieldException("Phone Number");
 
             if (phoneNumber.Length > MaxCharacterLimit)
                 throw new MaxCharacterLimitException(MaxCharacterLimit, "Phone number");

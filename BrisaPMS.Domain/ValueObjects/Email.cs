@@ -1,5 +1,5 @@
-﻿using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
+﻿using System;
+using BrisaPMS.Domain.Exceptions;
 using BrisaPMS.Domain.Exceptions.InvalidValueExceptions;
 
 namespace BrisaPMS.Domain.ValueObjects
@@ -12,7 +12,7 @@ namespace BrisaPMS.Domain.ValueObjects
         public Email(string email)
         {
             if (string.IsNullOrWhiteSpace(email) is true)
-                throw new EmptyEmailException();
+                throw new EmptyRequiredFieldException("Email");
 
             if (email.Contains('@') != true && email.Contains('.') != true)
                 throw new InvalidEmailAddressException();

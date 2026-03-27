@@ -1,5 +1,5 @@
 ﻿using System;
-using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
+using BrisaPMS.Domain.Exceptions;
 using BrisaPMS.Domain.Exceptions.InvalidValueExceptions;
 
 namespace BrisaPMS.Domain.ValueObjects
@@ -12,7 +12,7 @@ namespace BrisaPMS.Domain.ValueObjects
         public Url(string raw)
         {
             if (string.IsNullOrWhiteSpace(raw))
-                throw new EmptyUrlException();
+                throw new EmptyRequiredFieldException("Url");
 
             if (!Uri.TryCreate(raw.Trim(), UriKind.Absolute, out var uri))
                 throw new InvalidUrlException();

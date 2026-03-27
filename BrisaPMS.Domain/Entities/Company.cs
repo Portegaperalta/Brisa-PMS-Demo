@@ -1,6 +1,5 @@
 using System;
 using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
 using BrisaPMS.Domain.ValueObjects;
 
 namespace BrisaPMS.Domain.Entities;
@@ -25,10 +24,10 @@ public class Company
     public Company(string legalName,  string commercialName, Rnc rnc, Email businessEmail,  PhoneNumber businessPhone, Url logoUrl, Address address)
     {
         if (string.IsNullOrEmpty(legalName) is true)
-            throw new EmptyLegalNameException();
-        
+            throw new EmptyRequiredFieldException("Legal Name");
+
         if (string.IsNullOrWhiteSpace(commercialName) is true)
-            throw new EmptyCommercialNameException();
+            throw new EmptyRequiredFieldException("Commercial Name");
 
         if (legalName.Length > MaxLegalNameLength)
             throw new MaxCharacterLimitException(MaxLegalNameLength, "Legal Name");
@@ -50,7 +49,7 @@ public class Company
     public void ChangeLegalName(string newLegalName)
     {
         if (string.IsNullOrWhiteSpace(newLegalName))
-            throw new EmptyLegalNameException();
+            throw new EmptyRequiredFieldException("Legal Name");
 
         if (newLegalName.Length > MaxLegalNameLength)
             throw new MaxCharacterLimitException(MaxLegalNameLength, "Legal Name");
@@ -61,7 +60,7 @@ public class Company
     public void ChangeCommercialName(string newCommercialName)
     {
         if (string.IsNullOrWhiteSpace(newCommercialName))
-            throw new EmptyCommercialNameException();
+            throw new EmptyRequiredFieldException("Commercial Name");
 
         if (newCommercialName.Length > MaxCommercialNameLength)
             throw new MaxCharacterLimitException(MaxCommercialNameLength, "Commercial Name");

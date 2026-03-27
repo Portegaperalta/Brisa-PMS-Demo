@@ -1,7 +1,6 @@
 using System;
 using BrisaPMS.Domain.Enums;
 using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
 using BrisaPMS.Domain.ValueObjects;
 
 namespace BrisaPMS.Domain.Entities;
@@ -41,10 +40,10 @@ public class User
         bool isActive = true)
     {
         if (string.IsNullOrWhiteSpace(firstName) is true)
-            throw new EmptyFirstNameException();
+            throw new EmptyRequiredFieldException("First Name");
 
         if (string.IsNullOrWhiteSpace(lastName) is true)
-            throw new EmptyLastNameException();
+            throw new EmptyRequiredFieldException("Last Name");
 
         if (firstName.Length > FirstNameMaxLength)
             throw new MaxCharacterLimitException(FirstNameMaxLength, "First name");
@@ -78,7 +77,7 @@ public class User
     public void ChangeFirstName(string newFirstName)
     {
         if (string.IsNullOrWhiteSpace(newFirstName) is true)
-            throw new EmptyFirstNameException();
+            throw new EmptyRequiredFieldException("First Name");
 
         if (newFirstName.Length > FirstNameMaxLength)
             throw new MaxCharacterLimitException(FirstNameMaxLength, "First name");
@@ -89,7 +88,7 @@ public class User
     public void ChangeLastName(string newLastName)
     {
         if (string.IsNullOrWhiteSpace(newLastName) is true)
-            throw new EmptyLastNameException();
+            throw new EmptyRequiredFieldException("Last Name");
 
         if (newLastName.Length > LastNameMaxLength)
             throw new MaxCharacterLimitException(LastNameMaxLength, "Last name");

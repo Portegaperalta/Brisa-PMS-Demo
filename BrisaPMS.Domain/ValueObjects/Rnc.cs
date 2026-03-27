@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Text.RegularExpressions;
-using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
+using BrisaPMS.Domain.Exceptions;
 using BrisaPMS.Domain.Exceptions.InvalidValueExceptions;
+using System.Text.RegularExpressions;
 
 namespace BrisaPMS.Domain.ValueObjects
 {
@@ -16,7 +16,7 @@ namespace BrisaPMS.Domain.ValueObjects
         public Rnc(string rawRnc)
         {
             if (string.IsNullOrWhiteSpace(rawRnc) is true)
-                throw new EmptyRncException();
+                throw new EmptyRequiredFieldException("Rnc");
 
             var digits = DigitsOnly.Replace(rawRnc.Trim(), "");
 

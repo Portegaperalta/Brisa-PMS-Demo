@@ -1,6 +1,5 @@
 ﻿using System;
 using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
 
 namespace BrisaPMS.Domain.ValueObjects
 {
@@ -21,16 +20,16 @@ namespace BrisaPMS.Domain.ValueObjects
         public Address(string address1, string? address2, string city, string province, string zipcode)
         {
             if (string.IsNullOrWhiteSpace(address1) is true)
-                throw new EmptyAddress1Exception();
+                throw new EmptyRequiredFieldException("Address 1");
 
             if (string.IsNullOrWhiteSpace(city) is true)
-                throw new EmptyCityFieldException();
+                throw new EmptyRequiredFieldException("City");
 
             if (string.IsNullOrWhiteSpace(province) is true)
-                throw new EmptyProvinceFieldException();
+                throw new EmptyRequiredFieldException("Province");
 
             if (string.IsNullOrWhiteSpace(zipcode) is true)
-                throw new EmptyZipCodeException();
+                throw new EmptyRequiredFieldException("Zip Code");
 
             if (address1.Length > MaxAddres1CharacterLimit)
                 throw new MaxCharacterLimitException(MaxAddres1CharacterLimit, "Address 1");

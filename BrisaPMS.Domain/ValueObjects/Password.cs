@@ -1,8 +1,8 @@
 ﻿using System;
+using BrisaPMS.Domain.Exceptions;
+using BrisaPMS.Domain.Exceptions.InvalidValueExceptions;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
-using BrisaPMS.Domain.Exceptions.InvalidValueExceptions;
 
 namespace BrisaPMS.Domain.ValueObjects
 {
@@ -21,7 +21,7 @@ namespace BrisaPMS.Domain.ValueObjects
         public Password(string password)
         {
             if (string.IsNullOrWhiteSpace(password) is true)
-                throw new EmptyPasswordException();
+                throw new EmptyRequiredFieldException("Password");
 
             if (password.Length < MinCharacterLimit)
                 throw new InvalidPasswordException();
