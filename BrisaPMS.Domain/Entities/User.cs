@@ -8,7 +8,7 @@ namespace BrisaPMS.Domain.Entities;
 public class User
 {
     // Attributes
-    public Guid Id { get; private init; } = Guid.CreateVersion7();
+    public Guid Id { get; private init; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public Email Email { get; private set; }
@@ -48,6 +48,7 @@ public class User
         if (!Enum.IsDefined<PreferredLanguage>(preferredLanguage))
             throw new LanguageNotSupportedException();
 
+        Id = Guid.CreateVersion7();
         FirstName = firstName;
         LastName = lastName;
         Email = email;
