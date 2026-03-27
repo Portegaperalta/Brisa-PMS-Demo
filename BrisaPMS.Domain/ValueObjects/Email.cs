@@ -1,4 +1,6 @@
 ﻿using BrisaPMS.Domain.Exceptions;
+using BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
+using BrisaPMS.Domain.Exceptions.InvalidValueExceptions;
 
 namespace BrisaPMS.Domain.ValueObjects
 {
