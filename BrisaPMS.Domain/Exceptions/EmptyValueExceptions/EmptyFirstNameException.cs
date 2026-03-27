@@ -1,4 +1,6 @@
-namespace BrisaPMS.Domain.Exceptions;
+using System;
+
+namespace BrisaPMS.Domain.Exceptions.EmptyValueExceptions;
 
 public class EmptyFirstNameException : Exception
 {
