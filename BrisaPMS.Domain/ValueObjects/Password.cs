@@ -22,14 +22,17 @@ namespace BrisaPMS.Domain.ValueObjects
             if (string.IsNullOrWhiteSpace(password) is true)
                 throw new EmptyRequiredFieldException("Password");
 
+            if (password.Length > MaxCharacterLimit)
+                throw new InvalidFieldException("Password", "cannot be more than 512 characters long");
+
             if (password.Length < MinCharacterLimit)
-                throw new InvalidFieldException("Password", "Password must be at least 8 characters long");
+                throw new InvalidFieldException("Password", "must be at least 8 characters long");
 
             if (SpecialCharRegex.IsMatch(password) is false)
-                throw new InvalidFieldException("Password", "Password must include at least one special character.");
+                throw new InvalidFieldException("Password", "must include at least one special character.");
 
             if (password.Any(char.IsUpper) is false)
-                throw new InvalidFieldException("Password", "Password must include an uppercase letter.");
+                throw new InvalidFieldException("Password", "must include an uppercase letter.");
 
             Value = Hash(password);
         }
