@@ -13,7 +13,7 @@ public class User
     public string LastName { get; private set; }
     public Email Email { get; private set; }
     public string PasswordHash { get; private set; }
-    public string? PhoneNumber { get; private set; }
+    public PhoneNumber? PhoneNumber { get; private set; }
     public PreferredLanguage PreferredLanguage { get; private set; }
     public bool IsOnline { get; private set; }
     public bool IsActive { get; private set; }
@@ -35,7 +35,7 @@ public class User
         string lastName, 
         Email email,
         string passwordHash,
-        string? phoneNumber,
+        PhoneNumber? phoneNumber,
         PreferredLanguage preferredLanguage,
         bool isActive = true)
     {
@@ -109,13 +109,7 @@ public class User
         PasswordHash = newPasswordHash;
     }
 
-    public void ChangePhoneNumber(string newPhoneNumber)
-    {
-        if (string.IsNullOrWhiteSpace(newPhoneNumber) is true)
-            throw new EmptyPhoneNumberException();
-
-        PhoneNumber = newPhoneNumber;
-    }
+    public void ChangePhoneNumber(PhoneNumber newPhoneNumber) => PhoneNumber = newPhoneNumber;
 
     public void ChangePreferredLanguage(PreferredLanguage newPreferredLanguage)
     {

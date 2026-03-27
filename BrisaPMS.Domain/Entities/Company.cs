@@ -12,7 +12,7 @@ public class Company
     public string CommercialName {get; private set;}
     public string Rnc {get; private set;}
     public Email BusinessEmail { get; private set; }
-    public string BusinessPhone { get; private set; }
+    public PhoneNumber BusinessPhone { get; private set; }
     public string? LogoUrl  { get; private set; }
     public string Address1 { get; private set; }
     public string Address2 { get; private set; }
@@ -29,7 +29,7 @@ public class Company
         string commercialName, 
         string rnc,
         Email businessEmail, 
-        string businessPhone, 
+        PhoneNumber businessPhone, 
         string logoUrl, 
         string address1,
         string address2, 
@@ -45,9 +45,6 @@ public class Company
         
         if (string.IsNullOrWhiteSpace(rnc) is true)
             throw new EmptyRncException();
-        
-        if (string.IsNullOrWhiteSpace(businessPhone) is true)
-            throw new EmptyPhoneNumberException();
         
         if (string.IsNullOrWhiteSpace(address1) is true)
             throw new EmptyAddress1Exception();
@@ -117,13 +114,7 @@ public class Company
 
     public void ChangeBusinessEmail(Email newBusinessEmail)  => BusinessEmail = newBusinessEmail;
 
-    public void ChangeBusinessPhone(string newBusinessPhone)
-    {
-        if (string.IsNullOrWhiteSpace(newBusinessPhone))
-            throw new EmptyPhoneNumberException();
-        
-        BusinessPhone = newBusinessPhone;
-    }
+    public void ChangeBusinessPhone(PhoneNumber newBusinessPhone) => BusinessPhone = newBusinessPhone;
 
     public void ChangeLogoUrl(string? newLogoUrl)
     { 
