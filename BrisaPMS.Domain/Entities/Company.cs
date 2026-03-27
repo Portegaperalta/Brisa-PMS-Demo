@@ -21,6 +21,9 @@ public class Company
     public string ZipCode {get; private set;}
     public DateTime? UpdatedAt { get; private set; }
 
+    private readonly int MaxLegalNameLength = 250;
+    private readonly int MaxCommercialNameLength = 250;
+
     // Constructor
     public Company(string legalName, 
         string commercialName, 
@@ -57,6 +60,12 @@ public class Company
         
         if (string.IsNullOrWhiteSpace(zipCode) is true)
             throw new EmptyZipCodeException();
+
+        if (legalName.Length > MaxLegalNameLength)
+            throw new MaxCharacterLimitException(MaxLegalNameLength, "Legal Name");
+
+        if (commercialName.Length > MaxCommercialNameLength)
+            throw new MaxCharacterLimitException(MaxCommercialNameLength, "Commercial Name");
         
         LegalName = legalName;
         CommercialName = commercialName;
@@ -77,7 +86,10 @@ public class Company
     {
         if (string.IsNullOrWhiteSpace(newLegalName))
             throw new EmptyLegalNameException();
-        
+
+        if (newLegalName.Length > MaxLegalNameLength)
+            throw new MaxCharacterLimitException(MaxLegalNameLength, "Legal Name");
+
         LegalName = newLegalName;
     }
 
@@ -85,7 +97,10 @@ public class Company
     {
         if (string.IsNullOrWhiteSpace(newCommercialName))
             throw new EmptyCommercialNameException();
-        
+
+        if (newCommercialName.Length > MaxCommercialNameLength)
+            throw new MaxCharacterLimitException(MaxCommercialNameLength, "Commercial Name");
+
         CommercialName = newCommercialName;
     }
 
