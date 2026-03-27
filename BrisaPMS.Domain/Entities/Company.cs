@@ -13,7 +13,7 @@ public class Company
     public Rnc Rnc {get; private set;}
     public Email BusinessEmail { get; private set; }
     public PhoneNumber BusinessPhone { get; private set; }
-    public string? LogoUrl  { get; private set; }
+    public Url? LogoUrl  { get; private set; }
     public string Address1 { get; private set; }
     public string Address2 { get; private set; }
     public string City { get; private set; }
@@ -30,7 +30,7 @@ public class Company
         Rnc rnc,
         Email businessEmail, 
         PhoneNumber businessPhone, 
-        string logoUrl, 
+        Url logoUrl, 
         string address1,
         string address2, 
         string city, 
@@ -104,10 +104,7 @@ public class Company
 
     public void ChangeBusinessPhone(PhoneNumber newBusinessPhone) => BusinessPhone = newBusinessPhone;
 
-    public void ChangeLogoUrl(string? newLogoUrl)
-    { 
-        LogoUrl = newLogoUrl;
-    }
+    public void ChangeLogoUrl(Url newLogoUrl) => LogoUrl = newLogoUrl;
 
     public void ChangeAddress1(string newAddress1)
     {
