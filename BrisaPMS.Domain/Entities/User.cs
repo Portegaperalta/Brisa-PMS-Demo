@@ -1,6 +1,7 @@
 using System;
 using BrisaPMS.Domain.Enums;
 using BrisaPMS.Domain.Exceptions;
+using BrisaPMS.Domain.ValueObjects;
 
 namespace BrisaPMS.Domain.Entities;
 
@@ -10,7 +11,7 @@ public class User
     public Guid Id { get; private init; } = Guid.CreateVersion7();
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
-    public string Email { get; private set; }
+    public Email Email { get; private set; }
     public string PasswordHash { get; private set; }
     public string? PhoneNumber { get; private set; }
     public PreferredLanguage PreferredLanguage { get; private set; }
@@ -29,7 +30,7 @@ public class User
 
     public User(string firstName, 
         string lastName, 
-        string email,
+        Email email,
         string passwordHash,
         string? phoneNumber,
         PreferredLanguage preferredLanguage,
@@ -40,9 +41,6 @@ public class User
 
         if (string.IsNullOrWhiteSpace(lastName) is true)
             throw new EmptyLastNameException();
-
-        if (string.IsNullOrWhiteSpace(email) is true)
-            throw new EmptyEmailException();
 
         if (string.IsNullOrWhiteSpace(passwordHash) is true)
             throw new EmptyPasswordHashException();
@@ -85,13 +83,7 @@ public class User
         LastName = newLastName;
     }
 
-    public void ChangeEmail(string newEmail)
-    {
-        if (string.IsNullOrWhiteSpace(newEmail) is true)
-            throw new EmptyEmailException();
-
-        Email = newEmail;
-    }
+    public void ChangeEmail(Email newEmail) => Email = newEmail;
 
     public void ChangePasswordHash(string newPasswordHash)
     {
