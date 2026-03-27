@@ -12,7 +12,7 @@ namespace BrisaPMS.Domain.ValueObjects
                 throw new EmptyEmailException();
 
             if (email.Contains('@') != true && email.Contains('.') != true)
-                throw new ArgumentException("The email must be a valid email address");
+                throw new InvalidEmailAddressException();
 
             Value = email;
         }
