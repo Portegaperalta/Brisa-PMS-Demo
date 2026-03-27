@@ -1,6 +1,6 @@
 using System;
-using System.Reflection.Emit;
 using BrisaPMS.Domain.Exceptions;
+using BrisaPMS.Domain.ValueObjects;
 
 namespace BrisaPMS.Domain.Entities;
 
@@ -11,7 +11,7 @@ public class Company
     public string LegalName {get; private set;}
     public string CommercialName {get; private set;}
     public string Rnc {get; private set;}
-    public string BusinessEmail { get; private set; }
+    public Email BusinessEmail { get; private set; }
     public string BusinessPhone { get; private set; }
     public string? LogoUrl  { get; private set; }
     public string Address1 { get; private set; }
@@ -25,7 +25,7 @@ public class Company
     public Company(string legalName, 
         string commercialName, 
         string rnc,
-        string businessEmail, 
+        Email businessEmail, 
         string businessPhone, 
         string logoUrl, 
         string address1,
@@ -42,9 +42,6 @@ public class Company
         
         if (string.IsNullOrWhiteSpace(rnc) is true)
             throw new EmptyRncException();
-        
-        if (string.IsNullOrWhiteSpace(businessEmail) is true)
-            throw new EmptyEmailException();
         
         if (string.IsNullOrWhiteSpace(businessPhone) is true)
             throw new EmptyPhoneNumberException();
@@ -103,13 +100,7 @@ public class Company
         Rnc = newRnc;
     }
 
-    public void ChangeBusinessEmail(string newBusinessEmail)
-    {
-        if (string.IsNullOrWhiteSpace(newBusinessEmail))
-            throw new EmptyEmailException();
-        
-        BusinessEmail = newBusinessEmail;
-    }
+    public void ChangeBusinessEmail(Email newBusinessEmail)  => BusinessEmail = newBusinessEmail;
 
     public void ChangeBusinessPhone(string newBusinessPhone)
     {
