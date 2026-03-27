@@ -47,6 +47,9 @@ public class User
         if (string.IsNullOrWhiteSpace(passwordHash) is true)
             throw new EmptyPasswordHashException();
 
+        if (!Enum.IsDefined<PreferredLanguage>(preferredLanguage))
+            throw new LanguageNotSupportedException();
+
         FirstName = firstName;
         LastName = lastName;
         Email = email;
@@ -108,6 +111,9 @@ public class User
 
     public void ChangePreferredLanguage(PreferredLanguage newPreferredLanguage)
     {
+        if (!Enum.IsDefined<PreferredLanguage>(newPreferredLanguage))
+            throw new LanguageNotSupportedException();
+        
         PreferredLanguage = newPreferredLanguage;
     }
 
