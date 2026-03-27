@@ -24,7 +24,7 @@ public class User
     public DateTime? LastLoginAt { get; private set; }
     public DateTime? PasswordChangedAt { get; private set; }
     public DateTime CreatedAt { get; private init; }
-    public DateTime UpdatedAt { get; private set; }
+    public DateTime? UpdatedAt { get; private set; }
 
     //Constructor
 
@@ -63,7 +63,7 @@ public class User
         LastLoginAt = null;
         PasswordChangedAt = null;
         CreatedAt = DateTime.UtcNow;
-        UpdatedAt = DateTime.UtcNow;
+        UpdatedAt = null;
     }
 
     // Behavioral Methods
