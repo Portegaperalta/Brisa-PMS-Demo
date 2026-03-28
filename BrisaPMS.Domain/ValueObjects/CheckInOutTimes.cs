@@ -10,10 +10,10 @@ public class CheckInOutTimes
     public CheckInOutTimes(DateTime checkInTime, DateTime checkOutTime)
     {
         if (checkInTime >  checkOutTime)
-            throw new InvalidFieldException("CheckIn Time", "cannot be greater than CheckOut TIme");
+            throw new BusinessRuleException("Check-In Time cannot be greater than check-out time");
         
         if (checkOutTime < checkInTime)
-            throw new InvalidFieldException("CheckOut Time", "cannot be less than CheckIn Time");
+            throw new BusinessRuleException("Check-Out time cannot be less than Check-In time");
         
         CheckInTime = checkInTime;
         CheckOutTime = checkOutTime;
