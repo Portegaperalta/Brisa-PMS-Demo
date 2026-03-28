@@ -5,21 +5,20 @@ namespace BrisaPMS.Domain.ValueObjects
 {
     public record Url
     {
-        public Uri Uri { get; }
-        public string Value => Uri.AbsoluteUri;
+        public string Value { get; }
 
-        public Url(string raw)
+        public Url(string url)
         {
-            if (string.IsNullOrWhiteSpace(raw))
+            if (string.IsNullOrWhiteSpace(url))
                 throw new EmptyRequiredFieldException("Url");
 
-            if (!Uri.TryCreate(raw.Trim(), UriKind.Absolute, out var uri))
+            if (!Uri.TryCreate(url.Trim(), UriKind.Absolute, out var uri))
                 throw new InvalidFieldException("Url", "must have a valid URL format");
 
             if (uri.Scheme != Uri.UriSchemeHttps && uri.Scheme != Uri.UriSchemeHttp)
                 throw new InvalidFieldException("Url", "must use http or https");
 
-            Uri = uri;
+            Value = url.Trim();
         }
     }
 }
