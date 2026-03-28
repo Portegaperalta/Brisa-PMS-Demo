@@ -14,7 +14,7 @@ namespace BrisaPMS.Domain.ValueObjects
         private const int SaltSize = 16;
         private const int HashSize = 32;
         private const int Iterations = 100_000;
-        private readonly HashAlgorithmName Algorithm = HashAlgorithmName.SHA3_256;
+        private readonly HashAlgorithmName Algorithm = HashAlgorithmName.SHA256;
         private readonly Regex SpecialCharRegex = new(@"[!@#$%^&*()\-_+=\[\]{}|\\;:'"",.<>/?`~]", RegexOptions.Compiled);
 
         public Password(string password)
