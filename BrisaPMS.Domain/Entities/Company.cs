@@ -23,7 +23,7 @@ public class Company
     // Constructor
     public Company(string legalName,  string commercialName, Rnc rnc, Email businessEmail,  PhoneNumber businessPhone, Url logoUrl, Address address)
     {
-        if (string.IsNullOrEmpty(legalName) is true)
+        if (string.IsNullOrWhiteSpace(legalName) is true)
             throw new EmptyRequiredFieldException("Legal Name");
 
         if (string.IsNullOrWhiteSpace(commercialName) is true)
