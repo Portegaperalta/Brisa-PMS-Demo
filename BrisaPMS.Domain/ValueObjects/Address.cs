@@ -34,8 +34,11 @@ namespace BrisaPMS.Domain.ValueObjects
             if (address1.Length > MaxAddres1CharacterLimit)
                 throw new MaxCharacterLimitException(MaxAddres1CharacterLimit, "Address 1");
 
-            if (address2!.Length > MaxAddress2CharacterLimit)
-                throw new MaxCharacterLimitException(MaxAddress2CharacterLimit, "Address 2");
+            if (address2 is not null)
+            {
+                if (address2!.Length > MaxAddress2CharacterLimit)
+                    throw new MaxCharacterLimitException(MaxAddress2CharacterLimit, "Address 2");
+            }
 
             if (city.Length > MaxCityCharacterLimit)
                 throw new MaxCharacterLimitException(MaxCityCharacterLimit, "City");
