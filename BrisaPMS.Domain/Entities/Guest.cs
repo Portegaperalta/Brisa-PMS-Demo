@@ -9,6 +9,7 @@ namespace BrisaPMS.Domain.Entities
     {
         //Attributes 
         public Guid Id { get; private init; }
+        public Guid HotelId { get; private init; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public DocumentType DocumentType { get; private set; }
@@ -27,7 +28,8 @@ namespace BrisaPMS.Domain.Entities
         public DateTime? UpdatedAt { get; private set; }
 
         // Constructor
-        public Guest(string firstName,
+        public Guest(Guid hotelId,
+            string firstName,
             string lastName,
             DocumentType documentType,
             string documentNumber,
@@ -56,6 +58,7 @@ namespace BrisaPMS.Domain.Entities
                 throw new BusinessRuleException("Currency not supported");
 
             Id = Guid.CreateVersion7();
+            HotelId = hotelId;
             FirstName = firstName;
             LastName = lastName;
             DocumentType = documentType;
