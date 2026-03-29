@@ -8,8 +8,8 @@ namespace BrisaPMS.Domain.Entities;
 public class User
 {
     // Attributes
-    public Guid Id { get; private init; }
-    public Guid? HotelId { get; private init; }
+    public Guid Id { get; init; }
+    public Guid? HotelId { get; init; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public Email Email { get; private set; }
@@ -24,7 +24,7 @@ public class User
     public DateTimeOffset? LockOutEnd { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
     public DateTime? PasswordChangedAt { get; private set; }
-    public DateTime CreatedAt { get; private init; }
+    public DateTime CreatedAt { get; init; }
     public DateTime? UpdatedAt { get; private set; }
 
     //Constructor
