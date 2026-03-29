@@ -63,12 +63,12 @@ public class RncTests
     [InlineData("12345678")]
     [InlineData("1234567890")]
     [InlineData("123456789012")]
-    public void Constructor_ShouldThrowInvalidFieldException_WhenRncLengthIsNot9Or11Digits(string rawRnc)
+    public void Constructor_ShouldThrowBusinessRuleException_WhenRncLengthIsNot9Or11Digits(string rawRnc)
     {
         // Arrange + Act
         Action act = () => _ = new Rnc(rawRnc);
 
         // Assert
-        act.Should().Throw<InvalidFieldException>();
+        act.Should().Throw<BusinessRuleException>();
     }
 }
