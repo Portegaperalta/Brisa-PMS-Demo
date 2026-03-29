@@ -20,10 +20,10 @@ namespace BrisaPMS.Domain.ValueObjects
             var digits = DigitsOnly.Replace(rawRnc.Trim(), "");
 
             if (digits.All(char.IsDigit) is false)
-                throw new InvalidFieldException("Rnc", "must contain digits only.");
+                throw new BusinessRuleException("Rnc must contain digits only.");
 
             if (digits.Length != PersonRncLength && digits.Length != BusinessRncLength)
-                throw new InvalidFieldException("Rnc", "must be between 9 (Business) and 11 (Person) digits.");
+                throw new BusinessRuleException("Rnc must be between 9 (Business) and 11 (Person) digits.");
 
             Value = digits;
         }

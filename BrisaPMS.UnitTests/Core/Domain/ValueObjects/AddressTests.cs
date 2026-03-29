@@ -124,7 +124,7 @@ public class AddressTests
     [Theory]
     [InlineData("10A01")]
     [InlineData("10-01")]
-    public void Constructor_ShouldThrowInvalidFieldException_WhenZipCodeContainsNonNumericCharacters(string zipCode)
+    public void Constructor_ShouldThrowBusinessRuleException_WhenZipCodeContainsNonNumericCharacters(string zipCode)
     {
         // Arrange
         var address1 = "123 Main Street";
@@ -136,6 +136,6 @@ public class AddressTests
         Action act = () => _ = new Address(address1, address2, city, province, zipCode);
 
         // Assert
-        act.Should().Throw<InvalidFieldException>();
+        act.Should().Throw<BusinessRuleException>();
     }
 }
