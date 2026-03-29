@@ -17,9 +17,6 @@ public class Company
     public Address Address { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
-    private readonly int MaxLegalNameLength = 250;
-    private readonly int MaxCommercialNameLength = 250;
-
     // Constructor
     public Company(string legalName,  string commercialName, Rnc rnc, Email businessEmail,  PhoneNumber businessPhone, Url logoUrl, Address address)
     {
@@ -28,12 +25,6 @@ public class Company
 
         if (string.IsNullOrWhiteSpace(commercialName) is true)
             throw new EmptyRequiredFieldException("Commercial Name");
-
-        if (legalName.Length > MaxLegalNameLength)
-            throw new MaxCharacterLimitException(MaxLegalNameLength, "Legal Name");
-
-        if (commercialName.Length > MaxCommercialNameLength)
-            throw new MaxCharacterLimitException(MaxCommercialNameLength, "Commercial Name");
         
         LegalName = legalName;
         CommercialName = commercialName;
@@ -51,9 +42,6 @@ public class Company
         if (string.IsNullOrWhiteSpace(newLegalName))
             throw new EmptyRequiredFieldException("Legal Name");
 
-        if (newLegalName.Length > MaxLegalNameLength)
-            throw new MaxCharacterLimitException(MaxLegalNameLength, "Legal Name");
-
         LegalName = newLegalName;
     }
 
@@ -61,9 +49,6 @@ public class Company
     {
         if (string.IsNullOrWhiteSpace(newCommercialName))
             throw new EmptyRequiredFieldException("Commercial Name");
-
-        if (newCommercialName.Length > MaxCommercialNameLength)
-            throw new MaxCharacterLimitException(MaxCommercialNameLength, "Commercial Name");
 
         CommercialName = newCommercialName;
     }
