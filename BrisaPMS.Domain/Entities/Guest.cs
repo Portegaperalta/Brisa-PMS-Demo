@@ -24,7 +24,7 @@ namespace BrisaPMS.Domain.Entities
         public string? BlackListedReason { get; private set; }
         public string? Notes { get; private set; }
         public DateTime CreatedAt { get; private init; }
-        public DateTime? UpdatedAt { get; private init; }
+        public DateTime? UpdatedAt { get; private set; }
 
         // Constructor
         public Guest(string firstName,
@@ -73,5 +73,89 @@ namespace BrisaPMS.Domain.Entities
             CreatedAt = DateTime.UtcNow;
             UpdatedAt = null;
         }
+        
+        // Behavioral methods
+        public void ChangeFirstName(string newFirstName)
+        {
+            if (string.IsNullOrWhiteSpace(newFirstName))
+                throw new EmptyRequiredFieldException("First Name");
+            
+            FirstName = newFirstName;
+        }
+
+        public void ChangeLastName(string newLastName)
+        {
+            if (string.IsNullOrWhiteSpace(newLastName))
+                throw new EmptyRequiredFieldException("Last Name");
+            
+            LastName = newLastName;
+        }
+
+        public void ChangeDocumentType(DocumentType newDocumentType)
+        {
+            if (Enum.IsDefined<DocumentType>(newDocumentType) is not true)
+                throw new BusinessRuleException("Document type not supported");
+            
+            DocumentType = newDocumentType;
+        }
+
+        public void ChangeDocumentNumber(string newDocumentNumber)
+        {
+            if (string.IsNullOrWhiteSpace(newDocumentNumber))
+                throw new EmptyRequiredFieldException("Document Number");
+            
+            DocumentNumber = newDocumentNumber;
+        }
+
+        public void ChangeCountry(string newCountry)
+        {
+            if (string.IsNullOrWhiteSpace(newCountry))
+                throw new EmptyRequiredFieldException("Country");
+            
+            Country = newCountry;
+        }
+        
+        public void ChangeRnc(Rnc newRnc) =>  Rnc = newRnc;
+        
+        public void ChangeEmail(Email newEmail) =>  Email = newEmail;
+        
+        public void ChangePhoneNumber(PhoneNumber newPhoneNumber) =>  PhoneNumber = newPhoneNumber;
+
+        public void ChangePreferredCurrency(CurrencyCode newPreferredCurrency)
+        {
+            if (Enum.IsDefined<CurrencyCode>(newPreferredCurrency) is not true)
+                throw new BusinessRuleException("Currency not supported");
+            
+            PreferredCurrency = newPreferredCurrency;
+        }
+
+        public void ChangePreferredLanguage(string newPreferredLanguage)
+        {
+            if (string.IsNullOrWhiteSpace(newPreferredLanguage))
+                throw new EmptyRequiredFieldException("Preferred Language");
+            
+            PreferredLanguage = newPreferredLanguage;
+        }
+        
+        public void EnableVip () => IsVip = true;
+        
+        public void DisableVip() => IsVip = false;
+
+        public void BlackList(string blackListedReason)
+        {
+            if (string.IsNullOrWhiteSpace(blackListedReason))
+                throw new BusinessRuleException("Must have a reason to blacklist guest");
+            
+            BlackListedReason = blackListedReason;
+            IsBlackListed = true;
+        }
+        
+        public void DisableBlackList () => IsBlackListed = false;
+
+        public void ChangeBlackListedReason(string newBlackListedReason) => BlackListedReason = newBlackListedReason;
+
+        public void EditNotes(string newNotes)  => Notes = newNotes;
+        
+        public void UpdateLastUpdatedTime () => UpdatedAt = DateTime.UtcNow;
     }
 }
