@@ -9,6 +9,7 @@ public class User
 {
     // Attributes
     public Guid Id { get; private init; }
+    public Guid? HotelId { get; private init; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public Email Email { get; private set; }
@@ -28,12 +29,13 @@ public class User
 
     //Constructor
 
-    public User(string firstName, 
+    public User(Guid? hotelId,
+        string firstName, 
         string lastName, 
         Email email,
         Password password,
-        PhoneNumber? phoneNumber,
         PreferredLanguage preferredLanguage,
+        PhoneNumber? phoneNumber = null,
         bool isActive = true)
     {
         if (string.IsNullOrWhiteSpace(firstName) is true)
@@ -46,6 +48,7 @@ public class User
             throw new LanguageNotSupportedException();
 
         Id = Guid.CreateVersion7();
+        HotelId = hotelId;
         FirstName = firstName;
         LastName = lastName;
         Email = email;
