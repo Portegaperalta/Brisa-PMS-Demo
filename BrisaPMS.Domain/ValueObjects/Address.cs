@@ -11,11 +11,11 @@ namespace BrisaPMS.Domain.ValueObjects
         public string Province { get; }
         public string ZipCode { get; }
 
-        private readonly int MaxAddres1CharacterLimit = 200;
-        private readonly int MaxAddress2CharacterLimit = 200;
-        private readonly int MaxCityCharacterLimit = 100;
-        private readonly int MaxProvinceCharacterLimit = 100;
-        private readonly int MaxZipcodeCharacterLimit = 11;
+        private const int MaxAddress1CharacterLimit = 200;
+        private const int MaxAddress2CharacterLimit = 200;
+        private const int MaxCityCharacterLimit = 100;
+        private const int MaxProvinceCharacterLimit = 100;
+        private const int MaxZipcodeCharacterLimit = 11;
 
         public Address(string address1, string? address2, string city, string province, string zipcode)
         {
@@ -31,8 +31,8 @@ namespace BrisaPMS.Domain.ValueObjects
             if (string.IsNullOrWhiteSpace(zipcode) is true)
                 throw new EmptyRequiredFieldException("Zip Code");
 
-            if (address1.Length > MaxAddres1CharacterLimit)
-                throw new MaxCharacterLimitException(MaxAddres1CharacterLimit, "Address 1");
+            if (address1.Length > MaxAddress1CharacterLimit)
+                throw new MaxCharacterLimitException(MaxAddress1CharacterLimit, "Address 1");
 
             if (address2 is not null)
             {

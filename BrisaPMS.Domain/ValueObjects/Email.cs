@@ -6,7 +6,7 @@ namespace BrisaPMS.Domain.ValueObjects
     public record Email
     {
         public string Value { get; }
-        private readonly int MaxCharacterLimit = 254;
+        private const int MaxCharacterLimit = 254;
 
         public Email(string email)
         {
