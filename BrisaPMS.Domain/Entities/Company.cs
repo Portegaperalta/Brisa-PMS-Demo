@@ -7,7 +7,7 @@ namespace BrisaPMS.Domain.Entities;
 public class Company
 {
     // Attributes
-    public Guid Id { get; private init; } =  Guid.CreateVersion7();
+    public Guid Id { get; private init; }
     public string LegalName {get; private set;}
     public string CommercialName {get; private set;}
     public Rnc Rnc {get; private set;}
@@ -26,6 +26,7 @@ public class Company
         if (string.IsNullOrWhiteSpace(commercialName) is true)
             throw new EmptyRequiredFieldException("Commercial Name");
         
+        Id = Guid.CreateVersion7();
         LegalName = legalName;
         CommercialName = commercialName;
         Rnc = rnc;
