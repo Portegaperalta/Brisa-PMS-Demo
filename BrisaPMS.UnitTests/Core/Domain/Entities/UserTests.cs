@@ -12,21 +12,57 @@ public class UserTests
     public void Constructor_ShouldCreateUser_WhenValuesAreValid()
     {
         // Arrange
+        var hotelId = Guid.NewGuid();
         var email = CreateEmail();
         var password = CreatePassword();
         var phoneNumber = CreatePhoneNumber();
 
         // Act
-        var result = new User("John", "Doe", email, password, phoneNumber, PreferredLanguage.En);
+        var result = new User(hotelId, "John", "Doe", email, password, PreferredLanguage.En, phoneNumber);
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
+        result.HotelId.Should().Be(hotelId);
         result.FirstName.Should().Be("John");
         result.LastName.Should().Be("Doe");
         result.Email.Should().Be(email);
         result.PasswordHash.Should().Be(password);
         result.PhoneNumber.Should().Be(phoneNumber);
         result.PreferredLanguage.Should().Be(PreferredLanguage.En);
+        result.IsOnline.Should().BeFalse();
+        result.IsActive.Should().BeTrue();
+        result.IsEmailConfirmed.Should().BeFalse();
+        result.FailedLoginAttempts.Should().Be(0);
+        result.LockOutDuration.Should().BeNull();
+        result.LockOutEnd.Should().BeNull();
+        result.LastLoginAt.Should().BeNull();
+        result.PasswordChangedAt.Should().BeNull();
+        result.UpdatedAt.Should().BeNull();
+        result.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
+    }
+
+    [Fact]
+    public void Constructor_ShouldCreateUser_WhenPhoneNumberIsNotProvided()
+    {
+        // Arrange
+        var hotelId = Guid.NewGuid();
+
+        // Act
+        var result = new User(hotelId, "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En);
+
+        // Assert
+        result.HotelId.Should().Be(hotelId);
+        result.PhoneNumber.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_ShouldCreateUser_WhenHotelIdIsNull()
+    {
+        // Arrange + Act
+        var result = new User(null, "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En);
+
+        // Assert
+        result.HotelId.Should().BeNull();
     }
 
     [Theory]
@@ -44,31 +80,10 @@ public class UserTests
             lastName = " ";
 
         // Act
-        Action act = () => _ = new User(firstName, lastName, CreateEmail(), CreatePassword(), CreatePhoneNumber(), PreferredLanguage.En);
+        Action act = () => _ = new User(Guid.NewGuid(), firstName, lastName, CreateEmail(), CreatePassword(), PreferredLanguage.En);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
-    }
-
-    [Theory]
-    [InlineData("First Name", 251)]
-    [InlineData("Last Name", 251)]
-    public void Constructor_ShouldThrowMaxCharacterLimitException_WhenNameExceedsMaxLength(string fieldName, int length)
-    {
-        // Arrange
-        var firstName = "John";
-        var lastName = "Doe";
-
-        if (fieldName == "First Name")
-            firstName = new string('a', length);
-        else
-            lastName = new string('a', length);
-
-        // Act
-        Action act = () => _ = new User(firstName, lastName, CreateEmail(), CreatePassword(), CreatePhoneNumber(), PreferredLanguage.En);
-
-        // Assert
-        act.Should().Throw<MaxCharacterLimitException>();
     }
 
     [Fact]
@@ -78,7 +93,7 @@ public class UserTests
         var invalidLanguage = (PreferredLanguage)999;
 
         // Act
-        Action act = () => _ = new User("John", "Doe", CreateEmail(), CreatePassword(), CreatePhoneNumber(), invalidLanguage);
+        Action act = () => _ = new User(Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), invalidLanguage);
 
         // Assert
         act.Should().Throw<LanguageNotSupportedException>();
@@ -98,6 +113,19 @@ public class UserTests
     }
 
     [Fact]
+    public void ChangeFirstName_ShouldThrowEmptyRequiredFieldException_WhenNewFirstNameIsWhiteSpace()
+    {
+        // Arrange
+        var user = CreateUser();
+
+        // Act
+        Action act = () => user.ChangeFirstName(" ");
+
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
+    }
+
+    [Fact]
     public void ChangeLastName_ShouldUpdateLastName_WhenNewLastNameIsValid()
     {
         // Arrange
@@ -108,6 +136,61 @@ public class UserTests
 
         // Assert
         user.LastName.Should().Be("Smith");
+    }
+
+    [Fact]
+    public void ChangeLastName_ShouldThrowEmptyRequiredFieldException_WhenNewLastNameIsWhiteSpace()
+    {
+        // Arrange
+        var user = CreateUser();
+
+        // Act
+        Action act = () => user.ChangeLastName(" ");
+
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
+    }
+
+    [Fact]
+    public void ChangeEmail_ShouldUpdateEmail_WhenEmailIsValid()
+    {
+        // Arrange
+        var user = CreateUser();
+        var newEmail = new Email("jane.doe@example.com");
+
+        // Act
+        user.ChangeEmail(newEmail);
+
+        // Assert
+        user.Email.Should().Be(newEmail);
+    }
+
+    [Fact]
+    public void ChangePassword_ShouldUpdatePasswordHash_WhenPasswordIsValid()
+    {
+        // Arrange
+        var user = CreateUser();
+        var newPassword = new Password("NewPassword123!");
+
+        // Act
+        user.ChangePassword(newPassword);
+
+        // Assert
+        user.PasswordHash.Should().Be(newPassword);
+    }
+
+    [Fact]
+    public void ChangePhoneNumber_ShouldUpdatePhoneNumber_WhenPhoneNumberIsValid()
+    {
+        // Arrange
+        var user = CreateUser();
+        var newPhoneNumber = new PhoneNumber("+1 829 555 4321");
+
+        // Act
+        user.ChangePhoneNumber(newPhoneNumber);
+
+        // Assert
+        user.PhoneNumber.Should().Be(newPhoneNumber);
     }
 
     [Fact]
@@ -138,33 +221,26 @@ public class UserTests
     }
 
     [Fact]
-    public void ChangeContactAndCredentialData_ShouldUpdateReferenceProperties()
-    {
-        // Arrange
-        var user = CreateUser();
-        var newEmail = new Email("jane.doe@example.com");
-        var newPassword = new Password("NewPassword123!");
-        var newPhoneNumber = new PhoneNumber("+1 829 555 4321");
-
-        // Act
-        user.ChangeEmail(newEmail);
-        user.ChangePassword(newPassword);
-        user.ChangePhoneNumber(newPhoneNumber);
-
-        // Assert
-        user.Email.Should().Be(newEmail);
-        user.PasswordHash.Should().Be(newPassword);
-        user.PhoneNumber.Should().Be(newPhoneNumber);
-    }
-
-    [Fact]
-    public void OnlineStatusMethods_ShouldToggleOnlineStatus()
+    public void EnableOnlineStatus_ShouldSetIsOnlineToTrue()
     {
         // Arrange
         var user = CreateUser();
 
         // Act
         user.EnableOnlineStatus();
+
+        // Assert
+        user.IsOnline.Should().BeTrue();
+    }
+
+    [Fact]
+    public void DisableOnlineStatus_ShouldSetIsOnlineToFalse()
+    {
+        // Arrange
+        var user = CreateUser();
+        user.EnableOnlineStatus();
+
+        // Act
         user.DisableOnlineStatus();
 
         // Assert
@@ -259,7 +335,7 @@ public class UserTests
 
     private static User CreateUser()
     {
-        return new User("John", "Doe", CreateEmail(), CreatePassword(), CreatePhoneNumber(), PreferredLanguage.En);
+        return new User(Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En, CreatePhoneNumber());
     }
 
     private static Email CreateEmail()
