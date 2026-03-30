@@ -4,7 +4,8 @@ public enum RoleType
 {
     Admin = 1,
     Manager = 2,
-    Accounting = 3,
-    Housekeeper = 4,
-    CleaningStaff = 5,
+    Accountant = 3,
+    Receptionist = 4,
+    Housekeeper = 5,
+    CleaningStaff = 6,
 }
