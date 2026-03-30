@@ -79,21 +79,30 @@ public class GuestTests
     }
 
     [Theory]
-    [InlineData("First Name")]
-    [InlineData("Last Name")]
-    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenRequiredNameIsWhiteSpace(string fieldName)
+    [InlineData(null)]
+    [InlineData("  ")]
+    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenFirstNameIsNullOrWhiteSpace(string? firstName)
     {
         // Arrange
-        var firstName = "John";
-        var lastName = "Doe";
-
-        if (fieldName == "First Name")
-            firstName = " ";
-        else
-            lastName = " ";
+        const string lastName = "Doe";
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), firstName, lastName, DocumentType.IdCard, "00112345678", CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest(Guid.NewGuid(), firstName!, lastName, DocumentType.IdCard, "00112345678", CurrencyCode.DOP, false);
+
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("  ")]
+    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenLastNameIsNullOrWhiteSpace(string? lastName)
+    {
+        // Arrange
+        const string firstName = "John";
+
+        // Act
+        Action act = () => _ = new Guest(Guid.NewGuid(), firstName, lastName!, DocumentType.IdCard, "00112345678", CurrencyCode.DOP, false);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -151,14 +160,16 @@ public class GuestTests
         guest.FirstName.Should().Be("Jane");
     }
 
-    [Fact]
-    public void ChangeFirstName_ShouldThrowEmptyRequiredFieldException_WhenValueIsWhiteSpace()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("  ")]
+    public void ChangeFirstName_ShouldThrowEmptyRequiredFieldException_WhenValueIsNullOrWhiteSpace(string? newFirstName)
     {
         // Arrange
         var guest = CreateGuest();
 
         // Act
-        Action act = () => guest.ChangeFirstName(" ");
+        Action act = () => guest.ChangeFirstName(newFirstName!);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -243,40 +254,86 @@ public class GuestTests
         guest.Country.Should().Be("Germany");
     }
 
-    [Fact]
-    public void ChangeCountry_ShouldThrowEmptyRequiredFieldException_WhenValueIsWhiteSpace()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("  ")]
+    public void ChangeCountry_ShouldThrowEmptyRequiredFieldException_WhenValueIsNullOrWhiteSpace(string? newCountry)
     {
         // Arrange
         var guest = CreateGuest();
 
         // Act
-        Action act = () => guest.ChangeCountry(" ");
+        Action act = () => guest.ChangeCountry(newCountry!);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
     }
 
     [Fact]
-    public void ChangeContactPreferences_ShouldUpdateReferenceAndPreferenceProperties()
+    public void ChangeRnc_ShouldUpdateRnc_WhenValueIsValid()
     {
         // Arrange
         var guest = CreateGuest();
         var newRnc = new Rnc("00112345678");
-        var newEmail = new Email("guest.updated@example.com");
-        var newPhoneNumber = new PhoneNumber("+1 829 555 4321");
 
         // Act
         guest.ChangeRnc(newRnc);
-        guest.ChangeEmail(newEmail);
-        guest.ChangePhoneNumber(newPhoneNumber);
-        guest.ChangePreferredCurrency(CurrencyCode.EUR);
-        guest.ChangePreferredLanguage("Spanish");
 
         // Assert
         guest.Rnc.Should().Be(newRnc);
+    }
+
+    [Fact]
+    public void ChangeEmail_ShouldUpdateEmail_WhenValueIsValid()
+    {
+        // Arrange
+        var guest = CreateGuest();
+        var newEmail = new Email("guest.updated@example.com");
+
+        // Act
+        guest.ChangeEmail(newEmail);
+
+        // Assert
         guest.Email.Should().Be(newEmail);
+    }
+
+    [Fact]
+    public void ChangePhoneNumber_ShouldUpdatePhoneNumber_WhenValueIsValid()
+    {
+        // Arrange
+        var guest = CreateGuest();
+        var newPhoneNumber = new PhoneNumber("+1 829 555 4321");
+
+        // Act
+        guest.ChangePhoneNumber(newPhoneNumber);
+
+        // Assert
         guest.PhoneNumber.Should().Be(newPhoneNumber);
+    }
+
+    [Fact]
+    public void ChangePreferredCurrency_ShouldUpdatePreferredCurrency_WhenValueIsValid()
+    {
+        // Arrange
+        var guest = CreateGuest();
+
+        // Act
+        guest.ChangePreferredCurrency(CurrencyCode.EUR);
+
+        // Assert
         guest.PreferredCurrency.Should().Be(CurrencyCode.EUR);
+    }
+
+    [Fact]
+    public void ChangePreferredLanguage_ShouldUpdatePreferredLanguage_WhenValueIsValid()
+    {
+        // Arrange
+        var guest = CreateGuest();
+
+        // Act
+        guest.ChangePreferredLanguage("Spanish");
+
+        // Assert
         guest.PreferredLanguage.Should().Be("Spanish");
     }
 
@@ -294,27 +351,42 @@ public class GuestTests
         act.Should().Throw<BusinessRuleException>();
     }
 
-    [Fact]
-    public void ChangePreferredLanguage_ShouldThrowEmptyRequiredFieldException_WhenValueIsWhiteSpace()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("  ")]
+    public void ChangePreferredLanguage_ShouldThrowEmptyRequiredFieldException_WhenValueIsNullOrWhiteSpace(string? newPreferredLanguage)
     {
         // Arrange
         var guest = CreateGuest();
 
         // Act
-        Action act = () => guest.ChangePreferredLanguage(" ");
+        Action act = () => guest.ChangePreferredLanguage(newPreferredLanguage!);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
     }
 
     [Fact]
-    public void VipMethods_ShouldToggleVipStatus()
+    public void DisableVip_ShouldSetIsVipToFalse()
     {
         // Arrange
         var guest = CreateGuest();
 
         // Act
         guest.DisableVip();
+
+        // Assert
+        guest.IsVip.Should().BeFalse();
+    }
+
+    [Fact]
+    public void EnableVip_ShouldSetIsVipToTrue()
+    {
+        // Arrange
+        var guest = CreateGuest();
+        guest.DisableVip();
+
+        // Act
         guest.EnableVip();
 
         // Assert
@@ -335,21 +407,23 @@ public class GuestTests
         guest.BlackListedReason.Should().Be("Payment fraud");
     }
 
-    [Fact]
-    public void BlackList_ShouldThrowBusinessRuleException_WhenReasonIsWhiteSpace()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("  ")]
+    public void BlackList_ShouldThrowBusinessRuleException_WhenReasonIsNullOrWhiteSpace(string? blackListedReason)
     {
         // Arrange
         var guest = CreateGuest();
 
         // Act
-        Action act = () => guest.BlackList(" ");
+        Action act = () => guest.BlackList(blackListedReason!);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
     }
 
     [Fact]
-    public void DisableBlackListAndChangeBlackListedReason_ShouldUpdateBlackListProperties()
+    public void DisableBlackList_ShouldSetIsBlackListedToFalse()
     {
         // Arrange
         var guest = CreateGuest();
@@ -357,10 +431,22 @@ public class GuestTests
 
         // Act
         guest.DisableBlackList();
-        guest.ChangeBlackListedReason("Updated reason");
 
         // Assert
         guest.IsBlackListed.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ChangeBlackListedReason_ShouldUpdateBlackListedReason()
+    {
+        // Arrange
+        var guest = CreateGuest();
+        guest.BlackList("Initial reason");
+
+        // Act
+        guest.ChangeBlackListedReason("Updated reason");
+
+        // Assert
         guest.BlackListedReason.Should().Be("Updated reason");
     }
 
