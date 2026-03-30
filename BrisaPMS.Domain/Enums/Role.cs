@@ -1,6 +1,6 @@
 namespace BrisaPMS.Domain.Enums;
 
-public enum RoleType
+public enum Role
 {
     Admin = 1,
     Manager = 2,
