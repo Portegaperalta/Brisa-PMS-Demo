@@ -4,5 +4,6 @@ public enum AvailabilityStatus
 {
     Available = 1,
     Reserved = 2,
-    OutOfService = 3,
+    Occupied = 3,
+    OutOfService = 4,
 }
