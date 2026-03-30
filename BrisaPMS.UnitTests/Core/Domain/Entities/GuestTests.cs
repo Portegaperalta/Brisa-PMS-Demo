@@ -50,8 +50,6 @@ public class GuestTests
         result.IsBlackListed.Should().BeFalse();
         result.BlackListedReason.Should().BeNull();
         result.Notes.Should().Be("VIP guest");
-        result.UpdatedAt.Should().BeNull();
-        result.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
     }
 
     [Fact]
@@ -377,19 +375,6 @@ public class GuestTests
 
         // Assert
         guest.Notes.Should().Be("Requires airport pickup");
-    }
-
-    [Fact]
-    public void UpdateLastUpdatedTime_ShouldSetUpdatedAt()
-    {
-        // Arrange
-        var guest = CreateGuest();
-
-        // Act
-        guest.UpdateLastUpdatedTime();
-
-        // Assert
-        guest.UpdatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
     }
 
     private static Guest CreateGuest()

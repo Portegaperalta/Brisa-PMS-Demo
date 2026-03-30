@@ -39,8 +39,6 @@ public class UserTests
         result.LockOutEnd.Should().BeNull();
         result.LastLoginAt.Should().BeNull();
         result.PasswordChangedAt.Should().BeNull();
-        result.UpdatedAt.Should().BeNull();
-        result.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
     }
 
     [Fact]
@@ -342,12 +340,10 @@ public class UserTests
         // Act
         user.UpdateLastLoginTime();
         user.UpdatedLastPasswordChangeTime();
-        user.UpdatedLastProfileUpdateTime();
 
         // Assert
         user.LastLoginAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
         user.PasswordChangedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
-        user.UpdatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
     }
 
     private static User CreateUser()

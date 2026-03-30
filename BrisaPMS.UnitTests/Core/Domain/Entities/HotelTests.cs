@@ -44,9 +44,6 @@ public class HotelTests
         result.DefaultCurrencyCode.Should().Be(CurrencyCode.DOP);
         result.ItbisRate.Should().Be(18m);
         result.ServiceChargeRate.Should().Be(10m);
-        result.IsActive.Should().BeTrue();
-        result.UpdatedAt.Should().BeNull();
-        result.CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
     }
 
     [Fact]
@@ -412,46 +409,6 @@ public class HotelTests
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
-    }
-
-    [Fact]
-    public void DisableIsActive_ShouldSetIsActiveToFalse()
-    {
-        // Arrange
-        var hotel = CreateHotel();
-
-        // Act
-        hotel.DisableIsActive();
-
-        // Assert
-        hotel.IsActive.Should().BeFalse();
-    }
-
-    [Fact]
-    public void EnableIsActive_ShouldSetIsActiveToTrue()
-    {
-        // Arrange
-        var hotel = CreateHotel();
-        hotel.DisableIsActive();
-
-        // Act
-        hotel.EnableIsActive();
-
-        // Assert
-        hotel.IsActive.Should().BeTrue();
-    }
-
-    [Fact]
-    public void UpdateLastUpdatedAt_ShouldSetUpdatedAt()
-    {
-        // Arrange
-        var hotel = CreateHotel();
-
-        // Act
-        hotel.UpdateLastUpdatedAt();
-
-        // Assert
-        hotel.UpdatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
     }
 
     private static Hotel CreateHotel()

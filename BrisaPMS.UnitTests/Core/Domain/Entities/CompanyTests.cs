@@ -29,7 +29,6 @@ public class CompanyTests
         result.BusinessPhone.Should().Be(businessPhone);
         result.LogoUrl.Should().Be(logoUrl);
         result.Address.Should().Be(address);
-        result.UpdatedAt.Should().BeNull();
     }
 
     [Fact]
@@ -210,19 +209,6 @@ public class CompanyTests
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
-    }
-
-    [Fact]
-    public void UpdateLastProfileUpdateTime_ShouldSetUpdatedAt()
-    {
-        // Arrange
-        var company = CreateCompany();
-
-        // Act
-        company.UpdateLastProfileUpdateTime();
-
-        // Assert
-        company.UpdatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
     }
 
     private static Company CreateCompany()
