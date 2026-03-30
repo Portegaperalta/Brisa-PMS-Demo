@@ -6,7 +6,7 @@ namespace BrisaPMS.Domain.Entities
 {
     public class Hotel
     {
-        public Guid Id { get; private init; }
+        public Guid Id { get; init; }
         public string LegalName { get; private set; }
         public string CommercialName { get; private set; }
         public Url LogoUrl { get; private set; }
@@ -18,7 +18,7 @@ namespace BrisaPMS.Domain.Entities
         public decimal ItbisRate { get; private set; }
         public decimal ServiceChargeRate  { get; private set; }
         public bool IsActive { get; private set; }
-        public DateTime CreatedAt { get; private init; }
+        public DateTime CreatedAt { get; init; }
         public DateTime? UpdatedAt { get; private set; }
         
         // Constructor

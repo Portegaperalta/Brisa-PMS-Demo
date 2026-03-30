@@ -7,7 +7,7 @@ namespace BrisaPMS.Domain.ValueObjects
     {
         public string Value { get; }
 
-        private readonly int MaxCharacterLimit = 25;
+        private const int MaxCharacterLimit = 25;
 
         public PhoneNumber(string phoneNumber)
         {

@@ -9,8 +9,8 @@ namespace BrisaPMS.Domain.ValueObjects
         public string Value { get; }
 
         private static readonly Regex DigitsOnly = new(@"\D", RegexOptions.Compiled);
-        private readonly int BusinessRncLength = 9;
-        private readonly int PersonRncLength = 11;
+        private const int BusinessRncLength = 9;
+        private const int PersonRncLength = 11;
 
         public Rnc(string rawRnc)
         {

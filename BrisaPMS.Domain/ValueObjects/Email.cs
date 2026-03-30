@@ -6,14 +6,14 @@ namespace BrisaPMS.Domain.ValueObjects
     public record Email
     {
         public string Value { get; }
-        private readonly int MaxCharacterLimit = 254;
+        private const int MaxCharacterLimit = 254;
 
         public Email(string email)
         {
             if (string.IsNullOrWhiteSpace(email) is true)
                 throw new EmptyRequiredFieldException("Email");
 
-            if (email.Contains('@') != true || email.Contains('.') != true)
+            if (email.Contains('@') is not true || email.Contains('.') is not true)
                 throw new InvalidFieldException("Email", "The email must be a valid email address");
 
             if (email.Length > MaxCharacterLimit)

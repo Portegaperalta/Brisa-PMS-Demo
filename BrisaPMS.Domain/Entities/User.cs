@@ -8,7 +8,8 @@ namespace BrisaPMS.Domain.Entities;
 public class User
 {
     // Attributes
-    public Guid Id { get; private init; }
+    public Guid Id { get; init; }
+    public Guid? HotelId { get; init; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public Email Email { get; private set; }
@@ -23,20 +24,18 @@ public class User
     public DateTimeOffset? LockOutEnd { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
     public DateTime? PasswordChangedAt { get; private set; }
-    public DateTime CreatedAt { get; private init; }
+    public DateTime CreatedAt { get; init; }
     public DateTime? UpdatedAt { get; private set; }
-
-    private readonly int FirstNameMaxLength = 250;
-    private readonly int LastNameMaxLength = 250;
 
     //Constructor
 
-    public User(string firstName, 
+    public User(Guid? hotelId,
+        string firstName, 
         string lastName, 
         Email email,
         Password password,
-        PhoneNumber? phoneNumber,
         PreferredLanguage preferredLanguage,
+        PhoneNumber? phoneNumber = null,
         bool isActive = true)
     {
         if (string.IsNullOrWhiteSpace(firstName) is true)
@@ -45,16 +44,11 @@ public class User
         if (string.IsNullOrWhiteSpace(lastName) is true)
             throw new EmptyRequiredFieldException("Last Name");
 
-        if (firstName.Length > FirstNameMaxLength)
-            throw new MaxCharacterLimitException(FirstNameMaxLength, "First name");
-
-        if (lastName.Length > LastNameMaxLength)
-            throw new MaxCharacterLimitException(LastNameMaxLength, "Last name");
-
         if (!Enum.IsDefined<PreferredLanguage>(preferredLanguage))
             throw new LanguageNotSupportedException();
 
         Id = Guid.CreateVersion7();
+        HotelId = hotelId;
         FirstName = firstName;
         LastName = lastName;
         Email = email;
@@ -79,9 +73,6 @@ public class User
         if (string.IsNullOrWhiteSpace(newFirstName) is true)
             throw new EmptyRequiredFieldException("First Name");
 
-        if (newFirstName.Length > FirstNameMaxLength)
-            throw new MaxCharacterLimitException(FirstNameMaxLength, "First name");
-
         FirstName = newFirstName;
     }
 
@@ -89,9 +80,6 @@ public class User
     {
         if (string.IsNullOrWhiteSpace(newLastName) is true)
             throw new EmptyRequiredFieldException("Last Name");
-
-        if (newLastName.Length > LastNameMaxLength)
-            throw new MaxCharacterLimitException(LastNameMaxLength, "Last name");
 
         LastName = newLastName;
     }

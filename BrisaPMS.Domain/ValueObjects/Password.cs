@@ -9,8 +9,8 @@ namespace BrisaPMS.Domain.ValueObjects
     {
         public string Value { get; }
 
-        private readonly int MaxCharacterLimit = 512;
-        private readonly int MinCharacterLimit = 8;
+        private const int MaxCharacterLimit = 512;
+        private const int MinCharacterLimit = 8;
         private const int SaltSize = 16;
         private const int HashSize = 32;
         private const int Iterations = 100_000;
