@@ -3,5 +3,7 @@ namespace BrisaPMS.Domain.Enums;
 public enum HygieneStatus
 {
     Clean = 1,
-    Dirty = 2,
+    InProgress = 2,
+    PendingInspection = 3,
+    Dirty = 4,
 }
