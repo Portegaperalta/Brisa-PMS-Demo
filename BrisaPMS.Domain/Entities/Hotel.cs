@@ -17,9 +17,6 @@ namespace BrisaPMS.Domain.Entities
         public CurrencyCode DefaultCurrencyCode { get; private set; }
         public decimal ItbisRate { get; private set; }
         public decimal ServiceChargeRate  { get; private set; }
-        public bool IsActive { get; private set; }
-        public DateTime CreatedAt { get; init; }
-        public DateTime? UpdatedAt { get; private set; }
         
         // Constructor
         public Hotel(string legalName,
@@ -60,9 +57,6 @@ namespace BrisaPMS.Domain.Entities
             DefaultCurrencyCode = defaultCurrencyCode;
             ItbisRate = itbisRate;
             ServiceChargeRate = serviceChargeRate;
-            IsActive = isActive;
-            CreatedAt = DateTime.UtcNow;
-            UpdatedAt = null;
         }
         
         // Behavioral Methods
@@ -117,11 +111,5 @@ namespace BrisaPMS.Domain.Entities
             
             ServiceChargeRate = newServiceChargeRate;
         }
-        
-        public void DisableIsActive() => IsActive = false;
-        
-        public void EnableIsActive() => IsActive = true;
-        
-        public void UpdateLastUpdatedAt() => UpdatedAt = DateTime.UtcNow;
     }
 }

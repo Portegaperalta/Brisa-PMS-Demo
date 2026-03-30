@@ -24,8 +24,6 @@ namespace BrisaPMS.Domain.Entities
         public bool IsBlackListed { get; private set; }
         public string? BlackListedReason { get; private set; }
         public string? Notes { get; private set; }
-        public DateTime CreatedAt { get; init; }
-        public DateTime? UpdatedAt { get; private set; }
 
         // Constructor
         public Guest(Guid hotelId,
@@ -73,8 +71,6 @@ namespace BrisaPMS.Domain.Entities
             IsBlackListed = false;
             BlackListedReason = null;
             Notes = notes;
-            CreatedAt = DateTime.UtcNow;
-            UpdatedAt = null;
         }
         
         // Behavioral methods
@@ -158,7 +154,5 @@ namespace BrisaPMS.Domain.Entities
         public void ChangeBlackListedReason(string newBlackListedReason) => BlackListedReason = newBlackListedReason;
 
         public void EditNotes(string newNotes)  => Notes = newNotes;
-        
-        public void UpdateLastUpdatedTime () => UpdatedAt = DateTime.UtcNow;
     }
 }

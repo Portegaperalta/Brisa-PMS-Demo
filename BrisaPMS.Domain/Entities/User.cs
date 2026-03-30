@@ -25,8 +25,6 @@ public class User
     public DateTimeOffset? LockOutEnd { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
     public DateTime? PasswordChangedAt { get; private set; }
-    public DateTime CreatedAt { get; init; }
-    public DateTime? UpdatedAt { get; private set; }
 
     //Constructor
 
@@ -66,8 +64,6 @@ public class User
         LockOutEnd = null;
         LastLoginAt = null;
         PasswordChangedAt = null;
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = null;
     }
 
     // Behavioral Methods
@@ -136,6 +132,4 @@ public class User
     public void UpdateLastLoginTime() => LastLoginAt = DateTime.UtcNow;
 
     public void UpdatedLastPasswordChangeTime() => PasswordChangedAt = DateTime.UtcNow;
-
-    public void UpdatedLastProfileUpdateTime() => UpdatedAt = DateTime.UtcNow;
 }

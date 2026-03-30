@@ -15,7 +15,6 @@ public class Company
     public PhoneNumber BusinessPhone { get; private set; }
     public Url? LogoUrl  { get; private set; }
     public Address Address { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
 
     // Constructor
     public Company(string legalName,  string commercialName, Rnc rnc, Email businessEmail,  PhoneNumber businessPhone, Url logoUrl, Address address)
@@ -34,7 +33,6 @@ public class Company
         BusinessPhone = businessPhone;
         LogoUrl = logoUrl;
         Address = address;
-        UpdatedAt = null;
     }
 
     //Behavioral methods
@@ -63,6 +61,4 @@ public class Company
     public void ChangeLogoUrl(Url newLogoUrl) => LogoUrl = newLogoUrl;
 
     public void ChangeAddress(Address newAddress) => Address = newAddress;
-    
-    public void UpdateLastProfileUpdateTime() => UpdatedAt = DateTime.UtcNow;
 }
