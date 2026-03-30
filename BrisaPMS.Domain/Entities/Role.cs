@@ -5,7 +5,7 @@ namespace BrisaPMS.Domain.Entities;
 public class Role
 {
     public Guid Id { get; init; }
-    public RoleType Type { get; private set; }
+    public RoleType Type { get; init; }
 
     public Role(RoleType type)
     {
