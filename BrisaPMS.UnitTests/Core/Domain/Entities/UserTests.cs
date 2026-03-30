@@ -12,16 +12,18 @@ public class UserTests
     public void Constructor_ShouldCreateUser_WhenValuesAreValid()
     {
         // Arrange
+        var role = Role.Admin;
         var hotelId = Guid.NewGuid();
         var email = CreateEmail();
         var password = CreatePassword();
         var phoneNumber = CreatePhoneNumber();
 
         // Act
-        var result = new User(hotelId, "John", "Doe", email, password, PreferredLanguage.En, phoneNumber);
+        var result = new User(role, hotelId, "John", "Doe", email, password, PreferredLanguage.En, phoneNumber);
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
+        result.Role.Should().Be(role);
         result.HotelId.Should().Be(hotelId);
         result.FirstName.Should().Be("John");
         result.LastName.Should().Be("Doe");
@@ -45,12 +47,14 @@ public class UserTests
     public void Constructor_ShouldCreateUser_WhenPhoneNumberIsNotProvided()
     {
         // Arrange
+        var role = Role.Manager;
         var hotelId = Guid.NewGuid();
 
         // Act
-        var result = new User(hotelId, "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En);
+        var result = new User(role, hotelId, "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En);
 
         // Assert
+        result.Role.Should().Be(role);
         result.HotelId.Should().Be(hotelId);
         result.PhoneNumber.Should().BeNull();
     }
@@ -59,7 +63,7 @@ public class UserTests
     public void Constructor_ShouldCreateUser_WhenHotelIdIsNull()
     {
         // Arrange + Act
-        var result = new User(null, "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En);
+        var result = new User(Role.Admin, null, "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En);
 
         // Assert
         result.HotelId.Should().BeNull();
@@ -80,7 +84,7 @@ public class UserTests
             lastName = " ";
 
         // Act
-        Action act = () => _ = new User(Guid.NewGuid(), firstName, lastName, CreateEmail(), CreatePassword(), PreferredLanguage.En);
+        Action act = () => _ = new User(Role.Admin, Guid.NewGuid(), firstName, lastName, CreateEmail(), CreatePassword(), PreferredLanguage.En);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -93,10 +97,23 @@ public class UserTests
         var invalidLanguage = (PreferredLanguage)999;
 
         // Act
-        Action act = () => _ = new User(Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), invalidLanguage);
+        Action act = () => _ = new User(Role.Admin, Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), invalidLanguage);
 
         // Assert
         act.Should().Throw<LanguageNotSupportedException>();
+    }
+
+    [Fact]
+    public void ChangeRole_ShouldUpdateRole_WhenRoleIsValid()
+    {
+        // Arrange
+        var user = CreateUser();
+
+        // Act
+        user.ChangeRole(Role.Manager);
+
+        // Assert
+        user.Role.Should().Be(Role.Manager);
     }
 
     [Fact]
@@ -335,7 +352,7 @@ public class UserTests
 
     private static User CreateUser()
     {
-        return new User(Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En, CreatePhoneNumber());
+        return new User(Role.Receptionist, Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En, CreatePhoneNumber());
     }
 
     private static Email CreateEmail()
