@@ -24,12 +24,12 @@ public class GuestTests
             "Doe",
             DocumentType.Passport,
             "A1234567",
+            phoneNumber,
             CurrencyCode.USD,
             true,
             "United States",
             rnc,
             email,
-            phoneNumber,
             "English",
             "VIP guest");
 
@@ -57,6 +57,7 @@ public class GuestTests
     {
         // Arrange
         var hotelId = Guid.NewGuid();
+        var phoneNumber = CreatePhoneNumber();
 
         // Act
         var result = new Guest(
@@ -65,6 +66,7 @@ public class GuestTests
             "Doe",
             DocumentType.IdCard,
             "00112345678",
+            phoneNumber,
             CurrencyCode.DOP,
             false);
 
@@ -72,7 +74,7 @@ public class GuestTests
         result.Country.Should().BeNull();
         result.Rnc.Should().BeNull();
         result.Email.Should().BeNull();
-        result.PhoneNumber.Should().BeNull();
+        result.PhoneNumber.Should().Be(phoneNumber);
         result.PreferredLanguage.Should().BeNull();
         result.Notes.Should().BeNull();
         result.IsVip.Should().BeFalse();
@@ -87,7 +89,7 @@ public class GuestTests
         const string lastName = "Doe";
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), firstName!, lastName, DocumentType.IdCard, "00112345678", CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest(Guid.NewGuid(), firstName!, lastName, DocumentType.IdCard, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -102,7 +104,7 @@ public class GuestTests
         const string firstName = "John";
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), firstName, lastName!, DocumentType.IdCard, "00112345678", CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest(Guid.NewGuid(), firstName, lastName!, DocumentType.IdCard, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -115,7 +117,7 @@ public class GuestTests
         var invalidDocumentType = (DocumentType)999;
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", invalidDocumentType, "00112345678", CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", invalidDocumentType, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -128,7 +130,7 @@ public class GuestTests
         const string documentNumber = " ";
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", DocumentType.IdCard, documentNumber, CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", DocumentType.IdCard, documentNumber, CreatePhoneNumber(), CurrencyCode.DOP, false);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -141,7 +143,7 @@ public class GuestTests
         var invalidCurrency = (CurrencyCode)999;
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", DocumentType.IdCard, "00112345678", invalidCurrency, false);
+        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", DocumentType.IdCard, "00112345678", CreatePhoneNumber(), invalidCurrency, false);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -471,12 +473,12 @@ public class GuestTests
             "Doe",
             DocumentType.IdCard,
             "00112345678",
+            CreatePhoneNumber(),
             CurrencyCode.DOP,
             true,
             "United States",
             CreateRnc(),
             CreateEmail(),
-            CreatePhoneNumber(),
             "English",
             "Frequent guest");
     }
