@@ -17,7 +17,7 @@ namespace BrisaPMS.Domain.Entities
         public string? Country { get; private set; }
         public Rnc? Rnc { get; private set; }
         public Email? Email { get; private set; }
-        public PhoneNumber? PhoneNumber { get; private set; }
+        public PhoneNumber PhoneNumber { get; private set; }
         public CurrencyCode PreferredCurrency { get; private set; }
         public string? PreferredLanguage { get; private set; }
         public bool IsVip { get; private set; }
@@ -31,12 +31,12 @@ namespace BrisaPMS.Domain.Entities
             string lastName,
             DocumentType documentType,
             string documentNumber,
+            PhoneNumber phoneNumber,
             CurrencyCode preferredCurrency,
             bool isVip,
             string? country = null,
             Rnc? rnc = null,
             Email? email = null,
-            PhoneNumber? phoneNumber = null,
             string? preferredLanguage = null,
             string? notes = null)
         {
@@ -117,8 +117,8 @@ namespace BrisaPMS.Domain.Entities
         public void ChangeRnc(Rnc newRnc) =>  Rnc = newRnc;
         
         public void ChangeEmail(Email newEmail) =>  Email = newEmail;
-        
-        public void ChangePhoneNumber(PhoneNumber newPhoneNumber) =>  PhoneNumber = newPhoneNumber;
+
+        public void ChangePhoneNumber(PhoneNumber newPhoneNumber) => PhoneNumber = newPhoneNumber;
 
         public void ChangePreferredCurrency(CurrencyCode newPreferredCurrency)
         {
