@@ -59,7 +59,7 @@ public class Room
         NeedsRestocking = false;
     }
 
-    public void ChangeRoomType(Guid  newRoomTypeId)
+    public void UpdateRoomType(Guid  newRoomTypeId)
     {
         if (newRoomTypeId == Guid.Empty)
             throw new EmptyRequiredFieldException("Room TypeId");
@@ -67,7 +67,7 @@ public class Room
         RoomTypeId = newRoomTypeId;
     }
 
-    public void ChangeNumber(string newRoomNumber)
+    public void UpdateNumber(string newRoomNumber)
     {
         if (string.IsNullOrWhiteSpace(newRoomNumber))
             throw new EmptyRequiredFieldException("Room number");

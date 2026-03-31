@@ -60,13 +60,13 @@ public class Company
         CommercialName = newCommercialName;
     }
 
-    public void ChangeRnc(Rnc newRnc) => Rnc = newRnc;
+    public void UpdateRnc(Rnc newRnc) => Rnc = newRnc;
 
-    public void ChangeBusinessEmail(Email newBusinessEmail)  => BusinessEmail = newBusinessEmail;
+    public void UpdateBusinessEmail(Email newBusinessEmail)  => BusinessEmail = newBusinessEmail;
 
-    public void ChangeBusinessPhone(PhoneNumber newBusinessPhone) => BusinessPhone = newBusinessPhone;
+    public void UpdateBusinessPhone(PhoneNumber newBusinessPhone) => BusinessPhone = newBusinessPhone;
 
-    public void ChangeLogoUrl(Url newLogoUrl) => LogoUrl = newLogoUrl;
+    public void UpdateLogoUrl(Url newLogoUrl) => LogoUrl = newLogoUrl;
 
-    public void ChangeAddress(Address newAddress) => Address = newAddress;
+    public void UpdateAddress(Address newAddress) => Address = newAddress;
 }

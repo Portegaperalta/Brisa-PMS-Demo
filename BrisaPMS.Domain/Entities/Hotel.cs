@@ -63,7 +63,7 @@ namespace BrisaPMS.Domain.Entities
         }
         
         // Behavioral Methods
-        public void ChangeLegalName(string newLegalName)
+        public void UpdateLegalName(string newLegalName)
         {
             if (string.IsNullOrWhiteSpace(newLegalName) is true)
                 throw new EmptyRequiredFieldException("Legal Name");
@@ -71,7 +71,7 @@ namespace BrisaPMS.Domain.Entities
             LegalName = newLegalName;
         }
 
-        public void ChangeCommercialName(string newCommercialName)
+        public void UpdateCommercialName(string newCommercialName)
         {
             if (string.IsNullOrWhiteSpace(newCommercialName) is true)
                 throw new EmptyRequiredFieldException("Commercial Name");
@@ -79,19 +79,19 @@ namespace BrisaPMS.Domain.Entities
             CommercialName = newCommercialName;
         }
         
-        public void ChangeLogoUrl(Url newLogoUrl) => LogoUrl = newLogoUrl;
+        public void UpdateLogoUrl(Url newLogoUrl) => LogoUrl = newLogoUrl;
         
-        public void ChangeBusinessEmail(Email newBusinessEmail) => BusinessEmail = newBusinessEmail;
+        public void UpdateBusinessEmail(Email newBusinessEmail) => BusinessEmail = newBusinessEmail;
         
-        public void ChangeBusinessPhoneNumber(PhoneNumber newBusinessPhoneNumber) 
+        public void UpdateBusinessPhoneNumber(PhoneNumber newBusinessPhoneNumber) 
             => BusinessPhoneNumber = newBusinessPhoneNumber;
         
-        public void ChangeAddress(Address newAddress) => Address = newAddress;
+        public void UpdateAddress(Address newAddress) => Address = newAddress;
         
-        public void ChangeCheckInOutTimes (CheckInOutTimes newCheckInOutTimes) 
+        public void UpdateCheckInOutTimes (CheckInOutTimes newCheckInOutTimes) 
             => CheckInOutTimes = newCheckInOutTimes;
 
-        public void ChangeDefaultCurrencyCode(CurrencyCode newDefaultCurrencyCode)
+        public void UpdateDefaultCurrencyCode(CurrencyCode newDefaultCurrencyCode)
         {
             if (Enum.IsDefined<CurrencyCode>(newDefaultCurrencyCode) is not true)
                 throw new CurrencyNotSupportedException();
@@ -99,7 +99,7 @@ namespace BrisaPMS.Domain.Entities
             DefaultCurrencyCode = newDefaultCurrencyCode;
         }
 
-        public void ChangeItbisRate(decimal newItbisRate)
+        public void UpdateItbisRate(decimal newItbisRate)
         {
          if (newItbisRate < 0)
              throw new BusinessRuleException("Itbis Rate cannot be negative");
@@ -107,7 +107,7 @@ namespace BrisaPMS.Domain.Entities
          ItbisRate = newItbisRate;
         }
 
-        public void ChangeServiceChargeRate(decimal newServiceChargeRate)
+        public void UpdateServiceChargeRate(decimal newServiceChargeRate)
         {
             if (newServiceChargeRate < 0)
                 throw new BusinessRuleException("Service charge rate cannot be negative");
