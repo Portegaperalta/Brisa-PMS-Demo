@@ -72,7 +72,7 @@ public class Room
         Number = newRoomNumber;
     }
 
-    public void ChangeTotalBeds(int newTotalBeds)
+    public void UpdateTotalBeds(int newTotalBeds)
     {
         if (newTotalBeds <= 0)
             throw new BusinessRuleException("Room must have at least one bed");
@@ -80,7 +80,7 @@ public class Room
         TotalBeds = newTotalBeds;
     }
 
-    public void ChangeAvailabilityStatus(AvailabilityStatus newAvailabilityStatus)
+    public void UpdateAvailabilityStatus(AvailabilityStatus newAvailabilityStatus)
     {
         if(Enum.IsDefined<AvailabilityStatus>(newAvailabilityStatus) is false)
             throw new BusinessRuleException("Invalid availability status");
@@ -88,7 +88,7 @@ public class Room
         AvailabilityStatus = newAvailabilityStatus;
     }
 
-    public void ChangeHygieneStatus(HygieneStatus newHygieneStatus)
+    public void UpdateHygieneStatus(HygieneStatus newHygieneStatus)
     {
         if (Enum.IsDefined<HygieneStatus>(newHygieneStatus) is false)
             throw new BusinessRuleException("Invalid hygiene status");
