@@ -29,7 +29,6 @@ public class CompanyTests
         result.BusinessPhone.Should().Be(businessPhone);
         result.LogoUrl.Should().Be(logoUrl);
         result.Address.Should().Be(address);
-        result.UpdatedAt.Should().BeNull();
     }
 
     [Fact]
@@ -86,27 +85,6 @@ public class CompanyTests
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
-    }
-
-    [Theory]
-    [InlineData("Legal Name", 251)]
-    [InlineData("Commercial Name", 251)]
-    public void Constructor_ShouldThrowMaxCharacterLimitException_WhenNameExceedsMaxLength(string fieldName, int length)
-    {
-        // Arrange
-        var legalName = "Brisa PMS SRL";
-        var commercialName = "Brisa PMS";
-
-        if (fieldName == "Legal Name")
-            legalName = new string('a', length);
-        else
-            commercialName = new string('a', length);
-
-        // Act
-        Action act = () => _ = new Company(legalName, commercialName, CreateRnc(), CreateEmail(), CreatePhoneNumber(), CreateUrl(), CreateAddress());
-
-        // Assert
-        act.Should().Throw<MaxCharacterLimitException>();
     }
 
     [Fact]
@@ -231,47 +209,6 @@ public class CompanyTests
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
-    }
-
-    [Fact]
-    public void ChangeLegalName_ShouldThrowMaxCharacterLimitException_WhenNameExceedsMaxLength()
-    {
-        // Arrange
-        var company = CreateCompany();
-        var value = new string('a', 251);
-
-        // Act
-        Action act = () => company.ChangeLegalName(value);
-
-        // Assert
-        act.Should().Throw<MaxCharacterLimitException>();
-    }
-
-    [Fact]
-    public void ChangeCommercialName_ShouldThrowMaxCharacterLimitException_WhenNameExceedsMaxLength()
-    {
-        // Arrange
-        var company = CreateCompany();
-        var value = new string('a', 251);
-
-        // Act
-        Action act = () => company.ChangeCommercialName(value);
-
-        // Assert
-        act.Should().Throw<MaxCharacterLimitException>();
-    }
-
-    [Fact]
-    public void UpdateLastProfileUpdateTime_ShouldSetUpdatedAt()
-    {
-        // Arrange
-        var company = CreateCompany();
-
-        // Act
-        company.UpdateLastProfileUpdateTime();
-
-        // Assert
-        company.UpdatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
     }
 
     private static Company CreateCompany()

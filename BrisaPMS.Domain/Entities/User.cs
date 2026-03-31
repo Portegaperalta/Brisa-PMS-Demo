@@ -9,6 +9,7 @@ public class User
 {
     // Attributes
     public Guid Id { get; init; }
+    public Role Role { get; private set; }
     public Guid? HotelId { get; init; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
@@ -24,14 +25,13 @@ public class User
     public DateTimeOffset? LockOutEnd { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
     public DateTime? PasswordChangedAt { get; private set; }
-    public DateTime CreatedAt { get; init; }
-    public DateTime? UpdatedAt { get; private set; }
 
     //Constructor
 
-    public User(Guid? hotelId,
-        string firstName, 
-        string lastName, 
+    public User(Role role,
+        Guid? hotelId,
+        string firstName,
+        string lastName,
         Email email,
         Password password,
         PreferredLanguage preferredLanguage,
@@ -48,6 +48,7 @@ public class User
             throw new LanguageNotSupportedException();
 
         Id = Guid.CreateVersion7();
+        Role = role;
         HotelId = hotelId;
         FirstName = firstName;
         LastName = lastName;
@@ -63,11 +64,11 @@ public class User
         LockOutEnd = null;
         LastLoginAt = null;
         PasswordChangedAt = null;
-        CreatedAt = DateTime.UtcNow;
-        UpdatedAt = null;
     }
 
     // Behavioral Methods
+    public void ChangeRole(Role newRole) => Role = newRole;
+
     public void ChangeFirstName(string newFirstName)
     {
         if (string.IsNullOrWhiteSpace(newFirstName) is true)
@@ -94,7 +95,7 @@ public class User
     {
         if (!Enum.IsDefined<PreferredLanguage>(newPreferredLanguage))
             throw new LanguageNotSupportedException();
-        
+
         PreferredLanguage = newPreferredLanguage;
     }
 
@@ -131,6 +132,4 @@ public class User
     public void UpdateLastLoginTime() => LastLoginAt = DateTime.UtcNow;
 
     public void UpdatedLastPasswordChangeTime() => PasswordChangedAt = DateTime.UtcNow;
-
-    public void UpdatedLastProfileUpdateTime() => UpdatedAt = DateTime.UtcNow;
 }

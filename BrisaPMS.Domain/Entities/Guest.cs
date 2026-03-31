@@ -17,15 +17,13 @@ namespace BrisaPMS.Domain.Entities
         public string? Country { get; private set; }
         public Rnc? Rnc { get; private set; }
         public Email? Email { get; private set; }
-        public PhoneNumber? PhoneNumber { get; private set; }
+        public PhoneNumber PhoneNumber { get; private set; }
         public CurrencyCode PreferredCurrency { get; private set; }
         public string? PreferredLanguage { get; private set; }
         public bool IsVip { get; private set; }
         public bool IsBlackListed { get; private set; }
         public string? BlackListedReason { get; private set; }
         public string? Notes { get; private set; }
-        public DateTime CreatedAt { get; init; }
-        public DateTime? UpdatedAt { get; private set; }
 
         // Constructor
         public Guest(Guid hotelId,
@@ -33,12 +31,12 @@ namespace BrisaPMS.Domain.Entities
             string lastName,
             DocumentType documentType,
             string documentNumber,
+            PhoneNumber phoneNumber,
             CurrencyCode preferredCurrency,
             bool isVip,
             string? country = null,
             Rnc? rnc = null,
             Email? email = null,
-            PhoneNumber? phoneNumber = null,
             string? preferredLanguage = null,
             string? notes = null)
         {
@@ -73,8 +71,6 @@ namespace BrisaPMS.Domain.Entities
             IsBlackListed = false;
             BlackListedReason = null;
             Notes = notes;
-            CreatedAt = DateTime.UtcNow;
-            UpdatedAt = null;
         }
         
         // Behavioral methods
@@ -121,8 +117,8 @@ namespace BrisaPMS.Domain.Entities
         public void ChangeRnc(Rnc newRnc) =>  Rnc = newRnc;
         
         public void ChangeEmail(Email newEmail) =>  Email = newEmail;
-        
-        public void ChangePhoneNumber(PhoneNumber newPhoneNumber) =>  PhoneNumber = newPhoneNumber;
+
+        public void ChangePhoneNumber(PhoneNumber newPhoneNumber) => PhoneNumber = newPhoneNumber;
 
         public void ChangePreferredCurrency(CurrencyCode newPreferredCurrency)
         {
@@ -158,7 +154,5 @@ namespace BrisaPMS.Domain.Entities
         public void ChangeBlackListedReason(string newBlackListedReason) => BlackListedReason = newBlackListedReason;
 
         public void EditNotes(string newNotes)  => Notes = newNotes;
-        
-        public void UpdateLastUpdatedTime () => UpdatedAt = DateTime.UtcNow;
     }
 }
