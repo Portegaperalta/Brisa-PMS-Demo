@@ -7,7 +7,7 @@ public class Room
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init ; }
-    public RoomType RoomType { get; private set ; }
+    public Guid RoomTypeId { get; private set; }
     public string Number { get; private set ; }
     public int Floor { get; init ; }
     public int TotalBeds { get; private set ; }
@@ -18,7 +18,7 @@ public class Room
     public bool NeedsRestocking { get; private set ; }
     
     public Room(Guid hotelId,
-        RoomType roomType,
+        Guid roomTypeId,
         string number,
         int floor,
         int totalBeds,
@@ -28,8 +28,8 @@ public class Room
         if (hotelId == Guid.Empty)
             throw new EmptyRequiredFieldException("HotelId");
         
-        if (Enum.IsDefined<RoomType>(roomType) is false)
-            throw new BusinessRuleException("Invalid room type");
+        if (roomTypeId == Guid.Empty)
+            throw new EmptyRequiredFieldException("RoomTypeId");
         
         if(string.IsNullOrWhiteSpace(number))
             throw new EmptyRequiredFieldException("Room number");
@@ -45,7 +45,7 @@ public class Room
 
         Id = Guid.CreateVersion7();
         HotelId = hotelId;
-        RoomType = roomType;
+        RoomTypeId = roomTypeId;
         Number = number;
         Floor = floor;
         TotalBeds = totalBeds;
@@ -56,12 +56,12 @@ public class Room
         NeedsRestocking = false;
     }
 
-    public void ChangeRoomType(RoomType newRoomType)
+    public void ChangeRoomType(Guid  newRoomTypeId)
     {
-        if (Enum.IsDefined<RoomType>(newRoomType) is false)
-            throw new BusinessRuleException("Invalid room type");
+        if (newRoomTypeId == Guid.Empty)
+            throw new EmptyRequiredFieldException("Room TypeId");
         
-        RoomType = newRoomType;
+        RoomTypeId = newRoomTypeId;
     }
 
     public void ChangeNumber(string newRoomNumber)
