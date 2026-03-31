@@ -16,7 +16,8 @@ public class Amenity
         
         if (string.IsNullOrWhiteSpace(description))
             throw new EmptyRequiredFieldException("Amenity description");
-        
+
+        Id = Guid.CreateVersion7();
         Name = name;
         Description = description;
         IsActive = isActive;
