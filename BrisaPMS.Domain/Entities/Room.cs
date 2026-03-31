@@ -17,13 +17,16 @@ public class Room
     public Guid? LastCleanedBy { get; private set ; }
     public bool NeedsRestocking { get; private set ; }
     
-    public Room(Guid hotelId,
+    public Room
+    (
+        Guid hotelId,
         Guid roomTypeId,
         string number,
         int floor,
         int totalBeds,
         AvailabilityStatus availabilityStatus,
-        HygieneStatus hygieneStatus)
+        HygieneStatus hygieneStatus
+    )
     {
         if (hotelId == Guid.Empty)
             throw new EmptyRequiredFieldException("HotelId");

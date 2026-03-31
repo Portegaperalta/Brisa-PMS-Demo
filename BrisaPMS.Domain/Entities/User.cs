@@ -28,7 +28,9 @@ public class User
 
     //Constructor
 
-    public User(Role role,
+    public User
+    (
+        Role role,
         Guid? hotelId,
         string firstName,
         string lastName,

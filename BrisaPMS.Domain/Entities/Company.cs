@@ -17,7 +17,15 @@ public class Company
     public Address Address { get; private set; }
 
     // Constructor
-    public Company(string legalName,  string commercialName, Rnc rnc, Email businessEmail,  PhoneNumber businessPhone, Url logoUrl, Address address)
+    public Company
+        (
+            string legalName,
+            string commercialName,
+            Rnc rnc, Email businessEmail,
+            PhoneNumber businessPhone,
+            Url logoUrl,
+            Address address
+        ) 
     {
         if (string.IsNullOrWhiteSpace(legalName) is true)
             throw new EmptyRequiredFieldException("Legal Name");

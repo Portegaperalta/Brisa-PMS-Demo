@@ -20,7 +20,9 @@ public class Booking
     public decimal TotalPrice { get; private set; }
     public Guid? DiscountId { get; private set; }
 
-    public Booking(Guid hotelId,
+    public Booking
+    (
+        Guid hotelId,
         Guid roomId,
         Guid guestId,
         string source,
@@ -29,7 +31,8 @@ public class Booking
         CheckInOutTimes checkInOutTimes,
         decimal totalPrice,
         string? specialRequests = null,
-        Guid? discountId = null)
+        Guid? discountId = null
+    ) 
     {
         if (hotelId ==  Guid.Empty)
             throw new EmptyRequiredFieldException("HotelId can't be empty");

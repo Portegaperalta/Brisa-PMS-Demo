@@ -19,7 +19,9 @@ namespace BrisaPMS.Domain.Entities
         public decimal ServiceChargeRate  { get; private set; }
         
         // Constructor
-        public Hotel(string legalName,
+        public Hotel
+        (
+            string legalName,
             string commercialName,
             Url logoUrl,
             Email businessEmail,
@@ -29,7 +31,8 @@ namespace BrisaPMS.Domain.Entities
             CurrencyCode defaultCurrencyCode,
             decimal itbisRate,
             decimal serviceChargeRate,
-            bool isActive)
+            bool isActive
+        )
         {
             if (string.IsNullOrWhiteSpace(legalName) is true)
                 throw new EmptyRequiredFieldException("Legal Name");

@@ -13,7 +13,9 @@ public class RoomRate
     public decimal PricePerNight { get;  private set; }
     public RateTimeInterval  TimeInterval { get; private set; }
 
-    public RoomRate(Guid roomTypeId,
+    public RoomRate
+    (
+        Guid roomTypeId,
         string name,
         RoomRateType type,
         decimal pricePerNight,
