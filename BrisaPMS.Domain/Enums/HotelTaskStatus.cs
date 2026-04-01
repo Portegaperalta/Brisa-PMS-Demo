@@ -1,6 +1,6 @@
 namespace BrisaPMS.Domain.Enums;
 
-public enum TaskStatus
+public enum HotelTaskStatus
 {
     Pending = 1,
     InProgress = 2,
