@@ -8,6 +8,7 @@ public class RoomType
     public string Name { get; private set; }
     public string? Description { get; private set; }
     public decimal BaseRate {get; private set;}
+    public int TotalBeds { get; private set; }
     public int MaxOccupancyAdults { get; private set ; }
     public int MaxOccupancyChildren { get; private set ; }
 
@@ -15,6 +16,7 @@ public class RoomType
     (
         string name,
         decimal baseRate,
+        int totalBeds,
         int maxOccupancyAdults,
         int maxOccupancyChildren,
         string? description = null
@@ -26,6 +28,9 @@ public class RoomType
         if (baseRate < 0)
             throw new BusinessRuleException("BaseRate can't be negative");
         
+        if (totalBeds <= 0)
+            throw new BusinessRuleException("Room type must have at least 1 Bed");
+        
         if (maxOccupancyAdults <= 0)
             throw new BusinessRuleException("Max Occupancy Adults can't be less  or equal than zero");
         
@@ -36,6 +41,7 @@ public class RoomType
         Name = name;
         Description = description;
         BaseRate = baseRate;
+        TotalBeds = totalBeds;
         MaxOccupancyAdults = maxOccupancyAdults;
         MaxOccupancyChildren = maxOccupancyChildren;
     }
@@ -57,6 +63,14 @@ public class RoomType
             throw new BusinessRuleException("BaseRate can't be negative");
         
         BaseRate = newBaseRate;
+    }
+
+    public void UpdateTotalBeds(int newTotalBeds)
+    {
+        if (newTotalBeds <= 0)
+            throw new BusinessRuleException("Room type must have at least 1 Bed");
+        
+        TotalBeds = newTotalBeds;
     }
 
     public void UpdateMaxOccupancyAdults(int newMaxOccupancyAdults)
