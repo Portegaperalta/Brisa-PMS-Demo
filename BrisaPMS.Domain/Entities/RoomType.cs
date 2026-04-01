@@ -1,3 +1,4 @@
+using BrisaPMS.Domain.Enums;
 using BrisaPMS.Domain.Exceptions;
 
 namespace BrisaPMS.Domain.Entities;
@@ -9,6 +10,7 @@ public class RoomType
     public string? Description { get; private set; }
     public decimal BaseRate {get; private set;}
     public int TotalBeds { get; private set; }
+    public BedType BedType { get; private set; }
     public int MaxOccupancyAdults { get; private set ; }
     public int MaxOccupancyChildren { get; private set ; }
 
@@ -17,6 +19,7 @@ public class RoomType
         string name,
         decimal baseRate,
         int totalBeds,
+        BedType  bedType,
         int maxOccupancyAdults,
         int maxOccupancyChildren,
         string? description = null
@@ -31,6 +34,9 @@ public class RoomType
         if (totalBeds <= 0)
             throw new BusinessRuleException("Room type must have at least 1 Bed");
         
+        if (Enum.IsDefined<BedType>(bedType) is false)
+            throw new BusinessRuleException("Bed type not supported");
+        
         if (maxOccupancyAdults <= 0)
             throw new BusinessRuleException("Max Occupancy Adults can't be less  or equal than zero");
         
@@ -42,6 +48,7 @@ public class RoomType
         Description = description;
         BaseRate = baseRate;
         TotalBeds = totalBeds;
+        BedType = bedType;
         MaxOccupancyAdults = maxOccupancyAdults;
         MaxOccupancyChildren = maxOccupancyChildren;
     }
@@ -71,6 +78,14 @@ public class RoomType
             throw new BusinessRuleException("Room type must have at least 1 Bed");
         
         TotalBeds = newTotalBeds;
+    }
+
+    public void UpdateBedType(BedType newBedType)
+    {
+        if (Enum.IsDefined<BedType>(newBedType) is false)
+            throw new BusinessRuleException("Bed type not supported");
+        
+        BedType = newBedType;
     }
 
     public void UpdateMaxOccupancyAdults(int newMaxOccupancyAdults)
