@@ -28,7 +28,9 @@ public class User
 
     //Constructor
 
-    public User(Role role,
+    public User
+    (
+        Role role,
         Guid? hotelId,
         string firstName,
         string lastName,
@@ -69,7 +71,7 @@ public class User
     // Behavioral Methods
     public void ChangeRole(Role newRole) => Role = newRole;
 
-    public void ChangeFirstName(string newFirstName)
+    public void UpdateFirstName(string newFirstName)
     {
         if (string.IsNullOrWhiteSpace(newFirstName) is true)
             throw new EmptyRequiredFieldException("First Name");
@@ -77,7 +79,7 @@ public class User
         FirstName = newFirstName;
     }
 
-    public void ChangeLastName(string newLastName)
+    public void UpdateLastName(string newLastName)
     {
         if (string.IsNullOrWhiteSpace(newLastName) is true)
             throw new EmptyRequiredFieldException("Last Name");
@@ -91,7 +93,7 @@ public class User
 
     public void ChangePhoneNumber(PhoneNumber newPhoneNumber) => PhoneNumber = newPhoneNumber;
 
-    public void ChangePreferredLanguage(PreferredLanguage newPreferredLanguage)
+    public void UpdatePreferredLanguage(PreferredLanguage newPreferredLanguage)
     {
         if (!Enum.IsDefined<PreferredLanguage>(newPreferredLanguage))
             throw new LanguageNotSupportedException();

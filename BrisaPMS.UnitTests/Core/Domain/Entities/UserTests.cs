@@ -115,52 +115,52 @@ public class UserTests
     }
 
     [Fact]
-    public void ChangeFirstName_ShouldUpdateFirstName_WhenNewFirstNameIsValid()
+    public void UpdateFirstName_ShouldUpdateFirstName_WhenNewFirstNameIsValid()
     {
         // Arrange
         var user = CreateUser();
 
         // Act
-        user.ChangeFirstName("Jane");
+        user.UpdateFirstName("Jane");
 
         // Assert
         user.FirstName.Should().Be("Jane");
     }
 
     [Fact]
-    public void ChangeFirstName_ShouldThrowEmptyRequiredFieldException_WhenNewFirstNameIsWhiteSpace()
+    public void UpdateFirstName_ShouldThrowEmptyRequiredFieldException_WhenNewFirstNameIsWhiteSpace()
     {
         // Arrange
         var user = CreateUser();
 
         // Act
-        Action act = () => user.ChangeFirstName(" ");
+        Action act = () => user.UpdateFirstName(" ");
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
     }
 
     [Fact]
-    public void ChangeLastName_ShouldUpdateLastName_WhenNewLastNameIsValid()
+    public void UpdateLastName_ShouldUpdateLastName_WhenNewLastNameIsValid()
     {
         // Arrange
         var user = CreateUser();
 
         // Act
-        user.ChangeLastName("Smith");
+        user.UpdateLastName("Smith");
 
         // Assert
         user.LastName.Should().Be("Smith");
     }
 
     [Fact]
-    public void ChangeLastName_ShouldThrowEmptyRequiredFieldException_WhenNewLastNameIsWhiteSpace()
+    public void UpdateLastName_ShouldThrowEmptyRequiredFieldException_WhenNewLastNameIsWhiteSpace()
     {
         // Arrange
         var user = CreateUser();
 
         // Act
-        Action act = () => user.ChangeLastName(" ");
+        Action act = () => user.UpdateLastName(" ");
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -209,27 +209,27 @@ public class UserTests
     }
 
     [Fact]
-    public void ChangePreferredLanguage_ShouldUpdatePreferredLanguage_WhenLanguageIsValid()
+    public void UpdatePreferredLanguage_ShouldUpdatePreferredLanguage_WhenLanguageIsValid()
     {
         // Arrange
         var user = CreateUser();
 
         // Act
-        user.ChangePreferredLanguage(PreferredLanguage.Es);
+        user.UpdatePreferredLanguage(PreferredLanguage.Es);
 
         // Assert
         user.PreferredLanguage.Should().Be(PreferredLanguage.Es);
     }
 
     [Fact]
-    public void ChangePreferredLanguage_ShouldThrowLanguageNotSupportedException_WhenLanguageIsInvalid()
+    public void UpdatePreferredLanguage_ShouldThrowLanguageNotSupportedException_WhenLanguageIsInvalid()
     {
         // Arrange
         var user = CreateUser();
         var invalidLanguage = (PreferredLanguage)999;
 
         // Act
-        Action act = () => user.ChangePreferredLanguage(invalidLanguage);
+        Action act = () => user.UpdatePreferredLanguage(invalidLanguage);
 
         // Assert
         act.Should().Throw<LanguageNotSupportedException>();

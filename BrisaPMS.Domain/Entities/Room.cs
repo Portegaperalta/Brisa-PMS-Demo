@@ -7,35 +7,33 @@ public class Room
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init ; }
-    public RoomType RoomType { get; private set ; }
+    public Guid RoomTypeId { get; private set; }
     public string Number { get; private set ; }
     public int Floor { get; init ; }
-    public int TotalBeds { get; private set ; }
     public AvailabilityStatus AvailabilityStatus { get; private set ; }
     public HygieneStatus HygieneStatus { get; private set ; }
     public DateTime? LastCleanedAt { get; private set ; }
     public Guid? LastCleanedBy { get; private set ; }
     public bool NeedsRestocking { get; private set ; }
     
-    public Room(Guid hotelId,
-        RoomType roomType,
+    public Room
+    (
+        Guid hotelId,
+        Guid roomTypeId,
         string number,
         int floor,
-        int totalBeds,
         AvailabilityStatus availabilityStatus,
-        HygieneStatus hygieneStatus)
+        HygieneStatus hygieneStatus
+    )
     {
         if (hotelId == Guid.Empty)
             throw new EmptyRequiredFieldException("HotelId");
         
-        if (Enum.IsDefined<RoomType>(roomType) is false)
-            throw new BusinessRuleException("Invalid room type");
+        if (roomTypeId == Guid.Empty)
+            throw new EmptyRequiredFieldException("RoomTypeId");
         
         if(string.IsNullOrWhiteSpace(number))
             throw new EmptyRequiredFieldException("Room number");
-        
-        if (totalBeds <= 0) 
-            throw new BusinessRuleException("Room must have at least one bed");
         
         if(Enum.IsDefined<AvailabilityStatus>(availabilityStatus) is false)
             throw new BusinessRuleException("Invalid availability status");
@@ -45,10 +43,9 @@ public class Room
 
         Id = Guid.CreateVersion7();
         HotelId = hotelId;
-        RoomType = roomType;
+        RoomTypeId = roomTypeId;
         Number = number;
         Floor = floor;
-        TotalBeds = totalBeds;
         AvailabilityStatus = availabilityStatus;
         HygieneStatus = hygieneStatus;
         LastCleanedAt = null;
@@ -56,15 +53,15 @@ public class Room
         NeedsRestocking = false;
     }
 
-    public void ChangeRoomType(RoomType newRoomType)
+    public void UpdateRoomType(Guid  newRoomTypeId)
     {
-        if (Enum.IsDefined<RoomType>(newRoomType) is false)
-            throw new BusinessRuleException("Invalid room type");
+        if (newRoomTypeId == Guid.Empty)
+            throw new EmptyRequiredFieldException("Room TypeId");
         
-        RoomType = newRoomType;
+        RoomTypeId = newRoomTypeId;
     }
 
-    public void ChangeNumber(string newRoomNumber)
+    public void UpdateNumber(string newRoomNumber)
     {
         if (string.IsNullOrWhiteSpace(newRoomNumber))
             throw new EmptyRequiredFieldException("Room number");
@@ -72,15 +69,7 @@ public class Room
         Number = newRoomNumber;
     }
 
-    public void ChangeTotalBeds(int newTotalBeds)
-    {
-        if (newTotalBeds <= 0)
-            throw new BusinessRuleException("Room must have at least one bed");
-        
-        TotalBeds = newTotalBeds;
-    }
-
-    public void ChangeAvailabilityStatus(AvailabilityStatus newAvailabilityStatus)
+    public void UpdateAvailabilityStatus(AvailabilityStatus newAvailabilityStatus)
     {
         if(Enum.IsDefined<AvailabilityStatus>(newAvailabilityStatus) is false)
             throw new BusinessRuleException("Invalid availability status");
@@ -88,7 +77,7 @@ public class Room
         AvailabilityStatus = newAvailabilityStatus;
     }
 
-    public void ChangeHygieneStatus(HygieneStatus newHygieneStatus)
+    public void UpdateHygieneStatus(HygieneStatus newHygieneStatus)
     {
         if (Enum.IsDefined<HygieneStatus>(newHygieneStatus) is false)
             throw new BusinessRuleException("Invalid hygiene status");
