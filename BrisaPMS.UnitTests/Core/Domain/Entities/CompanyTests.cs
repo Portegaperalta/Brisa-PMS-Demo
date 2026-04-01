@@ -114,70 +114,70 @@ public class CompanyTests
     }
 
     [Fact]
-    public void ChangeRnc_ShouldUpdateRnc_WhenValueIsValid()
+    public void UpdateRnc_ShouldUpdateRnc_WhenValueIsValid()
     {
         // Arrange
         var company = CreateCompany();
         var newRnc = new Rnc("00112345678");
 
         // Act
-        company.ChangeRnc(newRnc);
+        company.UpdateRnc(newRnc);
 
         // Assert
         company.Rnc.Should().Be(newRnc);
     }
 
     [Fact]
-    public void ChangeBusinessEmail_ShouldUpdateBusinessEmail_WhenValueIsValid()
+    public void UpdateBusinessEmail_ShouldUpdateBusinessEmail_WhenValueIsValid()
     {
         // Arrange
         var company = CreateCompany();
         var newBusinessEmail = new Email("support@brisapms.com");
 
         // Act
-        company.ChangeBusinessEmail(newBusinessEmail);
+        company.UpdateBusinessEmail(newBusinessEmail);
 
         // Assert
         company.BusinessEmail.Should().Be(newBusinessEmail);
     }
 
     [Fact]
-    public void ChangeBusinessPhone_ShouldUpdateBusinessPhone_WhenValueIsValid()
+    public void UpdateBusinessPhone_ShouldUpdateBusinessPhone_WhenValueIsValid()
     {
         // Arrange
         var company = CreateCompany();
         var newBusinessPhone = new PhoneNumber("+1 829 555 4321");
 
         // Act
-        company.ChangeBusinessPhone(newBusinessPhone);
+        company.UpdateBusinessPhone(newBusinessPhone);
 
         // Assert
         company.BusinessPhone.Should().Be(newBusinessPhone);
     }
 
     [Fact]
-    public void ChangeLogoUrl_ShouldUpdateLogoUrl_WhenValueIsValid()
+    public void UpdateLogoUrl_ShouldUpdateLogoUrl_WhenValueIsValid()
     {
         // Arrange
         var company = CreateCompany();
         var newLogoUrl = new Url("https://cdn.example.com/logo.png");
 
         // Act
-        company.ChangeLogoUrl(newLogoUrl);
+        company.UpdateLogoUrl(newLogoUrl);
 
         // Assert
         company.LogoUrl.Should().Be(newLogoUrl);
     }
 
     [Fact]
-    public void ChangeAddress_ShouldUpdateAddress_WhenValueIsValid()
+    public void UpdateAddress_ShouldUpdateAddress_WhenValueIsValid()
     {
         // Arrange
         var company = CreateCompany();
         var newAddress = new Address("456 Ocean Drive", "Suite 8", "Punta Cana", "La Altagracia", "23000");
 
         // Act
-        company.ChangeAddress(newAddress);
+        company.UpdateAddress(newAddress);
 
         // Assert
         company.Address.Should().Be(newAddress);
