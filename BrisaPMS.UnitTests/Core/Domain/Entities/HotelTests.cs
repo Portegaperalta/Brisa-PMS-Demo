@@ -209,115 +209,115 @@ public class HotelTests
     }
 
     [Fact]
-    public void ChangeLegalName_ShouldUpdateLegalName_WhenValueIsValid()
+    public void UpdateLegalName_ShouldUpdateLegalName_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
 
         // Act
-        hotel.ChangeLegalName("Brisa Resorts SRL");
+        hotel.UpdateLegalName("Brisa Resorts SRL");
 
         // Assert
         hotel.LegalName.Should().Be("Brisa Resorts SRL");
     }
 
     [Fact]
-    public void ChangeLegalName_ShouldThrowEmptyRequiredFieldException_WhenValueIsWhiteSpace()
+    public void UpdateLegalName_ShouldThrowEmptyRequiredFieldException_WhenValueIsWhiteSpace()
     {
         // Arrange
         var hotel = CreateHotel();
 
         // Act
-        Action act = () => hotel.ChangeLegalName(" ");
+        Action act = () => hotel.UpdateLegalName(" ");
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
     }
 
     [Fact]
-    public void ChangeCommercialName_ShouldUpdateCommercialName_WhenValueIsValid()
+    public void UpdateCommercialName_ShouldUpdateCommercialName_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
 
         // Act
-        hotel.ChangeCommercialName("Brisa Beach");
+        hotel.UpdateCommercialName("Brisa Beach");
 
         // Assert
         hotel.CommercialName.Should().Be("Brisa Beach");
     }
 
     [Fact]
-    public void ChangeCommercialName_ShouldThrowEmptyRequiredFieldException_WhenValueIsWhiteSpace()
+    public void UpdateCommercialName_ShouldThrowEmptyRequiredFieldException_WhenValueIsWhiteSpace()
     {
         // Arrange
         var hotel = CreateHotel();
 
         // Act
-        Action act = () => hotel.ChangeCommercialName(" ");
+        Action act = () => hotel.UpdateCommercialName(" ");
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
     }
 
     [Fact]
-    public void ChangeLogoUrl_ShouldUpdateLogoUrl_WhenValueIsValid()
+    public void UpdateLogoUrl_ShouldUpdateLogoUrl_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
         var newLogoUrl = new Url("https://cdn.example.com/hotel-logo.png");
 
         // Act
-        hotel.ChangeLogoUrl(newLogoUrl);
+        hotel.UpdateLogoUrl(newLogoUrl);
 
         // Assert
         hotel.LogoUrl.Should().Be(newLogoUrl);
     }
 
     [Fact]
-    public void ChangeBusinessEmail_ShouldUpdateBusinessEmail_WhenValueIsValid()
+    public void UpdateBusinessEmail_ShouldUpdateBusinessEmail_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
         var newBusinessEmail = new Email("frontdesk@hotelbrisa.com");
 
         // Act
-        hotel.ChangeBusinessEmail(newBusinessEmail);
+        hotel.UpdateBusinessEmail(newBusinessEmail);
 
         // Assert
         hotel.BusinessEmail.Should().Be(newBusinessEmail);
     }
 
     [Fact]
-    public void ChangeBusinessPhoneNumber_ShouldUpdateBusinessPhoneNumber_WhenValueIsValid()
+    public void UpdateBusinessPhoneNumber_ShouldUpdateBusinessPhoneNumber_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
         var newBusinessPhoneNumber = new PhoneNumber("+1 829 555 4321");
 
         // Act
-        hotel.ChangeBusinessPhoneNumber(newBusinessPhoneNumber);
+        hotel.UpdateBusinessPhoneNumber(newBusinessPhoneNumber);
 
         // Assert
         hotel.BusinessPhoneNumber.Should().Be(newBusinessPhoneNumber);
     }
 
     [Fact]
-    public void ChangeAddress_ShouldUpdateAddress_WhenValueIsValid()
+    public void UpdateAddress_ShouldUpdateAddress_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
         var newAddress = new Address("456 Ocean Drive", "Suite 8", "Punta Cana", "La Altagracia", "23000");
 
         // Act
-        hotel.ChangeAddress(newAddress);
+        hotel.UpdateAddress(newAddress);
 
         // Assert
         hotel.Address.Should().Be(newAddress);
     }
 
     [Fact]
-    public void ChangeCheckInOutTimes_ShouldUpdateCheckInOutTimes_WhenValueIsValid()
+    public void UpdateCheckInOutTimes_ShouldUpdateCheckInOutTimes_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
@@ -326,86 +326,86 @@ public class HotelTests
             new DateTime(2026, 3, 29, 11, 0, 0));
 
         // Act
-        hotel.ChangeCheckInOutTimes(newCheckInOutTimes);
+        hotel.UpdateCheckInOutTimes(newCheckInOutTimes);
 
         // Assert
         hotel.CheckInOutTimes.Should().Be(newCheckInOutTimes);
     }
 
     [Fact]
-    public void ChangeDefaultCurrencyCode_ShouldUpdateDefaultCurrencyCode_WhenValueIsValid()
+    public void UpdateDefaultCurrencyCode_ShouldUpdateDefaultCurrencyCode_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
 
         // Act
-        hotel.ChangeDefaultCurrencyCode(CurrencyCode.USD);
+        hotel.UpdateDefaultCurrencyCode(CurrencyCode.USD);
 
         // Assert
         hotel.DefaultCurrencyCode.Should().Be(CurrencyCode.USD);
     }
 
     [Fact]
-    public void ChangeDefaultCurrencyCode_ShouldThrowCurrencyNotSupportedException_WhenValueIsInvalid()
+    public void UpdateDefaultCurrencyCode_ShouldThrowCurrencyNotSupportedException_WhenValueIsInvalid()
     {
         // Arrange
         var hotel = CreateHotel();
         var invalidCurrency = (CurrencyCode)999;
 
         // Act
-        Action act = () => hotel.ChangeDefaultCurrencyCode(invalidCurrency);
+        Action act = () => hotel.UpdateDefaultCurrencyCode(invalidCurrency);
 
         // Assert
         act.Should().Throw<CurrencyNotSupportedException>();
     }
 
     [Fact]
-    public void ChangeItbisRate_ShouldUpdateItbisRate_WhenValueIsValid()
+    public void UpdateItbisRate_ShouldUpdateItbisRate_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
 
         // Act
-        hotel.ChangeItbisRate(16m);
+        hotel.UpdateItbisRate(16m);
 
         // Assert
         hotel.ItbisRate.Should().Be(16m);
     }
 
     [Fact]
-    public void ChangeItbisRate_ShouldThrowBusinessRuleException_WhenValueIsNegative()
+    public void UpdateItbisRate_ShouldThrowBusinessRuleException_WhenValueIsNegative()
     {
         // Arrange
         var hotel = CreateHotel();
 
         // Act
-        Action act = () => hotel.ChangeItbisRate(-1m);
+        Action act = () => hotel.UpdateItbisRate(-1m);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
     }
 
     [Fact]
-    public void ChangeServiceChargeRate_ShouldUpdateServiceChargeRate_WhenValueIsValid()
+    public void UpdateServiceChargeRate_ShouldUpdateServiceChargeRate_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
 
         // Act
-        hotel.ChangeServiceChargeRate(12m);
+        hotel.UpdateServiceChargeRate(12m);
 
         // Assert
         hotel.ServiceChargeRate.Should().Be(12m);
     }
 
     [Fact]
-    public void ChangeServiceChargeRate_ShouldThrowBusinessRuleException_WhenValueIsNegative()
+    public void UpdateServiceChargeRate_ShouldThrowBusinessRuleException_WhenValueIsNegative()
     {
         // Arrange
         var hotel = CreateHotel();
 
         // Act
-        Action act = () => hotel.ChangeServiceChargeRate(-1m);
+        Action act = () => hotel.UpdateServiceChargeRate(-1m);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
