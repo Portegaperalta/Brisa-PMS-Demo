@@ -8,7 +8,7 @@ namespace BrisaPMS.Domain.Entities;
 public class User
 {
     // Attributes
-    public Guid Id { get; init; }
+    public Guid Id { get; }
     public Role Role { get; private set; }
     public Guid? HotelId { get; init; }
     public string FirstName { get; private set; }
