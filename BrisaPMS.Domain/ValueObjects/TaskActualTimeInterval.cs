@@ -10,12 +10,6 @@ public class TaskActualTimeInterval
 
     public TaskActualTimeInterval(DateTime actualStartAt, DateTime actualEndAt)
     {
-        if (actualStartAt > actualEndAt)
-            throw new BusinessRuleException("Actual start time must be earlier than actual end time.");
-        
-        if (actualEndAt < actualStartAt)
-            throw new BusinessRuleException("Actual end time must be later than actual start time.");
-        
         ActualStartAt = actualStartAt;
         ActualEndAt = actualEndAt;
     }
