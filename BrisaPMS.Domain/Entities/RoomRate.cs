@@ -6,7 +6,7 @@ namespace BrisaPMS.Domain.Entities;
 
 public class RoomRate
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; }
     public Guid RoomTypeId { get; init; }
     public string Name { get; private set; }
     public RoomRateType Type { get; private set; }

@@ -7,7 +7,7 @@ namespace BrisaPMS.Domain.Entities;
 public class Company
 {
     // Attributes
-    public Guid Id { get; init; }
+    public Guid Id { get; }
     public string LegalName {get; private set;}
     public string CommercialName {get; private set;}
     public Rnc Rnc {get; private set;}

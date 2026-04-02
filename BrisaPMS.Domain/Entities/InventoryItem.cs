@@ -6,7 +6,7 @@ namespace BrisaPMS.Domain.Entities;
 
 public class InventoryItem
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; }
     public Guid HotelId { get; init; }
     public string Name { get; private set; }
     public string Description { get; private set; }

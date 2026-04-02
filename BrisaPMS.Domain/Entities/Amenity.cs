@@ -4,7 +4,7 @@ namespace BrisaPMS.Domain.Entities;
 
 public class Amenity
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; }
     public string Name { get; private set; }
     public string Description { get; private set; }
     public bool IsActive { get; private set; }
