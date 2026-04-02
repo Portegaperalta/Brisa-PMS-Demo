@@ -124,6 +124,26 @@ public class HouseKeepingTask
         };
     }
 
+    public void StartActualTimeInterval()
+    {
+        ActualTimeInterval = Status switch
+        {
+            HotelTaskStatus.Completed => throw new BusinessRuleException("Completed task actual time interval can't be modified"),
+            HotelTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task actual time interval can't be modified"),
+            _ => new TaskActualTimeInterval(actualStartAt: DateTime.UtcNow, actualEndAt:DateTime.MinValue)
+        };
+    }
+
+    public void EndActualTimeInterval(TaskActualTimeInterval currentActualTimeInterval)
+    {
+        ActualTimeInterval = Status switch
+        {
+            HotelTaskStatus.Completed => throw new BusinessRuleException("Completed task actual time interval can't be modified"),
+            HotelTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task actual time interval can't be modified"),
+            _ => new TaskActualTimeInterval(actualStartAt: currentActualTimeInterval.ActualStartAt, actualEndAt: DateTime.UtcNow)
+        };
+    }
+
     public void ReportIncident(string incidentDescription)
     {
         if (string.IsNullOrWhiteSpace(incidentDescription))
