@@ -6,7 +6,7 @@ namespace BrisaPMS.Domain.Entities
 {
     public class Hotel
     {
-        public Guid Id { get; }
+        public Guid Id { get; init; }
         public string LegalName { get; private set; }
         public string CommercialName { get; private set; }
         public Url LogoUrl { get; private set; }

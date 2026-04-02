@@ -5,7 +5,7 @@ namespace BrisaPMS.Domain.Entities;
 
 public class InventoryMovement
 {
-    public Guid Id { get; }
+    public Guid Id { get; init; }
     public Guid InventoryItemId { get; init; }
     public Guid? TaskId {get; init; }
     public InventoryMovementType Type { get; init; }

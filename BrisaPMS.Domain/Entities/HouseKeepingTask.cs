@@ -7,7 +7,7 @@ namespace BrisaPMS.Domain.Entities;
 
 public class HouseKeepingTask
 {
-    public Guid Id { get; }
+    public Guid Id { get; init; }
     public Guid RoomId { get; init; }
     public Guid AssignedBy { get; init; }
     public Guid AssignedTo { get; private set; }
