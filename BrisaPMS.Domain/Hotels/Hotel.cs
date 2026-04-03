@@ -36,10 +36,10 @@ namespace BrisaPMS.Domain.Hotels
             CurrencyCode defaultCurrencyCode = CurrencyCode.DOP
         )
         {
-            if (string.IsNullOrWhiteSpace(legalName) is true)
+            if (string.IsNullOrWhiteSpace(legalName))
                 throw new EmptyRequiredFieldException("Legal Name");
             
-            if (string.IsNullOrWhiteSpace(commercialName) is true)
+            if (string.IsNullOrWhiteSpace(commercialName))
                 throw new EmptyRequiredFieldException("Commercial Name");
             
             if (Enum.IsDefined<CurrencyCode>(defaultCurrencyCode) is not true)
@@ -62,7 +62,7 @@ namespace BrisaPMS.Domain.Hotels
         // Behavioral Methods
         public void UpdateLegalName(string newLegalName)
         {
-            if (string.IsNullOrWhiteSpace(newLegalName) is true)
+            if (string.IsNullOrWhiteSpace(newLegalName))
                 throw new EmptyRequiredFieldException("Legal Name");
             
             LegalName = newLegalName;
@@ -70,7 +70,7 @@ namespace BrisaPMS.Domain.Hotels
 
         public void UpdateCommercialName(string newCommercialName)
         {
-            if (string.IsNullOrWhiteSpace(newCommercialName) is true)
+            if (string.IsNullOrWhiteSpace(newCommercialName))
                 throw new EmptyRequiredFieldException("Commercial Name");
             
             CommercialName = newCommercialName;
