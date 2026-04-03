@@ -1,4 +1,5 @@
-﻿using BrisaPMS.Domain.Shared.Enums;
+﻿using BrisaPMS.Domain.Billing;
+using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
@@ -15,7 +16,7 @@ namespace BrisaPMS.Domain.Hotels
         public Address Address { get; private set; }
         public CheckInOutTimes CheckInOutTimes { get; private set; }
         public CurrencyCode DefaultCurrencyCode { get; private set; }
-        public decimal ItbisRate { get; private set; }
+        public ItbisRate ItbisRate { get; private set; }
         public decimal ServiceChargeRate  { get; private set; }
         
         // Constructor
@@ -29,7 +30,7 @@ namespace BrisaPMS.Domain.Hotels
             Address address,
             CheckInOutTimes checkInOutTimes,
             CurrencyCode defaultCurrencyCode,
-            decimal itbisRate,
+            ItbisRate itbisRate,
             decimal serviceChargeRate,
             bool isActive
         )
@@ -42,9 +43,6 @@ namespace BrisaPMS.Domain.Hotels
             
             if (Enum.IsDefined<CurrencyCode>(defaultCurrencyCode) is not true)
                 throw new CurrencyNotSupportedException();
-            
-            if (itbisRate < 0)
-                throw new BusinessRuleException("Itbis Rate cannot be negative");
             
             if (serviceChargeRate < 0)
                 throw new BusinessRuleException("Service charge rate cannot be negative");
@@ -99,13 +97,7 @@ namespace BrisaPMS.Domain.Hotels
             DefaultCurrencyCode = newDefaultCurrencyCode;
         }
 
-        public void UpdateItbisRate(decimal newItbisRate)
-        {
-         if (newItbisRate < 0)
-             throw new BusinessRuleException("Itbis Rate cannot be negative");
-         
-         ItbisRate = newItbisRate;
-        }
+        public void UpdateItbisRate(ItbisRate newItbisRate) => ItbisRate = newItbisRate;
 
         public void UpdateServiceChargeRate(decimal newServiceChargeRate)
         {
