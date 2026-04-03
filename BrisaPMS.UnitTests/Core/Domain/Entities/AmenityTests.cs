@@ -1,5 +1,5 @@
-using BrisaPMS.Domain.Entities;
-using BrisaPMS.Domain.Exceptions;
+using BrisaPMS.Domain.Amenity;
+using BrisaPMS.Domain.Shared.Exceptions;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.Entities;

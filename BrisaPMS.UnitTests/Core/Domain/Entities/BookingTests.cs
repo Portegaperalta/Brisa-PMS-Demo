@@ -1,7 +1,6 @@
-using BrisaPMS.Domain.Entities;
-using BrisaPMS.Domain.Enums;
-using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.ValueObjects;
+using BrisaPMS.Domain.Booking;
+using BrisaPMS.Domain.Shared.Exceptions;
+using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.Entities;

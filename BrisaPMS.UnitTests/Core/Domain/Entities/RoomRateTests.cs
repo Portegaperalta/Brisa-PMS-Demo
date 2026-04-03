@@ -1,7 +1,5 @@
-using BrisaPMS.Domain.Entities;
-using BrisaPMS.Domain.Enums;
-using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.ValueObjects;
+using BrisaPMS.Domain.Room;
+using BrisaPMS.Domain.Shared.Exceptions;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.Entities;
@@ -176,7 +174,7 @@ public class RoomRateTests
     {
         // Arrange
         var roomRate = CreateRoomRate();
-        var newTimeInterval = new RateTimeInterval(
+        var newTimeInterval = new RoomRateTimeInterval(
             new DateTime(2026, 4, 10, 0, 0, 0),
             new DateTime(2026, 4, 20, 0, 0, 0));
 
@@ -197,9 +195,9 @@ public class RoomRateTests
             CreateRateTimeInterval());
     }
 
-    private static RateTimeInterval CreateRateTimeInterval()
+    private static RoomRateTimeInterval CreateRateTimeInterval()
     {
-        return new RateTimeInterval(
+        return new RoomRateTimeInterval(
             new DateTime(2026, 4, 1, 0, 0, 0),
             new DateTime(2026, 4, 30, 0, 0, 0));
     }

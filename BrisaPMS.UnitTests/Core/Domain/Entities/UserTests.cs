@@ -1,7 +1,6 @@
-using BrisaPMS.Domain.Entities;
-using BrisaPMS.Domain.Enums;
-using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.ValueObjects;
+using BrisaPMS.Domain.Shared.Exceptions;
+using BrisaPMS.Domain.Shared.ValueObjects;
+using BrisaPMS.Domain.User;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.Entities;
@@ -12,14 +11,14 @@ public class UserTests
     public void Constructor_ShouldCreateUser_WhenValuesAreValid()
     {
         // Arrange
-        var role = Role.Admin;
+        var role = UserRole.Admin;
         var hotelId = Guid.NewGuid();
         var email = CreateEmail();
         var password = CreatePassword();
         var phoneNumber = CreatePhoneNumber();
 
         // Act
-        var result = new User(role, hotelId, "John", "Doe", email, password, PreferredLanguage.En, phoneNumber);
+        var result = new User(role, hotelId, "John", "Doe", email, password, UserPreferredLanguage.En, phoneNumber);
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
@@ -30,7 +29,7 @@ public class UserTests
         result.Email.Should().Be(email);
         result.PasswordHash.Should().Be(password);
         result.PhoneNumber.Should().Be(phoneNumber);
-        result.PreferredLanguage.Should().Be(PreferredLanguage.En);
+        result.PreferredLanguage.Should().Be(UserPreferredLanguage.En);
         result.IsOnline.Should().BeFalse();
         result.IsActive.Should().BeTrue();
         result.IsEmailConfirmed.Should().BeFalse();
@@ -45,11 +44,11 @@ public class UserTests
     public void Constructor_ShouldCreateUser_WhenPhoneNumberIsNotProvided()
     {
         // Arrange
-        var role = Role.Manager;
+        var role = UserRole.Manager;
         var hotelId = Guid.NewGuid();
 
         // Act
-        var result = new User(role, hotelId, "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En);
+        var result = new User(role, hotelId, "John", "Doe", CreateEmail(), CreatePassword(), UserPreferredLanguage.En);
 
         // Assert
         result.Role.Should().Be(role);
@@ -61,7 +60,7 @@ public class UserTests
     public void Constructor_ShouldCreateUser_WhenHotelIdIsNull()
     {
         // Arrange + Act
-        var result = new User(Role.Admin, null, "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En);
+        var result = new User(UserRole.Admin, null, "John", "Doe", CreateEmail(), CreatePassword(), UserPreferredLanguage.En);
 
         // Assert
         result.HotelId.Should().BeNull();
@@ -82,7 +81,7 @@ public class UserTests
             lastName = " ";
 
         // Act
-        Action act = () => _ = new User(Role.Admin, Guid.NewGuid(), firstName, lastName, CreateEmail(), CreatePassword(), PreferredLanguage.En);
+        Action act = () => _ = new User(UserRole.Admin, Guid.NewGuid(), firstName, lastName, CreateEmail(), CreatePassword(), UserPreferredLanguage.En);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -92,10 +91,10 @@ public class UserTests
     public void Constructor_ShouldThrowLanguageNotSupportedException_WhenPreferredLanguageIsInvalid()
     {
         // Arrange
-        var invalidLanguage = (PreferredLanguage)999;
+        var invalidLanguage = (UserPreferredLanguage)999;
 
         // Act
-        Action act = () => _ = new User(Role.Admin, Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), invalidLanguage);
+        Action act = () => _ = new User(UserRole.Admin, Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), invalidLanguage);
 
         // Assert
         act.Should().Throw<LanguageNotSupportedException>();
@@ -108,10 +107,10 @@ public class UserTests
         var user = CreateUser();
 
         // Act
-        user.ChangeRole(Role.Manager);
+        user.ChangeRole(UserRole.Manager);
 
         // Assert
-        user.Role.Should().Be(Role.Manager);
+        user.Role.Should().Be(UserRole.Manager);
     }
 
     [Fact]
@@ -215,10 +214,10 @@ public class UserTests
         var user = CreateUser();
 
         // Act
-        user.UpdatePreferredLanguage(PreferredLanguage.Es);
+        user.UpdatePreferredLanguage(UserPreferredLanguage.Es);
 
         // Assert
-        user.PreferredLanguage.Should().Be(PreferredLanguage.Es);
+        user.PreferredLanguage.Should().Be(UserPreferredLanguage.Es);
     }
 
     [Fact]
@@ -226,7 +225,7 @@ public class UserTests
     {
         // Arrange
         var user = CreateUser();
-        var invalidLanguage = (PreferredLanguage)999;
+        var invalidLanguage = (UserPreferredLanguage)999;
 
         // Act
         Action act = () => user.UpdatePreferredLanguage(invalidLanguage);
@@ -348,7 +347,7 @@ public class UserTests
 
     private static User CreateUser()
     {
-        return new User(Role.Receptionist, Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), PreferredLanguage.En, CreatePhoneNumber());
+        return new User(UserRole.Receptionist, Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), UserPreferredLanguage.En, CreatePhoneNumber());
     }
 
     private static Email CreateEmail()

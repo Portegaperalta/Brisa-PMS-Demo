@@ -1,6 +1,5 @@
-using BrisaPMS.Domain.Entities;
-using BrisaPMS.Domain.Enums;
-using BrisaPMS.Domain.Exceptions;
+using BrisaPMS.Domain.Room;
+using BrisaPMS.Domain.Shared.Exceptions;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.Entities;
@@ -20,8 +19,8 @@ public class RoomTests
             roomTypeId,
             "201",
             2,
-            AvailabilityStatus.Available,
-            HygieneStatus.Clean);
+            RoomAvailabilityStatus.Available,
+            RoomHygieneStatus.Clean);
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
@@ -29,8 +28,8 @@ public class RoomTests
         result.RoomTypeId.Should().Be(roomTypeId);
         result.Number.Should().Be("201");
         result.Floor.Should().Be(2);
-        result.AvailabilityStatus.Should().Be(AvailabilityStatus.Available);
-        result.HygieneStatus.Should().Be(HygieneStatus.Clean);
+        result.AvailabilityStatus.Should().Be(RoomAvailabilityStatus.Available);
+        result.HygieneStatus.Should().Be(RoomHygieneStatus.Clean);
         result.LastCleanedAt.Should().BeNull();
         result.LastCleanedBy.Should().BeNull();
         result.NeedsRestocking.Should().BeFalse();
@@ -48,8 +47,8 @@ public class RoomTests
             Guid.NewGuid(),
             "101",
             1,
-            AvailabilityStatus.Available,
-            HygieneStatus.Clean);
+            RoomAvailabilityStatus.Available,
+            RoomHygieneStatus.Clean);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -67,8 +66,8 @@ public class RoomTests
             roomTypeId,
             "101",
             1,
-            AvailabilityStatus.Available,
-            HygieneStatus.Clean);
+            RoomAvailabilityStatus.Available,
+            RoomHygieneStatus.Clean);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -85,8 +84,8 @@ public class RoomTests
             Guid.NewGuid(),
             roomNumber!,
             1,
-            AvailabilityStatus.Available,
-            HygieneStatus.Clean);
+            RoomAvailabilityStatus.Available,
+            RoomHygieneStatus.Clean);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -96,7 +95,7 @@ public class RoomTests
     public void Constructor_ShouldThrowBusinessRuleException_WhenAvailabilityStatusIsInvalid()
     {
         // Arrange
-        var invalidAvailabilityStatus = (AvailabilityStatus)999;
+        var invalidAvailabilityStatus = (RoomAvailabilityStatus)999;
 
         // Act
         Action act = () => _ = new Room(
@@ -105,7 +104,7 @@ public class RoomTests
             "101",
             1,
             invalidAvailabilityStatus,
-            HygieneStatus.Clean);
+            RoomHygieneStatus.Clean);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -115,7 +114,7 @@ public class RoomTests
     public void Constructor_ShouldThrowBusinessRuleException_WhenHygieneStatusIsInvalid()
     {
         // Arrange
-        var invalidHygieneStatus = (HygieneStatus)999;
+        var invalidHygieneStatus = (RoomHygieneStatus)999;
 
         // Act
         Action act = () => _ = new Room(
@@ -123,7 +122,7 @@ public class RoomTests
             Guid.NewGuid(),
             "101",
             1,
-            AvailabilityStatus.Available,
+            RoomAvailabilityStatus.Available,
             invalidHygieneStatus);
 
         // Assert
@@ -192,10 +191,10 @@ public class RoomTests
         var room = CreateRoom();
 
         // Act
-        room.UpdateAvailabilityStatus(AvailabilityStatus.Occupied);
+        room.UpdateAvailabilityStatus(RoomAvailabilityStatus.Occupied);
 
         // Assert
-        room.AvailabilityStatus.Should().Be(AvailabilityStatus.Occupied);
+        room.AvailabilityStatus.Should().Be(RoomAvailabilityStatus.Occupied);
     }
 
     [Fact]
@@ -203,7 +202,7 @@ public class RoomTests
     {
         // Arrange
         var room = CreateRoom();
-        var invalidAvailabilityStatus = (AvailabilityStatus)999;
+        var invalidAvailabilityStatus = (RoomAvailabilityStatus)999;
 
         // Act
         Action act = () => room.UpdateAvailabilityStatus(invalidAvailabilityStatus);
@@ -219,10 +218,10 @@ public class RoomTests
         var room = CreateRoom();
 
         // Act
-        room.UpdateHygieneStatus(HygieneStatus.Dirty);
+        room.UpdateHygieneStatus(RoomHygieneStatus.Dirty);
 
         // Assert
-        room.HygieneStatus.Should().Be(HygieneStatus.Dirty);
+        room.HygieneStatus.Should().Be(RoomHygieneStatus.Dirty);
     }
 
     [Fact]
@@ -230,7 +229,7 @@ public class RoomTests
     {
         // Arrange
         var room = CreateRoom();
-        var invalidHygieneStatus = (HygieneStatus)999;
+        var invalidHygieneStatus = (RoomHygieneStatus)999;
 
         // Act
         Action act = () => room.UpdateHygieneStatus(invalidHygieneStatus);
@@ -313,7 +312,7 @@ public class RoomTests
             Guid.NewGuid(),
             "101",
             1,
-            AvailabilityStatus.Available,
-            HygieneStatus.Clean);
+            RoomAvailabilityStatus.Available,
+            RoomHygieneStatus.Clean);
     }
 }

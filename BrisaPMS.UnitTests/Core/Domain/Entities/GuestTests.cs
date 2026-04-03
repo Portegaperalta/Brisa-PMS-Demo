@@ -1,7 +1,7 @@
-using BrisaPMS.Domain.Entities;
-using BrisaPMS.Domain.Enums;
-using BrisaPMS.Domain.Exceptions;
-using BrisaPMS.Domain.ValueObjects;
+using BrisaPMS.Domain.Guest;
+using BrisaPMS.Domain.Shared.Enums;
+using BrisaPMS.Domain.Shared.Exceptions;
+using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.Entities;
@@ -22,7 +22,7 @@ public class GuestTests
             hotelId,
             "John",
             "Doe",
-            DocumentType.Passport,
+            GuestDocumentType.Passport,
             "A1234567",
             phoneNumber,
             CurrencyCode.USD,
@@ -38,7 +38,7 @@ public class GuestTests
         result.HotelId.Should().Be(hotelId);
         result.FirstName.Should().Be("John");
         result.LastName.Should().Be("Doe");
-        result.DocumentType.Should().Be(DocumentType.Passport);
+        result.DocumentType.Should().Be(GuestDocumentType.Passport);
         result.DocumentNumber.Should().Be("A1234567");
         result.Country.Should().Be("United States");
         result.Rnc.Should().Be(rnc);
@@ -64,7 +64,7 @@ public class GuestTests
             hotelId,
             "John",
             "Doe",
-            DocumentType.IdCard,
+            GuestDocumentType.IdCard,
             "00112345678",
             phoneNumber,
             CurrencyCode.DOP,
@@ -89,7 +89,7 @@ public class GuestTests
         const string lastName = "Doe";
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), firstName!, lastName, DocumentType.IdCard, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest(Guid.NewGuid(), firstName!, lastName, GuestDocumentType.IdCard, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -104,7 +104,7 @@ public class GuestTests
         const string firstName = "John";
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), firstName, lastName!, DocumentType.IdCard, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest(Guid.NewGuid(), firstName, lastName!, GuestDocumentType.IdCard, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -114,7 +114,7 @@ public class GuestTests
     public void Constructor_ShouldThrowBusinessRuleException_WhenDocumentTypeIsInvalid()
     {
         // Arrange
-        var invalidDocumentType = (DocumentType)999;
+        var invalidDocumentType = (GuestDocumentType)999;
 
         // Act
         Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", invalidDocumentType, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
@@ -130,7 +130,7 @@ public class GuestTests
         const string documentNumber = " ";
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", DocumentType.IdCard, documentNumber, CreatePhoneNumber(), CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", GuestDocumentType.IdCard, documentNumber, CreatePhoneNumber(), CurrencyCode.DOP, false);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -143,7 +143,7 @@ public class GuestTests
         var invalidCurrency = (CurrencyCode)999;
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", DocumentType.IdCard, "00112345678", CreatePhoneNumber(), invalidCurrency, false);
+        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", GuestDocumentType.IdCard, "00112345678", CreatePhoneNumber(), invalidCurrency, false);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -197,10 +197,10 @@ public class GuestTests
         var guest = CreateGuest();
 
         // Act
-        guest.ChangeDocumentType(DocumentType.Passport);
+        guest.ChangeDocumentType(GuestDocumentType.Passport);
 
         // Assert
-        guest.DocumentType.Should().Be(DocumentType.Passport);
+        guest.DocumentType.Should().Be(GuestDocumentType.Passport);
     }
 
     [Fact]
@@ -208,7 +208,7 @@ public class GuestTests
     {
         // Arrange
         var guest = CreateGuest();
-        var invalidDocumentType = (DocumentType)999;
+        var invalidDocumentType = (GuestDocumentType)999;
 
         // Act
         Action act = () => guest.ChangeDocumentType(invalidDocumentType);
@@ -471,7 +471,7 @@ public class GuestTests
             Guid.NewGuid(),
             "John",
             "Doe",
-            DocumentType.IdCard,
+            GuestDocumentType.IdCard,
             "00112345678",
             CreatePhoneNumber(),
             CurrencyCode.DOP,

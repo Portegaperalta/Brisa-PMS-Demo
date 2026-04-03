@@ -1,4 +1,4 @@
-using BrisaPMS.Domain.Exceptions;
+using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.ValueObjects;
 using FluentAssertions;
 
