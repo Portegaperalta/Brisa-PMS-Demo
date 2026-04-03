@@ -1,4 +1,3 @@
-using System;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
@@ -27,10 +26,10 @@ public class Company
             Address address
         ) 
     {
-        if (string.IsNullOrWhiteSpace(legalName) is true)
+        if (string.IsNullOrWhiteSpace(legalName))
             throw new EmptyRequiredFieldException("Legal Name");
 
-        if (string.IsNullOrWhiteSpace(commercialName) is true)
+        if (string.IsNullOrWhiteSpace(commercialName))
             throw new EmptyRequiredFieldException("Commercial Name");
         
         Id = Guid.CreateVersion7();
