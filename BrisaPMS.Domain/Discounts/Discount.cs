@@ -1,5 +1,6 @@
 ﻿using BrisaPMS.Domain.Discount;
 using BrisaPMS.Domain.Shared.Exceptions;
+using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Discounts;
 
@@ -9,7 +10,7 @@ public class Discount
     public Guid HotelId { get; init; }
     public string Name { get; private set; }
     public string Type { get; private set; }
-    public decimal Value { get;  private set; }
+    public Money Value { get;  private set; }
     public DiscountTimeInterval TimeInterval { get; private set; }
     public bool IsActive { get; private set; }
 
@@ -18,7 +19,7 @@ public class Discount
         Guid hotelId,
         string name,
         string type,
-        decimal value,
+        Money value,
         DiscountTimeInterval timeInterval,
         bool isActive
     )
@@ -31,9 +32,6 @@ public class Discount
         
         if (string.IsNullOrEmpty(type))
             throw new EmptyRequiredFieldException("Discount Type");
-        
-        if (value < 0)
-            throw new BusinessRuleException("Discount Value can't be negative");
         
         Id = Guid.CreateVersion7();
         HotelId = hotelId;
@@ -60,13 +58,7 @@ public class Discount
         Type = newType;
     }
 
-    public void UpdateValue(decimal newValue)
-    {
-        if (newValue < 0)
-            throw new BusinessRuleException("Discount Value can't be negative");
-        
-        Value = newValue;
-    }
+    public void UpdateValue(Money newValue) => Value = newValue;
 
     public void UpdateTimeInterval(DiscountTimeInterval newTimeInterval)
     {
