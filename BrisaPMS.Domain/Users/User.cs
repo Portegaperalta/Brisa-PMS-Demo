@@ -1,4 +1,3 @@
-using System;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
@@ -39,10 +38,10 @@ public class User
         PhoneNumber? phoneNumber = null,
         bool isActive = true)
     {
-        if (string.IsNullOrWhiteSpace(firstName) is true)
+        if (string.IsNullOrWhiteSpace(firstName))
             throw new EmptyRequiredFieldException("First Name");
 
-        if (string.IsNullOrWhiteSpace(lastName) is true)
+        if (string.IsNullOrWhiteSpace(lastName))
             throw new EmptyRequiredFieldException("Last Name");
 
         if (!Enum.IsDefined<UserPreferredLanguage>(preferredLanguage))
@@ -72,7 +71,7 @@ public class User
 
     public void UpdateFirstName(string newFirstName)
     {
-        if (string.IsNullOrWhiteSpace(newFirstName) is true)
+        if (string.IsNullOrWhiteSpace(newFirstName))
             throw new EmptyRequiredFieldException("First Name");
 
         FirstName = newFirstName;
@@ -80,7 +79,7 @@ public class User
 
     public void UpdateLastName(string newLastName)
     {
-        if (string.IsNullOrWhiteSpace(newLastName) is true)
+        if (string.IsNullOrWhiteSpace(newLastName))
             throw new EmptyRequiredFieldException("Last Name");
 
         LastName = newLastName;
@@ -102,13 +101,13 @@ public class User
 
     public void EnableOnlineStatus()
     {
-        if (IsOnline is false)
+        if (IsOnline is not true)
             IsOnline = true;
     }
 
     public void DisableOnlineStatus()
     {
-        if (IsOnline is true)
+        if (IsOnline)
         {
             IsOnline = false;
         }
