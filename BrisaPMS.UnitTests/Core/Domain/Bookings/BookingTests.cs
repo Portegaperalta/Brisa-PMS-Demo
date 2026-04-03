@@ -1,5 +1,6 @@
 using BrisaPMS.Domain.Booking;
 using BrisaPMS.Domain.Bookings;
+using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
