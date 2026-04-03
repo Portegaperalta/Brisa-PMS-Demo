@@ -1,6 +1,7 @@
 using BrisaPMS.Domain.AdditionalServices;
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
+using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.AdditionalServices;
@@ -13,15 +14,16 @@ public class AdditionalServiceTests
         // Arrange
         const string name = "Airport Pickup";
         const string description = "Transportation from the airport to the hotel";
+        var price = new Money(45m, CurrencyCode.USD);
 
         // Act
-        var result = new AdditionalService(name, description, 45m, CurrencyCode.USD);
+        var result = new AdditionalService(name, description, price, CurrencyCode.USD);
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
         result.Name.Should().Be(name);
         result.Description.Should().Be(description);
-        result.Price.Should().Be(45m);
+        result.Price.Should().Be(price);
         result.CurrencyCode.Should().Be(CurrencyCode.USD);
     }
 
@@ -35,7 +37,7 @@ public class AdditionalServiceTests
         const string description = "Transportation from the airport to the hotel";
 
         // Act
-        Action act = () => _ = new AdditionalService(name!, description, 45m, CurrencyCode.USD);
+        Action act = () => _ = new AdditionalService(name!, description, CreatePrice(), CurrencyCode.USD);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -51,23 +53,10 @@ public class AdditionalServiceTests
         const string name = "Airport Pickup";
 
         // Act
-        Action act = () => _ = new AdditionalService(name, description!, 45m, CurrencyCode.USD);
+        Action act = () => _ = new AdditionalService(name, description!, CreatePrice(), CurrencyCode.USD);
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
-    }
-
-    [Fact]
-    public void Constructor_ShouldThrowBusinessRuleException_WhenPriceIsNegative()
-    {
-        // Arrange
-        const decimal price = -1m;
-
-        // Act
-        Action act = () => _ = new AdditionalService("Airport Pickup", "Transportation from the airport to the hotel", price, CurrencyCode.USD);
-
-        // Assert
-        act.Should().Throw<BusinessRuleException>();
     }
 
     [Fact]
@@ -77,7 +66,7 @@ public class AdditionalServiceTests
         var invalidCurrencyCode = (CurrencyCode)999;
 
         // Act
-        Action act = () => _ = new AdditionalService("Airport Pickup", "Transportation from the airport to the hotel", 45m, invalidCurrencyCode);
+        Action act = () => _ = new AdditionalService("Airport Pickup", "Transportation from the airport to the hotel", CreatePrice(), invalidCurrencyCode);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -146,25 +135,13 @@ public class AdditionalServiceTests
     {
         // Arrange
         var additionalService = CreateAdditionalService();
+        var newPrice = new Money(60m, CurrencyCode.USD);
 
         // Act
-        additionalService.UpdatePrice(60m);
+        additionalService.UpdatePrice(newPrice);
 
         // Assert
-        additionalService.Price.Should().Be(60m);
-    }
-
-    [Fact]
-    public void UpdatePrice_ShouldThrowBusinessRuleException_WhenValueIsNegative()
-    {
-        // Arrange
-        var additionalService = CreateAdditionalService();
-
-        // Act
-        Action act = () => additionalService.UpdatePrice(-1m);
-
-        // Assert
-        act.Should().Throw<BusinessRuleException>();
+        additionalService.Price.Should().Be(newPrice);
     }
 
     [Fact]
@@ -199,7 +176,12 @@ public class AdditionalServiceTests
         return new AdditionalService(
             "Airport Pickup",
             "Transportation from the airport to the hotel",
-            45m,
+            CreatePrice(),
             CurrencyCode.USD);
+    }
+
+    private static Money CreatePrice()
+    {
+        return new Money(45m, CurrencyCode.USD);
     }
 }
