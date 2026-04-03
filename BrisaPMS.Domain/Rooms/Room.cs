@@ -1,4 +1,3 @@
-using BrisaPMS.Domain.Room;
 using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Rooms;

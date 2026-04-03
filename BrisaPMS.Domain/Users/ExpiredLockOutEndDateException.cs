@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BrisaPMS.Domain.User;
+namespace BrisaPMS.Domain.Users;
 
 public class ExpiredLockOutEndDateException : Exception
 {

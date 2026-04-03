@@ -1,9 +1,10 @@
 using BrisaPMS.Domain.Booking;
+using BrisaPMS.Domain.Bookings;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Booking;
+namespace BrisaPMS.UnitTests.Core.Domain.Bookings;
 
 public class BookingTests
 {

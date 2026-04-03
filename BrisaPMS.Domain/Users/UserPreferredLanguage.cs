@@ -1,4 +1,4 @@
-namespace BrisaPMS.Domain.User;
+namespace BrisaPMS.Domain.Users;
 
 public enum UserPreferredLanguage
 {

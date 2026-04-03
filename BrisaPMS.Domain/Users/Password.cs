@@ -1,9 +1,9 @@
-﻿using System;
-using BrisaPMS.Domain.Exceptions;
+﻿using BrisaPMS.Domain.Shared.Exceptions;
+using System;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
-namespace BrisaPMS.Domain.User
+namespace BrisaPMS.Domain.Users
 {
     public record Password
     {

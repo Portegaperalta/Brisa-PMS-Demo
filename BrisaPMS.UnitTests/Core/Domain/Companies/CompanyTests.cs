@@ -1,9 +1,9 @@
-using BrisaPMS.Domain.Company;
+using BrisaPMS.Domain.Companies;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Company;
+namespace BrisaPMS.UnitTests.Core.Domain.Companies;
 
 public class CompanyTests
 {

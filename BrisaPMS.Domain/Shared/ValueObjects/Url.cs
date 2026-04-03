@@ -1,5 +1,5 @@
 ﻿using System;
-using BrisaPMS.Domain.Exceptions;
+using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Shared.ValueObjects
 {

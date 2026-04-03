@@ -1,5 +1,5 @@
 using BrisaPMS.Domain.Shared.Exceptions;
-using BrisaPMS.Domain.ValueObjects;
+using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.Shared.ValueObjects;

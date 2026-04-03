@@ -1,10 +1,11 @@
 using BrisaPMS.Domain.Guest;
+using BrisaPMS.Domain.Guests;
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Guest;
+namespace BrisaPMS.UnitTests.Core.Domain.Guests;
 
 public class GuestTests
 {

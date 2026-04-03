@@ -1,4 +1,4 @@
-namespace BrisaPMS.Domain.Room;
+namespace BrisaPMS.Domain.Rooms;
 
 public enum BedType
 {

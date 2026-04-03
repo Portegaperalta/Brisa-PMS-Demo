@@ -1,5 +1,5 @@
+using BrisaPMS.Domain.HouseKeeping;
 using BrisaPMS.Domain.Shared.Exceptions;
-using BrisaPMS.Domain.ValueObjects;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.HouseKeeping;

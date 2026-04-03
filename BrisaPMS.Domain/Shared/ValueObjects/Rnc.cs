@@ -1,6 +1,6 @@
 ﻿using System;
-using BrisaPMS.Domain.Exceptions;
 using System.Text.RegularExpressions;
+using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Shared.ValueObjects
 {

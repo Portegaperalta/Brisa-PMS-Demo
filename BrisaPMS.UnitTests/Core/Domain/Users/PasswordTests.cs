@@ -1,8 +1,8 @@
 using BrisaPMS.Domain.Shared.Exceptions;
-using BrisaPMS.Domain.ValueObjects;
+using BrisaPMS.Domain.Users;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.User;
+namespace BrisaPMS.UnitTests.Core.Domain.Users;
 
 public class PasswordTests
 {

@@ -1,7 +1,6 @@
 using System;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
-using BrisaPMS.Domain.User;
 
 namespace BrisaPMS.Domain.Users;
 

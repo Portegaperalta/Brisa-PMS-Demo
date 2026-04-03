@@ -1,10 +1,10 @@
-using BrisaPMS.Domain.Hotel;
+using BrisaPMS.Domain.Hotels;
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Hotel;
+namespace BrisaPMS.UnitTests.Core.Domain.Hotels;
 
 public class HotelTests
 {

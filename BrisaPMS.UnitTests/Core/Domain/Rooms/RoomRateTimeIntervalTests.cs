@@ -1,8 +1,8 @@
+using BrisaPMS.Domain.Rooms;
 using BrisaPMS.Domain.Shared.Exceptions;
-using BrisaPMS.Domain.ValueObjects;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Room;
+namespace BrisaPMS.UnitTests.Core.Domain.Rooms;
 
 public class RoomRateTimeIntervalTests
 {
@@ -14,7 +14,7 @@ public class RoomRateTimeIntervalTests
     var validTo = new DateTime(2026, 4, 30, 0, 0, 0);
 
     // Act
-    var result = new RateTimeInterval(validFrom, validTo);
+    var result = new RoomRateTimeInterval(validFrom, validTo);
 
     // Assert
     result.ValidFrom.Should().Be(validFrom);
@@ -29,7 +29,7 @@ public class RoomRateTimeIntervalTests
     var validTo = validFrom;
 
     // Act
-    var result = new RateTimeInterval(validFrom, validTo);
+    var result = new RoomRateTimeInterval(validFrom, validTo);
 
     // Assert
     result.ValidFrom.Should().Be(validFrom);
@@ -44,7 +44,7 @@ public class RoomRateTimeIntervalTests
     var validTo = new DateTime(2026, 4, 1, 0, 0, 0);
 
     // Act
-    Action act = () => _ = new RateTimeInterval(validFrom, validTo);
+    Action act = () => _ = new RoomRateTimeInterval(validFrom, validTo);
 
     // Assert
     act.Should().Throw<BusinessRuleException>();

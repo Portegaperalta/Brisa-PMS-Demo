@@ -1,9 +1,9 @@
-using BrisaPMS.Domain.AdditionalService;
+using BrisaPMS.Domain.AdditionalServices;
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.AdditionalService;
+namespace BrisaPMS.UnitTests.Core.Domain.AdditionalServices;
 
 public class AdditionalServiceTests
 {

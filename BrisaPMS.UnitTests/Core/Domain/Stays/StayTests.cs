@@ -1,8 +1,9 @@
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Stay;
+using BrisaPMS.Domain.Stays;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Stay;
+namespace BrisaPMS.UnitTests.Core.Domain.Stays;
 
 public class StayTests
 {
