@@ -68,7 +68,6 @@ public class NcfTests
     [Theory]
     [InlineData("A01-00000000001")]
     [InlineData("B00-00000000001")]
-    [InlineData("B03-00000000001")]
     [InlineData("B01-0000000001")]
     [InlineData("B01-000000000001")]
     [InlineData("B0100000000001")]
