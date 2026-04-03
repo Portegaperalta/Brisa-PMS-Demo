@@ -1,6 +1,6 @@
 namespace BrisaPMS.Domain.HouseKeeping;
 
-public enum HotelTaskStatus
+public enum HouseKeepingTaskStatus
 {
     Pending = 1,
     InProgress = 2,

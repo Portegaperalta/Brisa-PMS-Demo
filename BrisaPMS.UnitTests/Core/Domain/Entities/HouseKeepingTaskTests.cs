@@ -33,7 +33,7 @@ public class HouseKeepingTaskTests
         result.AssignedBy.Should().Be(assignedBy);
         result.Type.Should().Be(HouseKeepingTaskType.Cleaning);
         result.Priority.Should().Be(TaskPriority.High);
-        result.Status.Should().Be(HotelTaskStatus.Pending);
+        result.Status.Should().Be(HouseKeepingTaskStatus.Pending);
         result.Notes.Should().Be(notes);
         result.ExpectedTimeInterval.Should().Be(expectedTimeInterval);
         result.ActualTimeInterval.Should().BeNull();
@@ -183,9 +183,9 @@ public class HouseKeepingTaskTests
     }
 
     [Theory]
-    [InlineData(HotelTaskStatus.Completed)]
-    [InlineData(HotelTaskStatus.Cancelled)]
-    public void ChangeAssignedTo_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HotelTaskStatus status)
+    [InlineData(HouseKeepingTaskStatus.Completed)]
+    [InlineData(HouseKeepingTaskStatus.Cancelled)]
+    public void ChangeAssignedTo_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HouseKeepingTaskStatus status)
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
@@ -226,9 +226,9 @@ public class HouseKeepingTaskTests
     }
 
     [Theory]
-    [InlineData(HotelTaskStatus.Completed)]
-    [InlineData(HotelTaskStatus.Cancelled)]
-    public void ChangeTaskType_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HotelTaskStatus status)
+    [InlineData(HouseKeepingTaskStatus.Completed)]
+    [InlineData(HouseKeepingTaskStatus.Cancelled)]
+    public void ChangeTaskType_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HouseKeepingTaskStatus status)
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
@@ -269,9 +269,9 @@ public class HouseKeepingTaskTests
     }
 
     [Theory]
-    [InlineData(HotelTaskStatus.Completed)]
-    [InlineData(HotelTaskStatus.Cancelled)]
-    public void ChangePriority_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HotelTaskStatus status)
+    [InlineData(HouseKeepingTaskStatus.Completed)]
+    [InlineData(HouseKeepingTaskStatus.Cancelled)]
+    public void ChangePriority_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HouseKeepingTaskStatus status)
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
@@ -291,10 +291,10 @@ public class HouseKeepingTaskTests
         var houseKeepingTask = CreateHouseKeepingTask();
 
         // Act
-        houseKeepingTask.UpdatedStatus(HotelTaskStatus.InProgress);
+        houseKeepingTask.UpdatedStatus(HouseKeepingTaskStatus.InProgress);
 
         // Assert
-        houseKeepingTask.Status.Should().Be(HotelTaskStatus.InProgress);
+        houseKeepingTask.Status.Should().Be(HouseKeepingTaskStatus.InProgress);
     }
 
     [Fact]
@@ -302,7 +302,7 @@ public class HouseKeepingTaskTests
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
-        var invalidStatus = (HotelTaskStatus)999;
+        var invalidStatus = (HouseKeepingTaskStatus)999;
 
         // Act
         Action act = () => houseKeepingTask.UpdatedStatus(invalidStatus);
@@ -312,16 +312,16 @@ public class HouseKeepingTaskTests
     }
 
     [Theory]
-    [InlineData(HotelTaskStatus.Completed)]
-    [InlineData(HotelTaskStatus.Cancelled)]
-    public void UpdatedStatus_ShouldThrowBusinessRuleException_WhenCurrentStatusDoesNotAllowChanges(HotelTaskStatus status)
+    [InlineData(HouseKeepingTaskStatus.Completed)]
+    [InlineData(HouseKeepingTaskStatus.Cancelled)]
+    public void UpdatedStatus_ShouldThrowBusinessRuleException_WhenCurrentStatusDoesNotAllowChanges(HouseKeepingTaskStatus status)
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
         houseKeepingTask.UpdatedStatus(status);
 
         // Act
-        Action act = () => houseKeepingTask.UpdatedStatus(HotelTaskStatus.InProgress);
+        Action act = () => houseKeepingTask.UpdatedStatus(HouseKeepingTaskStatus.InProgress);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -370,9 +370,9 @@ public class HouseKeepingTaskTests
     }
 
     [Theory]
-    [InlineData(HotelTaskStatus.Completed)]
-    [InlineData(HotelTaskStatus.Cancelled)]
-    public void ChangeExpectedTimeInterval_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HotelTaskStatus status)
+    [InlineData(HouseKeepingTaskStatus.Completed)]
+    [InlineData(HouseKeepingTaskStatus.Cancelled)]
+    public void ChangeExpectedTimeInterval_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HouseKeepingTaskStatus status)
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
@@ -404,9 +404,9 @@ public class HouseKeepingTaskTests
     }
 
     [Theory]
-    [InlineData(HotelTaskStatus.Completed)]
-    [InlineData(HotelTaskStatus.Cancelled)]
-    public void StartActualTimeInterval_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HotelTaskStatus status)
+    [InlineData(HouseKeepingTaskStatus.Completed)]
+    [InlineData(HouseKeepingTaskStatus.Cancelled)]
+    public void StartActualTimeInterval_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HouseKeepingTaskStatus status)
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
@@ -438,9 +438,9 @@ public class HouseKeepingTaskTests
     }
 
     [Theory]
-    [InlineData(HotelTaskStatus.Completed)]
-    [InlineData(HotelTaskStatus.Cancelled)]
-    public void EndActualTimeInterval_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HotelTaskStatus status)
+    [InlineData(HouseKeepingTaskStatus.Completed)]
+    [InlineData(HouseKeepingTaskStatus.Cancelled)]
+    public void EndActualTimeInterval_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HouseKeepingTaskStatus status)
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();

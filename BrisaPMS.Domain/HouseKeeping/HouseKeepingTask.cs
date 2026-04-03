@@ -11,7 +11,7 @@ public class HouseKeepingTask
     public Guid AssignedTo { get; private set; }
     public HouseKeepingTaskType Type { get; private set; }
     public TaskPriority Priority { get; private set; }
-    public HotelTaskStatus Status { get; private set; }
+    public HouseKeepingTaskStatus Status { get; private set; }
     public string? Notes { get;  private set; }
     public TaskExpectedTimeInterval ExpectedTimeInterval { get; private set; }
     public TaskActualTimeInterval? ActualTimeInterval { get; private set; }
@@ -50,7 +50,7 @@ public class HouseKeepingTask
         AssignedTo = assignedTo;
         Type = type;
         Priority = priority;
-        Status = HotelTaskStatus.Pending;
+        Status = HouseKeepingTaskStatus.Pending;
         Notes = notes;
         ExpectedTimeInterval = expectedTimeInterval;
         ActualTimeInterval = null;
@@ -65,8 +65,8 @@ public class HouseKeepingTask
 
         AssignedTo = Status switch
         {
-            HotelTaskStatus.Completed => throw new BusinessRuleException("Completed task can't be reassigned"),
-            HotelTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task can't be reassigned"),
+            HouseKeepingTaskStatus.Completed => throw new BusinessRuleException("Completed task can't be reassigned"),
+            HouseKeepingTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task can't be reassigned"),
             _ => newAssignedTo
         };
     }
@@ -78,8 +78,8 @@ public class HouseKeepingTask
 
         Type = Status switch
         {
-            HotelTaskStatus.Completed => throw new BusinessRuleException("Completed task type can't be modified"),
-            HotelTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task type can't be modified"),
+            HouseKeepingTaskStatus.Completed => throw new BusinessRuleException("Completed task type can't be modified"),
+            HouseKeepingTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task type can't be modified"),
             _ => newType
         };
     }
@@ -91,21 +91,21 @@ public class HouseKeepingTask
 
         Priority = Status switch
         {
-            HotelTaskStatus.Completed => throw new BusinessRuleException("Completed task priority can't be modified"),
-            HotelTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task priority can't be modified"),
+            HouseKeepingTaskStatus.Completed => throw new BusinessRuleException("Completed task priority can't be modified"),
+            HouseKeepingTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task priority can't be modified"),
             _ => newPriority
         };
     }
 
-    public void UpdatedStatus(HotelTaskStatus newHotelTaskStatus)
+    public void UpdatedStatus(HouseKeepingTaskStatus newHotelTaskStatus)
     {
-        if (Enum.IsDefined<HotelTaskStatus>(newHotelTaskStatus) is false)
+        if (Enum.IsDefined<HouseKeepingTaskStatus>(newHotelTaskStatus) is false)
             throw new BusinessRuleException("Invalid hotel task status");
 
         Status = Status switch
         {
-            HotelTaskStatus.Completed => throw new BusinessRuleException("Completed task status can't be modified"),
-            HotelTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task status can't be modified"),
+            HouseKeepingTaskStatus.Completed => throw new BusinessRuleException("Completed task status can't be modified"),
+            HouseKeepingTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task status can't be modified"),
             _ => newHotelTaskStatus
         };
     }
@@ -116,8 +116,8 @@ public class HouseKeepingTask
     {
         ExpectedTimeInterval = Status switch
         {
-            HotelTaskStatus.Completed => throw new BusinessRuleException("Completed task expected time interval can't be modified"),
-            HotelTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task expected time interval can't be modified"),
+            HouseKeepingTaskStatus.Completed => throw new BusinessRuleException("Completed task expected time interval can't be modified"),
+            HouseKeepingTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task expected time interval can't be modified"),
             _ => newExpectedTimeInterval
         };
     }
@@ -126,8 +126,8 @@ public class HouseKeepingTask
     {
         ActualTimeInterval = Status switch
         {
-            HotelTaskStatus.Completed => throw new BusinessRuleException("Completed task actual time interval can't be modified"),
-            HotelTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task actual time interval can't be modified"),
+            HouseKeepingTaskStatus.Completed => throw new BusinessRuleException("Completed task actual time interval can't be modified"),
+            HouseKeepingTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task actual time interval can't be modified"),
             _ => new TaskActualTimeInterval(actualStartAt: DateTime.UtcNow, actualEndAt:DateTime.MinValue)
         };
     }
@@ -136,8 +136,8 @@ public class HouseKeepingTask
     {
         ActualTimeInterval = Status switch
         {
-            HotelTaskStatus.Completed => throw new BusinessRuleException("Completed task actual time interval can't be modified"),
-            HotelTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task actual time interval can't be modified"),
+            HouseKeepingTaskStatus.Completed => throw new BusinessRuleException("Completed task actual time interval can't be modified"),
+            HouseKeepingTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task actual time interval can't be modified"),
             _ => new TaskActualTimeInterval(actualStartAt: currentActualTimeInterval.ActualStartAt, actualEndAt: DateTime.UtcNow)
         };
     }
