@@ -22,11 +22,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BrisaPMS.Domain\BrisaPMS.Domain.csproj" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <Folder Include="Core\Domain\Billing\" />
+    <Folder Include="Core\Domain\Discounts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BrisaPMS.Domain\BrisaPMS.Domain.csproj" />
   </ItemGroup>
 
 </Project>
