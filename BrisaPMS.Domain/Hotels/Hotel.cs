@@ -29,10 +29,10 @@ namespace BrisaPMS.Domain.Hotels
             PhoneNumber businessPhoneNumber,
             Address address,
             CheckInOutTimes checkInOutTimes,
-            CurrencyCode defaultCurrencyCode,
             ItbisRate itbisRate,
             decimal serviceChargeRate,
-            bool isActive
+            bool isActive,
+            CurrencyCode defaultCurrencyCode = CurrencyCode.DOP
         )
         {
             if (string.IsNullOrWhiteSpace(legalName) is true)
