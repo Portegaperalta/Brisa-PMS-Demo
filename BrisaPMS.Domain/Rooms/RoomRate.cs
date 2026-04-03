@@ -1,4 +1,5 @@
 ﻿using BrisaPMS.Domain.Shared.Exceptions;
+using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Rooms;
 
@@ -8,7 +9,7 @@ public class RoomRate
     public Guid RoomTypeId { get; init; }
     public string Name { get; private set; }
     public RoomRateType Type { get; private set; }
-    public decimal PricePerNight { get;  private set; }
+    public Money PricePerNight { get;  private set; }
     public RoomRateTimeInterval  TimeInterval { get; private set; }
 
     public RoomRate
@@ -16,7 +17,7 @@ public class RoomRate
         Guid roomTypeId,
         string name,
         RoomRateType type,
-        decimal pricePerNight,
+        Money pricePerNight,
         RoomRateTimeInterval timeInterval
     )
     {
@@ -28,9 +29,6 @@ public class RoomRate
         
         if (Enum.IsDefined<RoomRateType>(type) is false)
             throw new BusinessRuleException("Invalid room rate type");
-        
-        if (pricePerNight < 0)
-            throw new BusinessRuleException("Price per night cannot be negative");
 
         Id = Guid.CreateVersion7();
         RoomTypeId = roomTypeId;
@@ -56,13 +54,8 @@ public class RoomRate
         Type = newType;
     }
 
-    public void UpdatePricePerNight(decimal newPricePerNight)
-    {
-        if (newPricePerNight < 0)
-            throw new BusinessRuleException("Price per night cannot be negative");
-        
+    public void UpdatePricePerNight(Money newPricePerNight) =>
         PricePerNight = newPricePerNight;
-    }
 
     public void UpdateRateTimeInterval(RoomRateTimeInterval newRateTimeInterval)
         =>  TimeInterval = newRateTimeInterval;
