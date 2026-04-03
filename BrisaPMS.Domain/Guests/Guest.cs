@@ -8,7 +8,6 @@ namespace BrisaPMS.Domain.Guests
 {
     public class Guest
     {
-        //Attributes 
         public Guid Id { get; init; }
         public Guid HotelId { get; init; }
         public string FirstName { get; private set; }
@@ -26,7 +25,6 @@ namespace BrisaPMS.Domain.Guests
         public string? BlackListedReason { get; private set; }
         public string? Notes { get; private set; }
 
-        // Constructor
         public Guest(Guid hotelId,
             string firstName,
             string lastName,
@@ -74,7 +72,6 @@ namespace BrisaPMS.Domain.Guests
             Notes = notes;
         }
         
-        // Behavioral methods
         public void ChangeFirstName(string newFirstName)
         {
             if (string.IsNullOrWhiteSpace(newFirstName))
