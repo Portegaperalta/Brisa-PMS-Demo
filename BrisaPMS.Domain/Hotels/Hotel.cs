@@ -18,6 +18,7 @@ namespace BrisaPMS.Domain.Hotels
         public CurrencyCode DefaultCurrencyCode { get; private set; }
         public ItbisRate ItbisRate { get; private set; }
         public ServiceChargeRate ServiceChargeRate  { get; private set; }
+        public bool IsActive { get;  private set; }
         
         // Constructor
         public Hotel
@@ -55,6 +56,7 @@ namespace BrisaPMS.Domain.Hotels
             DefaultCurrencyCode = defaultCurrencyCode;
             ItbisRate = itbisRate;
             ServiceChargeRate = serviceChargeRate;
+            IsActive = isActive;
         }
         
         // Behavioral Methods
@@ -98,5 +100,9 @@ namespace BrisaPMS.Domain.Hotels
 
         public void UpdateServiceChargeRate(ServiceChargeRate newServiceChargeRate) 
             => ServiceChargeRate = newServiceChargeRate;
+
+        public void SetAsActive() => IsActive = true;
+
+        public void SetAsInactive() => IsActive = false;
     }
 }
