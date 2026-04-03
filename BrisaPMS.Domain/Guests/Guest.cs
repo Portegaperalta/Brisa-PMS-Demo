@@ -2,7 +2,6 @@
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
-using System;
 
 namespace BrisaPMS.Domain.Guests
 {
@@ -39,16 +38,16 @@ namespace BrisaPMS.Domain.Guests
             string? preferredLanguage = null,
             string? notes = null)
         {
-            if (string.IsNullOrWhiteSpace(firstName) is true)
+            if (string.IsNullOrWhiteSpace(firstName))
                 throw new EmptyRequiredFieldException("First Name");
 
-            if (string.IsNullOrWhiteSpace(lastName) is true)
+            if (string.IsNullOrWhiteSpace(lastName))
                 throw new EmptyRequiredFieldException("Last Name");
 
             if (Enum.IsDefined<GuestDocumentType>(documentType) is false)
                 throw new BusinessRuleException("Document type not supported");
 
-            if (string.IsNullOrWhiteSpace(documentNumber) is true)
+            if (string.IsNullOrWhiteSpace(documentNumber))
                 throw new BusinessRuleException("Document number cannot be empty");
 
             if (Enum.IsDefined<CurrencyCode>(preferredCurrency) is false)
