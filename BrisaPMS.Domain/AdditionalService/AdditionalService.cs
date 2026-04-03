@@ -1,7 +1,7 @@
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 
-namespace BrisaPMS.Domain.AdditionalService;
+namespace BrisaPMS.Domain.AdditionalServices;
 
 public class AdditionalService
 {

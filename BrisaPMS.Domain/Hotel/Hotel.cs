@@ -2,7 +2,7 @@
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
-namespace BrisaPMS.Domain.Hotel
+namespace BrisaPMS.Domain.Hotels
 {
     public class Hotel
     {

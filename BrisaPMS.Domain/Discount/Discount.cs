@@ -1,6 +1,7 @@
-﻿using BrisaPMS.Domain.Shared.Exceptions;
+﻿using BrisaPMS.Domain.Discount;
+using BrisaPMS.Domain.Shared.Exceptions;
 
-namespace BrisaPMS.Domain.Discount;
+namespace BrisaPMS.Domain.Discounts;
 
 public class Discount
 {

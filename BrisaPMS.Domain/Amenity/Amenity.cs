@@ -1,6 +1,6 @@
 ﻿using BrisaPMS.Domain.Shared.Exceptions;
 
-namespace BrisaPMS.Domain.Amenity;
+namespace BrisaPMS.Domain.Amenities;
 
 public class Amenity
 {

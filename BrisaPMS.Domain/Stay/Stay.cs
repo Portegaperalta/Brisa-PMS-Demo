@@ -1,6 +1,7 @@
 using BrisaPMS.Domain.Shared.Exceptions;
+using BrisaPMS.Domain.Stay;
 
-namespace BrisaPMS.Domain.Stay;
+namespace BrisaPMS.Domain.Stays;
 
 public class Stay
 {

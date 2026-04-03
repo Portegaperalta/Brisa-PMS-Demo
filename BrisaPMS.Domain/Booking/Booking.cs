@@ -1,7 +1,8 @@
-﻿using BrisaPMS.Domain.Shared.Exceptions;
+﻿using BrisaPMS.Domain.Booking;
+using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
-namespace BrisaPMS.Domain.Booking;
+namespace BrisaPMS.Domain.Bookings;
 
 public class Booking
 {
