@@ -1,4 +1,4 @@
-using BrisaPMS.Domain.Amenity;
+
 using BrisaPMS.Domain.Shared.Exceptions;
 using FluentAssertions;
 
@@ -14,7 +14,7 @@ public class AmenityTests
         const string description = "Access to the swimming pool";
 
         // Act
-        var result = new Amenity(name, description);
+        var result = new Amen(name, description);
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);

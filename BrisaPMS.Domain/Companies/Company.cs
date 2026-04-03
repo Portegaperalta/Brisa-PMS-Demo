@@ -2,7 +2,7 @@ using System;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
-namespace BrisaPMS.Domain.Company;
+namespace BrisaPMS.Domain.Companies;
 
 public class Company
 {
