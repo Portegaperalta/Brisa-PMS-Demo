@@ -17,7 +17,7 @@ public class Booking
     public string? SpecialRequests { get; private set; }
     public BookingStatus Status { get; private set; }
     public string? CancellationReason { get;  private set; }
-    public decimal TotalPrice { get; private set; }
+    public Money TotalPrice { get; private set; }
     public Guid? DiscountId { get; private set; }
 
     public Booking
@@ -29,7 +29,7 @@ public class Booking
         int numberOfAdults,
         int numberOfChildren,
         CheckInOutTimes checkInOutTimes,
-        decimal totalPrice,
+        Money totalPrice,
         string? specialRequests = null,
         Guid? discountId = null
     ) 
@@ -51,9 +51,6 @@ public class Booking
         
         if (numberOfChildren < 0)
             throw new BusinessRuleException("Number of children can't be less than zero");
-        
-        if (totalPrice < 0)
-            throw new BusinessRuleException("Total price can't be less than zero");
 
         Id = Guid.CreateVersion7();
         HotelId = hotelId;
@@ -107,13 +104,7 @@ public class Booking
         CancellationReason = newCancellationReason;
     }
 
-    public void UpdateTotalPrice(decimal newTotalPrice)
-    {
-        if (newTotalPrice < 0)
-            throw new BusinessRuleException("Total price can't be less than zero");
-
-        TotalPrice = newTotalPrice;
-    }
+    public void UpdateTotalPrice(Money newTotalPrice) => TotalPrice = newTotalPrice;
 
     public void UpdateDiscountId(Guid newDiscountId) => DiscountId = newDiscountId;
 }
