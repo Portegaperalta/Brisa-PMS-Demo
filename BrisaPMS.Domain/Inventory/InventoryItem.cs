@@ -16,8 +16,7 @@ public class InventoryItem
     public decimal MinStockThreshold { get; private set; }
     public decimal MaxStockThreshold { get; private set; }
     public decimal ReorderQuantity { get; private set; }
-    public decimal UnitCost { get; private set; }
-    public CurrencyCode CurrencyCode { get; private set; }
+    public Money UnitCost { get; private set; }
     public string SupplierName { get; private set; }
     public PhoneNumber SupplierPhoneNumber { get; private set; }
     public Email SupplierEmail { get; private set; }
@@ -33,12 +32,11 @@ public class InventoryItem
         decimal minStockThreshold,
         decimal maxStockThreshold,
         decimal reorderQuantity,
-        decimal unitCost,
+        Money unitCost,
         string supplierName,
         PhoneNumber supplierPhoneNumber,
         Email supplierEmail,
         bool isActive,
-        CurrencyCode currencyCode = CurrencyCode.DOP,
         decimal currentStock = 0m
     )
     {
@@ -69,12 +67,6 @@ public class InventoryItem
         if (reorderQuantity < 0m)
             throw new BusinessRuleException("Reorder quantity can't be negative");
         
-        if (unitCost < 0m)
-            throw new BusinessRuleException("Unit cost can't be negative");
-        
-        if (Enum.IsDefined<CurrencyCode>(currencyCode) is false)
-            throw new BusinessRuleException("Currency code not supported");
-        
         if  (string.IsNullOrEmpty(supplierName))
             throw new EmptyRequiredFieldException("Supplier Name");
 
@@ -89,7 +81,6 @@ public class InventoryItem
         MaxStockThreshold = maxStockThreshold;
         ReorderQuantity = reorderQuantity;
         UnitCost = unitCost;
-        CurrencyCode = currencyCode;
         SupplierName = supplierName;
         SupplierPhoneNumber = supplierPhoneNumber;
         SupplierEmail = supplierEmail;
@@ -161,21 +152,7 @@ public class InventoryItem
         ReorderQuantity = newReorderQuantity;
     }
 
-    public void UpdateUnitCost(decimal newUnitCost)
-    {
-        if (newUnitCost < 0m)
-            throw new BusinessRuleException("Unit cost can't be negative");
-        
-        UnitCost = newUnitCost;
-    }
-
-    public void ChangeCurrencyCode(CurrencyCode newCurrencyCode)
-    {
-        if (Enum.IsDefined<CurrencyCode>(newCurrencyCode) is false)
-            throw new BusinessRuleException("Currency code not supported");
-        
-        CurrencyCode = newCurrencyCode;
-    }
+    public void UpdateUnitCost(Money newUnitCost) => UnitCost = newUnitCost;
 
     public void UpdateSupplierName(string newSupplierName)
     {
@@ -188,7 +165,7 @@ public class InventoryItem
     public void UpdateSupplierPhoneNumber(PhoneNumber newSupplierPhoneNumber) 
         => SupplierPhoneNumber = newSupplierPhoneNumber;
     
-    public void UpdateSupplierEmail(Email newSupplierEmail)
+    public void UpdateSupplierEmail(Email newSupplierEmail) 
         => SupplierEmail = newSupplierEmail;
     
     public void SetAsActive() => IsActive = true;
