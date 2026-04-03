@@ -3,7 +3,7 @@ using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Entities;
+namespace BrisaPMS.UnitTests.Core.Domain.AdditionalService;
 
 public class AdditionalServiceTests
 {

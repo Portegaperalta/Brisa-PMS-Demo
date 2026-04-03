@@ -3,7 +3,7 @@ using BrisaPMS.Domain.Shared.ValueObjects;
 using BrisaPMS.Domain.User;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Entities;
+namespace BrisaPMS.UnitTests.Core.Domain.User;
 
 public class UserTests
 {

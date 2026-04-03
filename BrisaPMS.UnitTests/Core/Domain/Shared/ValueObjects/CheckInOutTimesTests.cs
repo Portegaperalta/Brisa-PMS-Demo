@@ -2,9 +2,9 @@ using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.ValueObjects;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.ValueObjects;
+namespace BrisaPMS.UnitTests.Core.Domain.Shared.ValueObjects;
 
-public class CheckInCheckOutTimesTests
+public class CheckInOutTimesTests
 {
     [Fact]
     public void Constructor_ShouldCreateCheckInOutTimes_WhenCheckInTimeIsBeforeCheckOutTime()

@@ -29,4 +29,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\Domain\Billing\" />
+    <Folder Include="Core\Domain\Discount\" />
+  </ItemGroup>
+
 </Project>

@@ -2,7 +2,7 @@ using BrisaPMS.Domain.HouseKeeping;
 using BrisaPMS.Domain.Shared.Exceptions;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Entities;
+namespace BrisaPMS.UnitTests.Core.Domain.HouseKeeping;
 
 public class HouseKeepingTaskTests
 {

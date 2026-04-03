@@ -2,9 +2,9 @@ using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.ValueObjects;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.ValueObjects;
+namespace BrisaPMS.UnitTests.Core.Domain.Room;
 
-public class RateTimeIntervalTests
+public class RoomRateTimeIntervalTests
 {
   [Fact]
   public void Constructor_ShouldCreateRateTimeInterval_WhenValidFromIsBeforeValidTo()

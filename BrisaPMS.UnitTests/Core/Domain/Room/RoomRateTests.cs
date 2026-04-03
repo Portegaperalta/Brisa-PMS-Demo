@@ -2,7 +2,7 @@ using BrisaPMS.Domain.Room;
 using BrisaPMS.Domain.Shared.Exceptions;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Entities;
+namespace BrisaPMS.UnitTests.Core.Domain.Room;
 
 public class RoomRateTests
 {

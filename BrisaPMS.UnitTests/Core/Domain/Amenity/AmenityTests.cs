@@ -2,7 +2,7 @@ using BrisaPMS.Domain.Amenity;
 using BrisaPMS.Domain.Shared.Exceptions;
 using FluentAssertions;
 
-namespace BrisaPMS.UnitTests.Core.Domain.Entities;
+namespace BrisaPMS.UnitTests.Core.Domain.Amenity;
 
 public class AmenityTests
 {
