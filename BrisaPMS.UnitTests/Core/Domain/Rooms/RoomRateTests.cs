@@ -1,5 +1,7 @@
 using BrisaPMS.Domain.Rooms;
+using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
+using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.Rooms;
@@ -12,16 +14,17 @@ public class RoomRateTests
         // Arrange
         var roomTypeId = Guid.NewGuid();
         var timeInterval = CreateRateTimeInterval();
+        var pricePerNight = CreatePricePerNight();
 
         // Act
-        var result = new RoomRate(roomTypeId, "Standard Nightly Rate", RoomRateType.Nightly, 150m, timeInterval);
+        var result = new RoomRate(roomTypeId, "Standard Nightly Rate", RoomRateType.Nightly, pricePerNight, timeInterval);
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
         result.RoomTypeId.Should().Be(roomTypeId);
         result.Name.Should().Be("Standard Nightly Rate");
         result.Type.Should().Be(RoomRateType.Nightly);
-        result.PricePerNight.Should().Be(150m);
+        result.PricePerNight.Should().Be(pricePerNight);
         result.TimeInterval.Should().Be(timeInterval);
     }
 
@@ -32,7 +35,7 @@ public class RoomRateTests
         var roomTypeId = Guid.Empty;
 
         // Act
-        Action act = () => _ = new RoomRate(roomTypeId, "Standard Nightly Rate", RoomRateType.Nightly, 150m, CreateRateTimeInterval());
+        Action act = () => _ = new RoomRate(roomTypeId, "Standard Nightly Rate", RoomRateType.Nightly, CreatePricePerNight(), CreateRateTimeInterval());
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -45,7 +48,7 @@ public class RoomRateTests
     public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenNameIsNullOrWhiteSpace(string? name)
     {
         // Act
-        Action act = () => _ = new RoomRate(Guid.NewGuid(), name!, RoomRateType.Nightly, 150m, CreateRateTimeInterval());
+        Action act = () => _ = new RoomRate(Guid.NewGuid(), name!, RoomRateType.Nightly, CreatePricePerNight(), CreateRateTimeInterval());
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -62,25 +65,7 @@ public class RoomRateTests
             Guid.NewGuid(),
             "Standard Nightly Rate",
             invalidType,
-            150m,
-            CreateRateTimeInterval());
-
-        // Assert
-        act.Should().Throw<BusinessRuleException>();
-    }
-
-    [Fact]
-    public void Constructor_ShouldThrowBusinessRuleException_WhenPricePerNightIsNegative()
-    {
-        // Arrange
-        const decimal pricePerNight = -1m;
-
-        // Act
-        Action act = () => _ = new RoomRate(
-            Guid.NewGuid(),
-            "Standard Nightly Rate",
-            RoomRateType.Nightly,
-            pricePerNight,
+            CreatePricePerNight(),
             CreateRateTimeInterval());
 
         // Assert
@@ -148,25 +133,13 @@ public class RoomRateTests
     {
         // Arrange
         var roomRate = CreateRoomRate();
+        var newPricePerNight = new Money(200m, CurrencyCode.USD);
 
         // Act
-        roomRate.UpdatePricePerNight(200m);
+        roomRate.UpdatePricePerNight(newPricePerNight);
 
         // Assert
-        roomRate.PricePerNight.Should().Be(200m);
-    }
-
-    [Fact]
-    public void UpdatePricePerNight_ShouldThrowBusinessRuleException_WhenValueIsNegative()
-    {
-        // Arrange
-        var roomRate = CreateRoomRate();
-
-        // Act
-        Action act = () => roomRate.UpdatePricePerNight(-1m);
-
-        // Assert
-        act.Should().Throw<BusinessRuleException>();
+        roomRate.PricePerNight.Should().Be(newPricePerNight);
     }
 
     [Fact]
@@ -191,7 +164,7 @@ public class RoomRateTests
             Guid.NewGuid(),
             "Standard Nightly Rate",
             RoomRateType.Nightly,
-            150m,
+            CreatePricePerNight(),
             CreateRateTimeInterval());
     }
 
@@ -200,5 +173,10 @@ public class RoomRateTests
         return new RoomRateTimeInterval(
             new DateTime(2026, 4, 1, 0, 0, 0),
             new DateTime(2026, 4, 30, 0, 0, 0));
+    }
+
+    private static Money CreatePricePerNight()
+    {
+        return new Money(150m, CurrencyCode.DOP);
     }
 }
