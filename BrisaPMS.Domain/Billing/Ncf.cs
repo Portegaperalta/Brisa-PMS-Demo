@@ -11,13 +11,16 @@ public record Ncf
 
     public Ncf(string value)
     {
+        
         if (string.IsNullOrWhiteSpace(value))
             throw new BusinessRuleException("NCF can't be empty");
+
+        var sanitizedValue = value.ToUpper();
         
-        if (Format.IsMatch(value) is not true)
+        if (Format.IsMatch(sanitizedValue) is not true)
             throw new BusinessRuleException($"Invalid NCF format: {value}");
         
-        Value = value.ToUpper();
+        Value = sanitizedValue;
     }
 
     public string Series => Value[..3];
