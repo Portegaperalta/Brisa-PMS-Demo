@@ -3,7 +3,7 @@ using BrisaPMS.Domain.Exceptions;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
-namespace BrisaPMS.Domain.Shared.ValueObjects
+namespace BrisaPMS.Domain.User
 {
     public record Password
     {
