@@ -17,7 +17,7 @@ namespace BrisaPMS.Domain.Hotels
         public CheckInOutTimes CheckInOutTimes { get; private set; }
         public CurrencyCode DefaultCurrencyCode { get; private set; }
         public ItbisRate ItbisRate { get; private set; }
-        public decimal ServiceChargeRate  { get; private set; }
+        public ServiceChargeRate ServiceChargeRate  { get; private set; }
         
         // Constructor
         public Hotel
@@ -30,7 +30,7 @@ namespace BrisaPMS.Domain.Hotels
             Address address,
             CheckInOutTimes checkInOutTimes,
             ItbisRate itbisRate,
-            decimal serviceChargeRate,
+            ServiceChargeRate serviceChargeRate,
             bool isActive,
             CurrencyCode defaultCurrencyCode = CurrencyCode.DOP
         )
@@ -43,9 +43,6 @@ namespace BrisaPMS.Domain.Hotels
             
             if (Enum.IsDefined<CurrencyCode>(defaultCurrencyCode) is not true)
                 throw new CurrencyNotSupportedException();
-            
-            if (serviceChargeRate < 0)
-                throw new BusinessRuleException("Service charge rate cannot be negative");
             
             Id = Guid.CreateVersion7();
             LegalName = legalName;
@@ -99,12 +96,7 @@ namespace BrisaPMS.Domain.Hotels
 
         public void UpdateItbisRate(ItbisRate newItbisRate) => ItbisRate = newItbisRate;
 
-        public void UpdateServiceChargeRate(decimal newServiceChargeRate)
-        {
-            if (newServiceChargeRate < 0)
-                throw new BusinessRuleException("Service charge rate cannot be negative");
-            
-            ServiceChargeRate = newServiceChargeRate;
-        }
+        public void UpdateServiceChargeRate(ServiceChargeRate newServiceChargeRate) 
+            => ServiceChargeRate = newServiceChargeRate;
     }
 }
