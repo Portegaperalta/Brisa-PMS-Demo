@@ -15,6 +15,7 @@ public class InventoryItemTests
     var hotelId = Guid.NewGuid();
     var supplierPhoneNumber = CreatePhoneNumber();
     var supplierEmail = CreateEmail();
+    var unitCost = CreateUnitCost();
 
     // Act
     var result = new InventoryItem(
@@ -26,7 +27,7 @@ public class InventoryItemTests
         10m,
         100m,
         25m,
-        8.5m,
+        unitCost,
         "Linen Supplier SRL",
         supplierPhoneNumber,
         supplierEmail,
@@ -43,8 +44,7 @@ public class InventoryItemTests
     result.MinStockThreshold.Should().Be(10m);
     result.MaxStockThreshold.Should().Be(100m);
     result.ReorderQuantity.Should().Be(25m);
-    result.UnitCost.Should().Be(8.5m);
-    result.CurrencyCode.Should().Be(CurrencyCode.DOP);
+    result.UnitCost.Should().Be(unitCost);
     result.SupplierName.Should().Be("Linen Supplier SRL");
     result.SupplierPhoneNumber.Should().Be(supplierPhoneNumber);
     result.SupplierEmail.Should().Be(supplierEmail);
@@ -67,16 +67,15 @@ public class InventoryItemTests
         5m,
         50m,
         10m,
-        2m,
+        new Money(2m, CurrencyCode.USD),
         "Refreshments Inc.",
         CreatePhoneNumber(),
         CreateEmail(),
         false,
-        CurrencyCode.USD,
         20m);
 
     // Assert
-    result.CurrencyCode.Should().Be(CurrencyCode.USD);
+    result.UnitCost.Should().Be(new Money(2m, CurrencyCode.USD));
     result.CurrentStock.Should().Be(20m);
     result.IsActive.Should().BeFalse();
   }
@@ -97,7 +96,7 @@ public class InventoryItemTests
         10m,
         100m,
         25m,
-        8.5m,
+        CreateUnitCost(),
         "Linen Supplier SRL",
         CreatePhoneNumber(),
         CreateEmail(),
@@ -122,7 +121,7 @@ public class InventoryItemTests
         10m,
         100m,
         25m,
-        8.5m,
+        CreateUnitCost(),
         "Linen Supplier SRL",
         CreatePhoneNumber(),
         CreateEmail(),
@@ -147,7 +146,7 @@ public class InventoryItemTests
         10m,
         100m,
         25m,
-        8.5m,
+        CreateUnitCost(),
         "Linen Supplier SRL",
         CreatePhoneNumber(),
         CreateEmail(),
@@ -172,7 +171,7 @@ public class InventoryItemTests
         10m,
         100m,
         25m,
-        8.5m,
+        CreateUnitCost(),
         "Linen Supplier SRL",
         CreatePhoneNumber(),
         CreateEmail(),
@@ -197,7 +196,7 @@ public class InventoryItemTests
         10m,
         100m,
         25m,
-        8.5m,
+        CreateUnitCost(),
         supplierName!,
         CreatePhoneNumber(),
         CreateEmail(),
@@ -223,7 +222,7 @@ public class InventoryItemTests
         10m,
         100m,
         25m,
-        8.5m,
+        CreateUnitCost(),
         "Linen Supplier SRL",
         CreatePhoneNumber(),
         CreateEmail(),
@@ -246,12 +245,11 @@ public class InventoryItemTests
         10m,
         100m,
         25m,
-        8.5m,
+        CreateUnitCost(),
         "Linen Supplier SRL",
         CreatePhoneNumber(),
         CreateEmail(),
         true,
-        CurrencyCode.DOP,
         -1m);
 
     // Assert
@@ -262,7 +260,6 @@ public class InventoryItemTests
   [InlineData(-1, 100, 25, 8.5)]
   [InlineData(10, -1, 25, 8.5)]
   [InlineData(10, 100, -1, 8.5)]
-  [InlineData(10, 100, 25, -1)]
   public void Constructor_ShouldThrowBusinessRuleException_WhenNumericValuesAreNegative(
       decimal minStockThreshold,
       decimal maxStockThreshold,
@@ -279,38 +276,11 @@ public class InventoryItemTests
         minStockThreshold,
         maxStockThreshold,
         reorderQuantity,
-        unitCost,
+        new Money(unitCost, CurrencyCode.DOP),
         "Linen Supplier SRL",
         CreatePhoneNumber(),
         CreateEmail(),
         true);
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
-  public void Constructor_ShouldThrowBusinessRuleException_WhenCurrencyCodeIsInvalid()
-  {
-    // Arrange
-    var invalidCurrencyCode = (CurrencyCode)999;
-
-    // Act
-    Action act = () => _ = new InventoryItem(
-        Guid.NewGuid(),
-        "Bath Towels",
-        "Large white cotton bath towels",
-        "Linen",
-        UnitOfMeasure.Piece,
-        10m,
-        100m,
-        25m,
-        8.5m,
-        "Linen Supplier SRL",
-        CreatePhoneNumber(),
-        CreateEmail(),
-        true,
-        invalidCurrencyCode);
 
     // Assert
     act.Should().Throw<BusinessRuleException>();
@@ -549,52 +519,13 @@ public class InventoryItemTests
   {
     // Arrange
     var inventoryItem = CreateInventoryItem();
+    var newUnitCost = new Money(10m, CurrencyCode.USD);
 
     // Act
-    inventoryItem.UpdateUnitCost(10m);
+    inventoryItem.UpdateUnitCost(newUnitCost);
 
     // Assert
-    inventoryItem.UnitCost.Should().Be(10m);
-  }
-
-  [Fact]
-  public void UpdateUnitCost_ShouldThrowBusinessRuleException_WhenValueIsNegative()
-  {
-    // Arrange
-    var inventoryItem = CreateInventoryItem();
-
-    // Act
-    Action act = () => inventoryItem.UpdateUnitCost(-1m);
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
-  public void ChangeCurrencyCode_ShouldUpdateCurrencyCode_WhenValueIsValid()
-  {
-    // Arrange
-    var inventoryItem = CreateInventoryItem();
-
-    // Act
-    inventoryItem.ChangeCurrencyCode(CurrencyCode.USD);
-
-    // Assert
-    inventoryItem.CurrencyCode.Should().Be(CurrencyCode.USD);
-  }
-
-  [Fact]
-  public void ChangeCurrencyCode_ShouldThrowBusinessRuleException_WhenValueIsInvalid()
-  {
-    // Arrange
-    var inventoryItem = CreateInventoryItem();
-    var invalidCurrencyCode = (CurrencyCode)999;
-
-    // Act
-    Action act = () => inventoryItem.ChangeCurrencyCode(invalidCurrencyCode);
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
+    inventoryItem.UnitCost.Should().Be(newUnitCost);
   }
 
   [Fact]
@@ -693,12 +624,11 @@ public class InventoryItemTests
         10m,
         maxStockThreshold,
         25m,
-        8.5m,
+        CreateUnitCost(),
         "Linen Supplier SRL",
         CreatePhoneNumber(),
         CreateEmail(),
         isActive,
-        CurrencyCode.DOP,
         currentStock);
   }
 
@@ -710,5 +640,10 @@ public class InventoryItemTests
   private static Email CreateEmail()
   {
     return new Email("supplier@linen.com");
+  }
+
+  private static Money CreateUnitCost()
+  {
+    return new Money(8.5m, CurrencyCode.DOP);
   }
 }

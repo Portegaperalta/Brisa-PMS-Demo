@@ -16,12 +16,12 @@ public class Invoice
     public CurrencyCode CurrencyCode { get; init; }
     public Money ExchangeRate { get; init; }
     public Money RoomCharges { get; init; }
-    public Money ServicesTotal  { get; init; }
+    public Money ServicesTotal { get; init; }
     public Money SubTotal { get; init; }
     public Money DiscountTotal { get; init; }
     public Money NetTotal { get; init; }
     public Money ItbisAmount { get; init; }
-    public Money LegalTipTotal  { get; init; }
+    public Money LegalTipTotal { get; init; }
     public Money PaidAmount { get; init; }
     public InvoiceStatus Status { get; init; }
     public DateTime IssuedAt { get; init; }
@@ -32,7 +32,6 @@ public class Invoice
         Guid stayId,
         Guid issuedBy,
         Ncf ncf,
-        string ncfType,
         InvoiceType type,
         CurrencyCode currencyCode,
         Money exchangeRate,
@@ -50,18 +49,18 @@ public class Invoice
     {
         if (hotelId == Guid.Empty)
             throw new EmptyRequiredFieldException("Hotel Id");
-        
+
         if (stayId == Guid.Empty)
             throw new EmptyRequiredFieldException("Stay Id");
-        
+
         if (issuedBy == Guid.Empty)
             throw new EmptyRequiredFieldException("Issued By");
-        
+
         if (Enum.IsDefined<InvoiceType>(type) is not true)
             throw new BusinessRuleException("Invoice type not supported");
 
         if (Enum.IsDefined<CurrencyCode>(currencyCode) is not true)
-            throw new  BusinessRuleException("Currency code not supported");
+            throw new BusinessRuleException("Currency code not supported");
 
         if (paidAmount.Amount < netTotal.Amount)
             throw new BusinessRuleException("Paid amount can't be less than net total amount");

@@ -68,6 +68,34 @@ public class StayTests
   }
 
   [Fact]
+  public void IncreaseNightCount_ShouldThrowBusinessRuleException_WhenStayIsComplete()
+  {
+    // Arrange
+    var stay = CreateStay();
+    stay.SetAsComplete();
+
+    // Act
+    Action act = () => stay.IncreaseNightCount();
+
+    // Assert
+    act.Should().Throw<BusinessRuleException>();
+  }
+
+  [Fact]
+  public void IncreaseNightCount_ShouldThrowBusinessRuleException_WhenStayIsCancelled()
+  {
+    // Arrange
+    var stay = CreateStay();
+    stay.SetAsCancelled();
+
+    // Act
+    Action act = () => stay.IncreaseNightCount();
+
+    // Assert
+    act.Should().Throw<BusinessRuleException>();
+  }
+
+  [Fact]
   public void SetAsComplete_ShouldSetStatusToCompleteAndActualCheckOut_WhenStayIsNotCancelled()
   {
     // Arrange

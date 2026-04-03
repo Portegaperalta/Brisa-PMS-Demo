@@ -1,5 +1,6 @@
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
+using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.AdditionalServices;
 
@@ -8,14 +9,14 @@ public class AdditionalService
     public Guid Id { get; init; }
     public string Name { get; private set; }
     public string Description { get; private set; }
-    public decimal Price { get; private set; }
+    public Money Price { get; private set; }
     public CurrencyCode  CurrencyCode { get; private set; }
 
     public AdditionalService
     (
         string name,
         string description,
-        decimal price,
+        Money price,
         CurrencyCode currencyCode
     )
     {
@@ -24,9 +25,6 @@ public class AdditionalService
         
         if (string.IsNullOrWhiteSpace(description))
             throw new EmptyRequiredFieldException("Additional service description");
-        
-        if (price < 0)
-            throw new BusinessRuleException("Price cannot be negative");
         
         if (Enum.IsDefined<CurrencyCode>(currencyCode) is false)
             throw new BusinessRuleException("Invalid currency code");
@@ -54,13 +52,7 @@ public class AdditionalService
         Description = newDescription;
     }
 
-    public void UpdatePrice(decimal newPrice)
-    {
-        if (newPrice < 0)
-            throw new BusinessRuleException("Price cannot be negative");
-        
-        Price = newPrice;
-    }
+    public void UpdatePrice(Money newPrice) => Price = newPrice;
 
     public void UpdateCurrencyCode(CurrencyCode newCurrencyCode)
     {
