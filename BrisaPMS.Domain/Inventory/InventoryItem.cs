@@ -12,8 +12,7 @@ public class InventoryItem
     public string Category { get; private set; }
     public UnitOfMeasure UnitOfMeasure { get; private set; }
     public decimal CurrentStock { get;  private set; }
-    public decimal MinStockThreshold { get; private set; }
-    public decimal MaxStockThreshold { get; private set; }
+    public StockThreshold StockThreshold { get;  private set; }
     public decimal ReorderQuantity { get; private set; }
     public Money UnitCost { get; private set; }
     public string SupplierName { get; private set; }
@@ -28,8 +27,7 @@ public class InventoryItem
         string description,
         string category,
         UnitOfMeasure unitOfMeasure,
-        decimal minStockThreshold,
-        decimal maxStockThreshold,
+        StockThreshold stockThreshold,
         decimal reorderQuantity,
         Money unitCost,
         string supplierName,
@@ -57,12 +55,6 @@ public class InventoryItem
         if (currentStock < 0m)
             throw new BusinessRuleException("Current stock can't be negative");
         
-        if (minStockThreshold < 0m)
-            throw new BusinessRuleException("Min stock threshold can't be negative");
-        
-        if (maxStockThreshold < 0m)
-            throw new BusinessRuleException("Max stock threshold can't be negative");
-        
         if (reorderQuantity < 0m)
             throw new BusinessRuleException("Reorder quantity can't be negative");
         
@@ -76,8 +68,7 @@ public class InventoryItem
         Category = category;
         UnitOfMeasure = unitOfMeasure;
         CurrentStock = currentStock;
-        MinStockThreshold = minStockThreshold;
-        MaxStockThreshold = maxStockThreshold;
+        StockThreshold = stockThreshold;
         ReorderQuantity = reorderQuantity;
         UnitCost = unitCost;
         SupplierName = supplierName;
@@ -123,7 +114,7 @@ public class InventoryItem
         if (IsActive is false)
             throw new BusinessRuleException("Item is not active,  can't increase stock");
         
-        if (CurrentStock > MaxStockThreshold)
+        if (CurrentStock > StockThreshold.MaxStockThreshold)
             throw new BusinessRuleException("Max stock threshold exceeded, can't increase current stock");
         
         CurrentStock += newStockAmount;
@@ -150,6 +141,8 @@ public class InventoryItem
         
         ReorderQuantity = newReorderQuantity;
     }
+    
+    public void UpdateStockThreshold(StockThreshold newStockThreshold) => StockThreshold = newStockThreshold;
 
     public void UpdateUnitCost(Money newUnitCost) => UnitCost = newUnitCost;
 
