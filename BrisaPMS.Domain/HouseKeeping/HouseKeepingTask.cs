@@ -1,4 +1,3 @@
-using System;
 using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.HouseKeeping;

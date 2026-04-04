@@ -43,7 +43,7 @@ public class Booking
         if (guestId ==  Guid.Empty)
             throw new EmptyRequiredFieldException("GuestId can't be empty");
         
-        if (string.IsNullOrWhiteSpace(source) is true)
+        if (string.IsNullOrWhiteSpace(source))
             throw new EmptyRequiredFieldException("Booking source can't be empty");
         
         if  (numberOfAdults <= 0)

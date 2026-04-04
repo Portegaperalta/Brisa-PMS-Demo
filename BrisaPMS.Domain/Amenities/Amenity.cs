@@ -39,15 +39,7 @@ public class Amenity
         Description = newDescription;
     }
 
-    public void SetAsActive()
-    {
-        if (IsActive is false)
-            IsActive = true;
-    }
+    public void SetAsActive() => IsActive = true;
 
-    public void SetAsInactive()
-    {
-        if (IsActive is true)
-            IsActive = false;
-    }
+    public void SetAsInactive() => IsActive = false;
 }

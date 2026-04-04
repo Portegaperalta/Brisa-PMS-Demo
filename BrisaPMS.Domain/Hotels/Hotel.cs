@@ -1,4 +1,5 @@
-﻿using BrisaPMS.Domain.Shared.Enums;
+﻿using BrisaPMS.Domain.Billing;
+using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
@@ -15,8 +16,9 @@ namespace BrisaPMS.Domain.Hotels
         public Address Address { get; private set; }
         public CheckInOutTimes CheckInOutTimes { get; private set; }
         public CurrencyCode DefaultCurrencyCode { get; private set; }
-        public decimal ItbisRate { get; private set; }
-        public decimal ServiceChargeRate  { get; private set; }
+        public ItbisRate ItbisRate { get; private set; }
+        public ServiceChargeRate ServiceChargeRate  { get; private set; }
+        public bool IsActive { get;  private set; }
         
         // Constructor
         public Hotel
@@ -28,26 +30,20 @@ namespace BrisaPMS.Domain.Hotels
             PhoneNumber businessPhoneNumber,
             Address address,
             CheckInOutTimes checkInOutTimes,
-            CurrencyCode defaultCurrencyCode,
-            decimal itbisRate,
-            decimal serviceChargeRate,
-            bool isActive
+            ItbisRate itbisRate,
+            ServiceChargeRate serviceChargeRate,
+            bool isActive,
+            CurrencyCode defaultCurrencyCode = CurrencyCode.DOP
         )
         {
-            if (string.IsNullOrWhiteSpace(legalName) is true)
+            if (string.IsNullOrWhiteSpace(legalName))
                 throw new EmptyRequiredFieldException("Legal Name");
             
-            if (string.IsNullOrWhiteSpace(commercialName) is true)
+            if (string.IsNullOrWhiteSpace(commercialName))
                 throw new EmptyRequiredFieldException("Commercial Name");
             
             if (Enum.IsDefined<CurrencyCode>(defaultCurrencyCode) is not true)
                 throw new CurrencyNotSupportedException();
-            
-            if (itbisRate < 0)
-                throw new BusinessRuleException("Itbis Rate cannot be negative");
-            
-            if (serviceChargeRate < 0)
-                throw new BusinessRuleException("Service charge rate cannot be negative");
             
             Id = Guid.CreateVersion7();
             LegalName = legalName;
@@ -60,12 +56,13 @@ namespace BrisaPMS.Domain.Hotels
             DefaultCurrencyCode = defaultCurrencyCode;
             ItbisRate = itbisRate;
             ServiceChargeRate = serviceChargeRate;
+            IsActive = isActive;
         }
         
         // Behavioral Methods
         public void UpdateLegalName(string newLegalName)
         {
-            if (string.IsNullOrWhiteSpace(newLegalName) is true)
+            if (string.IsNullOrWhiteSpace(newLegalName))
                 throw new EmptyRequiredFieldException("Legal Name");
             
             LegalName = newLegalName;
@@ -73,7 +70,7 @@ namespace BrisaPMS.Domain.Hotels
 
         public void UpdateCommercialName(string newCommercialName)
         {
-            if (string.IsNullOrWhiteSpace(newCommercialName) is true)
+            if (string.IsNullOrWhiteSpace(newCommercialName))
                 throw new EmptyRequiredFieldException("Commercial Name");
             
             CommercialName = newCommercialName;
@@ -99,20 +96,13 @@ namespace BrisaPMS.Domain.Hotels
             DefaultCurrencyCode = newDefaultCurrencyCode;
         }
 
-        public void UpdateItbisRate(decimal newItbisRate)
-        {
-         if (newItbisRate < 0)
-             throw new BusinessRuleException("Itbis Rate cannot be negative");
-         
-         ItbisRate = newItbisRate;
-        }
+        public void UpdateItbisRate(ItbisRate newItbisRate) => ItbisRate = newItbisRate;
 
-        public void UpdateServiceChargeRate(decimal newServiceChargeRate)
-        {
-            if (newServiceChargeRate < 0)
-                throw new BusinessRuleException("Service charge rate cannot be negative");
-            
-            ServiceChargeRate = newServiceChargeRate;
-        }
+        public void UpdateServiceChargeRate(ServiceChargeRate newServiceChargeRate) 
+            => ServiceChargeRate = newServiceChargeRate;
+
+        public void SetAsActive() => IsActive = true;
+
+        public void SetAsInactive() => IsActive = false;
     }
 }

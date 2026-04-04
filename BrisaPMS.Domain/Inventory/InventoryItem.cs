@@ -1,5 +1,4 @@
-﻿using BrisaPMS.Domain.Shared.Enums;
-using BrisaPMS.Domain.Shared.Exceptions;
+﻿using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Inventory;
