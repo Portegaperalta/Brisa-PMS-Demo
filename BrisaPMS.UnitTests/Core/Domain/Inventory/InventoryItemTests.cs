@@ -16,6 +16,7 @@ public class InventoryItemTests
     var supplierPhoneNumber = CreatePhoneNumber();
     var supplierEmail = CreateEmail();
     var unitCost = CreateUnitCost();
+    var stockThreshold = CreateStockThreshold();
 
     // Act
     var result = new InventoryItem(
@@ -24,8 +25,7 @@ public class InventoryItemTests
         "Large white cotton bath towels",
         "Linen",
         UnitOfMeasure.Piece,
-        10m,
-        100m,
+        stockThreshold,
         25m,
         unitCost,
         "Linen Supplier SRL",
@@ -41,8 +41,8 @@ public class InventoryItemTests
     result.Category.Should().Be("Linen");
     result.UnitOfMeasure.Should().Be(UnitOfMeasure.Piece);
     result.CurrentStock.Should().Be(0m);
-    result.MinStockThreshold.Should().Be(10m);
-    result.MaxStockThreshold.Should().Be(100m);
+    result.StockThreshold.MinStockThreshold.Should().Be(stockThreshold.MinStockThreshold);
+    result.StockThreshold.MaxStockThreshold.Should().Be(stockThreshold.MaxStockThreshold);
     result.ReorderQuantity.Should().Be(25m);
     result.UnitCost.Should().Be(unitCost);
     result.SupplierName.Should().Be("Linen Supplier SRL");
@@ -64,8 +64,7 @@ public class InventoryItemTests
         "Complimentary bottled water",
         "Minibar",
         UnitOfMeasure.Box,
-        5m,
-        50m,
+        new StockThreshold(5m, 50m),
         10m,
         new Money(2m, CurrencyCode.USD),
         "Refreshments Inc.",
@@ -93,8 +92,7 @@ public class InventoryItemTests
         "Large white cotton bath towels",
         "Linen",
         UnitOfMeasure.Piece,
-        10m,
-        100m,
+        CreateStockThreshold(),
         25m,
         CreateUnitCost(),
         "Linen Supplier SRL",
@@ -118,8 +116,7 @@ public class InventoryItemTests
         "Large white cotton bath towels",
         "Linen",
         UnitOfMeasure.Piece,
-        10m,
-        100m,
+        CreateStockThreshold(),
         25m,
         CreateUnitCost(),
         "Linen Supplier SRL",
@@ -143,8 +140,7 @@ public class InventoryItemTests
         description!,
         "Linen",
         UnitOfMeasure.Piece,
-        10m,
-        100m,
+        CreateStockThreshold(),
         25m,
         CreateUnitCost(),
         "Linen Supplier SRL",
@@ -168,8 +164,7 @@ public class InventoryItemTests
         "Large white cotton bath towels",
         category!,
         UnitOfMeasure.Piece,
-        10m,
-        100m,
+        CreateStockThreshold(),
         25m,
         CreateUnitCost(),
         "Linen Supplier SRL",
@@ -193,8 +188,7 @@ public class InventoryItemTests
         "Large white cotton bath towels",
         "Linen",
         UnitOfMeasure.Piece,
-        10m,
-        100m,
+        CreateStockThreshold(),
         25m,
         CreateUnitCost(),
         supplierName!,
@@ -219,8 +213,7 @@ public class InventoryItemTests
         "Large white cotton bath towels",
         "Linen",
         invalidUnitOfMeasure,
-        10m,
-        100m,
+        CreateStockThreshold(),
         25m,
         CreateUnitCost(),
         "Linen Supplier SRL",
@@ -242,8 +235,7 @@ public class InventoryItemTests
         "Large white cotton bath towels",
         "Linen",
         UnitOfMeasure.Piece,
-        10m,
-        100m,
+        CreateStockThreshold(),
         25m,
         CreateUnitCost(),
         "Linen Supplier SRL",
@@ -256,15 +248,8 @@ public class InventoryItemTests
     act.Should().Throw<BusinessRuleException>();
   }
 
-  [Theory]
-  [InlineData(-1, 100, 25, 8.5)]
-  [InlineData(10, -1, 25, 8.5)]
-  [InlineData(10, 100, -1, 8.5)]
-  public void Constructor_ShouldThrowBusinessRuleException_WhenNumericValuesAreNegative(
-      decimal minStockThreshold,
-      decimal maxStockThreshold,
-      decimal reorderQuantity,
-      decimal unitCost)
+  [Fact]
+  public void Constructor_ShouldThrowBusinessRuleException_WhenReorderQuantityIsNegative()
   {
     // Act
     Action act = () => _ = new InventoryItem(
@@ -273,14 +258,33 @@ public class InventoryItemTests
         "Large white cotton bath towels",
         "Linen",
         UnitOfMeasure.Piece,
-        minStockThreshold,
-        maxStockThreshold,
-        reorderQuantity,
-        new Money(unitCost, CurrencyCode.DOP),
+        CreateStockThreshold(),
+        -1m,
+        CreateUnitCost(),
         "Linen Supplier SRL",
         CreatePhoneNumber(),
         CreateEmail(),
         true);
+
+    // Assert
+    act.Should().Throw<BusinessRuleException>();
+  }
+
+  [Fact]
+  public void Constructor_ShouldThrowBusinessRuleException_WhenMinStockThresholdIsNegative()
+  {
+    // Act
+    Action act = () => _ = new StockThreshold(-1m, 100m);
+
+    // Assert
+    act.Should().Throw<BusinessRuleException>();
+  }
+
+  [Fact]
+  public void Constructor_ShouldThrowBusinessRuleException_WhenMaxStockThresholdIsNegative()
+  {
+    // Act
+    Action act = () => _ = new StockThreshold(10m, -1m);
 
     // Assert
     act.Should().Throw<BusinessRuleException>();
@@ -515,6 +519,20 @@ public class InventoryItemTests
   }
 
   [Fact]
+  public void UpdateStockThreshold_ShouldUpdateStockThreshold_WhenValueIsValid()
+  {
+    // Arrange
+    var inventoryItem = CreateInventoryItem();
+    var newStockThreshold = new StockThreshold(20m, 120m);
+
+    // Act
+    inventoryItem.UpdateStockThreshold(newStockThreshold);
+
+    // Assert
+    inventoryItem.StockThreshold.Should().Be(newStockThreshold);
+  }
+
+  [Fact]
   public void UpdateUnitCost_ShouldUpdateUnitCost_WhenValueIsValid()
   {
     // Arrange
@@ -621,8 +639,7 @@ public class InventoryItemTests
         "Large white cotton bath towels",
         "Linen",
         UnitOfMeasure.Piece,
-        10m,
-        maxStockThreshold,
+        CreateStockThreshold(maxStockThreshold: maxStockThreshold),
         25m,
         CreateUnitCost(),
         "Linen Supplier SRL",
@@ -645,5 +662,12 @@ public class InventoryItemTests
   private static Money CreateUnitCost()
   {
     return new Money(8.5m, CurrencyCode.DOP);
+  }
+
+  private static StockThreshold CreateStockThreshold(
+      decimal minStockThreshold = 10m,
+      decimal maxStockThreshold = 100m)
+  {
+    return new StockThreshold(minStockThreshold, maxStockThreshold);
   }
 }

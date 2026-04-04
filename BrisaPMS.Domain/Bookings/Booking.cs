@@ -11,8 +11,7 @@ public class Booking
     public Guid RoomId { get; init; }
     public Guid GuestId { get; init; }
     public string Source { get; private set; }
-    public int NumberOfAdults { get; private set; }
-    public int NumberOfChildren { get; private set; }
+    public GuestCount GuestCount { get; private set; }
     public CheckInOutTimes CheckInOutTimes { get; private set; }
     public string? SpecialRequests { get; private set; }
     public BookingStatus Status { get; private set; }
@@ -26,8 +25,7 @@ public class Booking
         Guid roomId,
         Guid guestId,
         string source,
-        int numberOfAdults,
-        int numberOfChildren,
+        GuestCount guestCount,
         CheckInOutTimes checkInOutTimes,
         Money totalPrice,
         string? specialRequests = null,
@@ -45,20 +43,13 @@ public class Booking
         
         if (string.IsNullOrWhiteSpace(source))
             throw new EmptyRequiredFieldException("Booking source can't be empty");
-        
-        if  (numberOfAdults <= 0)
-            throw new BusinessRuleException("Booking must include at least one adult");
-        
-        if (numberOfChildren < 0)
-            throw new BusinessRuleException("Number of children can't be less than zero");
 
         Id = Guid.CreateVersion7();
         HotelId = hotelId;
         RoomId = roomId;
         GuestId = guestId;
         Source = source;
-        NumberOfAdults = numberOfAdults;
-        NumberOfChildren = numberOfChildren;
+        GuestCount =  guestCount;
         CheckInOutTimes = checkInOutTimes;
         SpecialRequests = specialRequests;
         Status = BookingStatus.Pending;
@@ -74,25 +65,12 @@ public class Booking
         
         Source = newSource;
     }
+    
+    public void UpdateGuestCount(GuestCount newGuestCount)
+        => GuestCount = newGuestCount;
 
-    public void UpdateNumberOfAdults(int newNumberOfAdults)
-    {
-        if (newNumberOfAdults <= 0)
-            throw new BusinessRuleException("Booking must include at least one adult");
-            
-        NumberOfAdults = newNumberOfAdults;
-    }
-
-    public void UpdateNumberOfChildren(int newNumberOfChildren)
-    {
-        if (newNumberOfChildren < 0)
-            throw new BusinessRuleException("Number of children can't be less than zero");
-        
-        NumberOfChildren = newNumberOfChildren;
-    }
-
-    public void UpdateCheckInOutTimes(CheckInOutTimes newCheckInOutTimes) =>
-        CheckInOutTimes = newCheckInOutTimes;
+    public void UpdateCheckInOutTimes(CheckInOutTimes newCheckInOutTimes) 
+        => CheckInOutTimes = newCheckInOutTimes;
     
     public void UpdateSpecialRequests(string newSpecialRequests) => SpecialRequests = newSpecialRequests;
     

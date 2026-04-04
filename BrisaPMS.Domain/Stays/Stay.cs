@@ -33,7 +33,7 @@ public class Stay
     public void IncreaseNightCount()
     {
         if (Status == StayStatus.Complete || Status == StayStatus.Cancelled)
-            throw new BusinessRuleException("Stay night count can't be increased once it's completed or cancelled");
+            throw new BusinessRuleException("Night count can't be increased once stay it's completed or cancelled");
 
         NightCount += 1;
     }
