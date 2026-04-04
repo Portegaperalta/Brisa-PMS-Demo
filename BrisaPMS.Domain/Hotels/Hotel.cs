@@ -10,7 +10,7 @@ namespace BrisaPMS.Domain.Hotels
         public Guid Id { get; init; }
         public string LegalName { get; private set; }
         public string CommercialName { get; private set; }
-        public Url LogoUrl { get; private set; }
+        public Url? LogoUrl { get; private set; }
         public Email BusinessEmail { get; private set; }
         public PhoneNumber BusinessPhoneNumber { get; private set; }
         public Address Address { get; private set; }
@@ -25,7 +25,6 @@ namespace BrisaPMS.Domain.Hotels
         (
             string legalName,
             string commercialName,
-            Url logoUrl,
             Email businessEmail,
             PhoneNumber businessPhoneNumber,
             Address address,
@@ -33,6 +32,7 @@ namespace BrisaPMS.Domain.Hotels
             ItbisRate itbisRate,
             ServiceChargeRate serviceChargeRate,
             bool isActive,
+            Url? logoUrl = null,
             CurrencyCode defaultCurrencyCode = CurrencyCode.DOP
         )
         {
