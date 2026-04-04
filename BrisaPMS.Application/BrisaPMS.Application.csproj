@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BrisaPMS.Domain\BrisaPMS.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
