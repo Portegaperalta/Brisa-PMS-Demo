@@ -1,4 +1,4 @@
-namespace BrisaPMS.Application.Contracts;
+namespace BrisaPMS.Application.Contracts.Repositories;
 
 public interface IRepository<T> where T : class
 {
