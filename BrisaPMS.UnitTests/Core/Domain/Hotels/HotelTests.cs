@@ -19,6 +19,7 @@ public class HotelTests
         var address = CreateAddress();
         var checkInOutTimes = CreateCheckInOutTimes();
         var itbisRate = new ItbisRate(0.18m);
+        var serviceChargeRate = new ServiceChargeRate(10m);
 
         // Act
         var result = new Hotel(
@@ -30,7 +31,7 @@ public class HotelTests
             address,
             checkInOutTimes,
             itbisRate,
-            10m,
+            serviceChargeRate,
             true);
 
         // Assert
@@ -44,7 +45,7 @@ public class HotelTests
         result.CheckInOutTimes.Should().Be(checkInOutTimes);
         result.DefaultCurrencyCode.Should().Be(CurrencyCode.DOP);
         result.ItbisRate.Rate.Should().Be(itbisRate.Rate);
-        result.ServiceChargeRate.Should().Be(10m);
+        result.ServiceChargeRate.Rate.Should().Be(serviceChargeRate.Rate);
     }
 
     [Fact]
@@ -63,7 +64,7 @@ public class HotelTests
             CreateAddress(),
             CreateCheckInOutTimes(),
             CreateItbisRate(),
-            18m,
+            CreateServiceChargeRate(),
             true);
 
         // Assert
@@ -86,7 +87,7 @@ public class HotelTests
             CreateAddress(),
             CreateCheckInOutTimes(),
             CreateItbisRate(),
-            18m,
+            CreateServiceChargeRate(),
             true);
 
         // Assert
@@ -109,7 +110,7 @@ public class HotelTests
             CreateAddress(),
             CreateCheckInOutTimes(),
             CreateItbisRate(),
-            18m,
+            CreateServiceChargeRate(),
             true);
 
         // Assert
@@ -132,7 +133,7 @@ public class HotelTests
             CreateAddress(),
             CreateCheckInOutTimes(),
             CreateItbisRate(),
-            18m,
+            CreateServiceChargeRate(),
             true);
 
         // Assert
@@ -155,7 +156,7 @@ public class HotelTests
             CreateAddress(),
             CreateCheckInOutTimes(),
             CreateItbisRate(),
-            18m,
+            CreateServiceChargeRate(),
             true,
             invalidCurrency);
 
@@ -164,23 +165,13 @@ public class HotelTests
     }
 
     [Fact]
-    public void Constructor_ShouldThrowBusinessRuleException_WhenServiceChargeRateIsNegative()
+    public void Constructor_ShouldThrowInvalidServiceChargeRateException_WhenServiceChargeRateIsNegative()
     {
         // Arrange + Act
-        Action act = () => _ = new Hotel(
-            "Brisa Hospitality SRL",
-            "Hotel Brisa",
-            CreateUrl(),
-            CreateEmail(),
-            CreatePhoneNumber(),
-            CreateAddress(),
-            CreateCheckInOutTimes(),
-            CreateItbisRate(),
-            -1m,
-            true);
+        Action act = () => _ = new ServiceChargeRate(-1m);
 
         // Assert
-        act.Should().Throw<BusinessRuleException>();
+        act.Should().Throw<InvalidServiceChargeRateException>();
     }
 
     [Fact]
@@ -351,12 +342,8 @@ public class HotelTests
     [Fact]
     public void UpdateItbisRate_ShouldThrowInvalidItbisRateException_WhenNewRateIsInvalid()
     {
-        // Arrange
-        var hotel = CreateHotel();
-        var  newItbisRate = new ItbisRate(-19m);
-
         // Act
-        Action act = () => hotel.UpdateItbisRate(newItbisRate);
+        Action act = () => _ = new ItbisRate(-19m);
 
         // Assert
         act.Should().Throw<InvalidItbisRateException>();
@@ -367,25 +354,23 @@ public class HotelTests
     {
         // Arrange
         var hotel = CreateHotel();
+        var newServiceChargeRate = new ServiceChargeRate(12m);
 
         // Act
-        hotel.UpdateServiceChargeRate(12m);
+        hotel.UpdateServiceChargeRate(newServiceChargeRate);
 
         // Assert
-        hotel.ServiceChargeRate.Should().Be(12m);
+        hotel.ServiceChargeRate.Rate.Should().Be(newServiceChargeRate.Rate);
     }
 
     [Fact]
-    public void UpdateServiceChargeRate_ShouldThrowBusinessRuleException_WhenValueIsNegative()
+    public void UpdateServiceChargeRate_ShouldThrowInvalidServiceChargeRateException_WhenValueIsNegative()
     {
-        // Arrange
-        var hotel = CreateHotel();
-
         // Act
-        Action act = () => hotel.UpdateServiceChargeRate(-1m);
+        Action act = () => _ = new ServiceChargeRate(-1m);
 
         // Assert
-        act.Should().Throw<BusinessRuleException>();
+        act.Should().Throw<InvalidServiceChargeRateException>();
     }
 
     private static Hotel CreateHotel()
@@ -399,7 +384,7 @@ public class HotelTests
             CreateAddress(),
             CreateCheckInOutTimes(),
             CreateItbisRate(),
-            18m,
+            CreateServiceChargeRate(),
             true);
     }
 
@@ -431,4 +416,6 @@ public class HotelTests
     }
 
     private static ItbisRate CreateItbisRate() => new ItbisRate(0.18m);
+
+    private static ServiceChargeRate CreateServiceChargeRate() => new ServiceChargeRate(18m);
 }
