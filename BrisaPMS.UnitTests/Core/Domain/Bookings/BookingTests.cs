@@ -19,9 +19,10 @@ public class BookingTests
     var checkInOutTimes = CreateCheckInOutTimes();
     var discountId = Guid.NewGuid();
     var totalPrice = CreateTotalPrice();
+    var guestCount = CreateGuestCount();
 
     // Act
-    var result = new Booking(hotelId, roomId, guestId, "Direct", 2, 1, checkInOutTimes, totalPrice, "Late arrival", discountId);
+    var result = new Booking(hotelId, roomId, guestId, "Direct", guestCount, checkInOutTimes, totalPrice, "Late arrival", discountId);
 
     // Assert
     result.Id.Should().NotBe(Guid.Empty);
@@ -29,8 +30,8 @@ public class BookingTests
     result.RoomId.Should().Be(roomId);
     result.GuestId.Should().Be(guestId);
     result.Source.Should().Be("Direct");
-    result.NumberOfAdults.Should().Be(2);
-    result.NumberOfChildren.Should().Be(1);
+    result.GuestCount.NumberOfAdults.Should().Be(guestCount.NumberOfAdults);
+    result.GuestCount.NumberOfChildren.Should().Be(guestCount.NumberOfChildren);
     result.CheckInOutTimes.Should().Be(checkInOutTimes);
     result.SpecialRequests.Should().Be("Late arrival");
     result.Status.Should().Be(BookingStatus.Pending);
@@ -48,7 +49,14 @@ public class BookingTests
     var guestId = Guid.NewGuid();
 
     // Act
-    var result = new Booking(hotelId, roomId, guestId, "Online Travel Agency", 2, 0, CreateCheckInOutTimes(), new Money(180m, CurrencyCode.DOP));
+    var result = new Booking(
+        hotelId,
+        roomId,
+        guestId,
+        "Online Travel Agency",
+        new GuestCount(2, 0),
+        CreateCheckInOutTimes(),
+        new Money(180m, CurrencyCode.DOP));
 
     // Assert
     result.SpecialRequests.Should().BeNull();
@@ -63,7 +71,7 @@ public class BookingTests
     var hotelId = Guid.Empty;
 
     // Act
-    Action act = () => _ = new Booking(hotelId, Guid.NewGuid(), Guid.NewGuid(), "Direct", 2, 0, CreateCheckInOutTimes(), CreateTotalPrice());
+    Action act = () => _ = new Booking(hotelId, Guid.NewGuid(), Guid.NewGuid(), "Direct", CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
@@ -76,7 +84,7 @@ public class BookingTests
     var roomId = Guid.Empty;
 
     // Act
-    Action act = () => _ = new Booking(Guid.NewGuid(), roomId, Guid.NewGuid(), "Direct", 2, 0, CreateCheckInOutTimes(), CreateTotalPrice());
+    Action act = () => _ = new Booking(Guid.NewGuid(), roomId, Guid.NewGuid(), "Direct", CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
@@ -89,7 +97,7 @@ public class BookingTests
     var guestId = Guid.Empty;
 
     // Act
-    Action act = () => _ = new Booking(Guid.NewGuid(), Guid.NewGuid(), guestId, "Direct", 2, 0, CreateCheckInOutTimes(), CreateTotalPrice());
+    Action act = () => _ = new Booking(Guid.NewGuid(), Guid.NewGuid(), guestId, "Direct", CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
@@ -101,7 +109,7 @@ public class BookingTests
   public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenSourceIsNullOrWhiteSpace(string? bookingSource)
   {
     // Act
-    Action act = () => _ = new Booking(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), bookingSource!, 2, 0, CreateCheckInOutTimes(), CreateTotalPrice());
+    Action act = () => _ = new Booking(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), bookingSource!, CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
@@ -114,15 +122,7 @@ public class BookingTests
     const int numberOfAdults = 0;
 
     // Act
-    Action act = () => _ = new Booking(
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        "Direct",
-        numberOfAdults,
-        0,
-        CreateCheckInOutTimes(),
-        CreateTotalPrice());
+    Action act = () => _ = new GuestCount(numberOfAdults, 0);
 
     // Assert
     act.Should().Throw<BusinessRuleException>();
@@ -135,15 +135,7 @@ public class BookingTests
     const int numberOfChildren = -1;
 
     // Act
-    Action act = () => _ = new Booking(
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        "Direct",
-        2,
-        numberOfChildren,
-        CreateCheckInOutTimes(),
-        CreateTotalPrice());
+    Action act = () => _ = new GuestCount(2, numberOfChildren);
 
     // Assert
     act.Should().Throw<BusinessRuleException>();
@@ -178,52 +170,34 @@ public class BookingTests
   }
 
   [Fact]
-  public void UpdateNumberOfAdults_ShouldUpdateNumberOfAdults_WhenValueIsValid()
+  public void UpdateGuestCount_ShouldUpdateGuestCount_WhenValueIsValid()
   {
     // Arrange
     var booking = CreateBooking();
+    var newGuestCount = new GuestCount(3, 2);
 
     // Act
-    booking.UpdateNumberOfAdults(3);
+    booking.UpdateGuestCount(newGuestCount);
 
     // Assert
-    booking.NumberOfAdults.Should().Be(3);
+    booking.GuestCount.Should().Be(newGuestCount);
   }
 
   [Fact]
-  public void UpdateNumberOfAdults_ShouldThrowBusinessRuleException_WhenValueIsZeroOrLess()
+  public void UpdateGuestCount_ShouldThrowBusinessRuleException_WhenNumberOfAdultsIsZeroOrLess()
   {
-    // Arrange
-    var booking = CreateBooking();
-
     // Act
-    Action act = () => booking.UpdateNumberOfAdults(0);
+    Action act = () => _ = new GuestCount(0, 1);
 
     // Assert
     act.Should().Throw<BusinessRuleException>();
   }
 
   [Fact]
-  public void UpdateNumberOfChildren_ShouldUpdateNumberOfChildren_WhenValueIsValid()
+  public void UpdateGuestCount_ShouldThrowBusinessRuleException_WhenNumberOfChildrenIsNegative()
   {
-    // Arrange
-    var booking = CreateBooking();
-
     // Act
-    booking.UpdateNumberOfChildren(2);
-
-    // Assert
-    booking.NumberOfChildren.Should().Be(2);
-  }
-
-  [Fact]
-  public void UpdateNumberOfChildren_ShouldThrowBusinessRuleException_WhenValueIsNegative()
-  {
-    // Arrange
-    var booking = CreateBooking();
-
-    // Act
-    Action act = () => booking.UpdateNumberOfChildren(-1);
+    Action act = () => _ = new GuestCount(2, -1);
 
     // Assert
     act.Should().Throw<BusinessRuleException>();
@@ -319,8 +293,7 @@ public class BookingTests
         Guid.NewGuid(),
         Guid.NewGuid(),
         "Direct",
-        2,
-        1,
+        CreateGuestCount(),
         CreateCheckInOutTimes(),
         CreateTotalPrice(),
         "Late arrival");
@@ -336,5 +309,10 @@ public class BookingTests
   private static Money CreateTotalPrice()
   {
     return new Money(250m, CurrencyCode.DOP);
+  }
+
+  private static GuestCount CreateGuestCount()
+  {
+    return new GuestCount(2, 1);
   }
 }
