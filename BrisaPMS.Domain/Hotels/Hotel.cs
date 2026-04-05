@@ -31,7 +31,7 @@ namespace BrisaPMS.Domain.Hotels
             CheckInOutTimes checkInOutTimes,
             ItbisRate itbisRate,
             ServiceChargeRate serviceChargeRate,
-            bool isActive,
+            bool isActive = true,
             Url? logoUrl = null,
             CurrencyCode defaultCurrencyCode = CurrencyCode.DOP
         )
