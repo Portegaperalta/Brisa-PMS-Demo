@@ -16,5 +16,5 @@ public class CreateHotelCommand
     public CurrencyCode DefaultCurrencyCode { get; set; }
     public required ItbisRate ItbisRate { get; set; }
     public required ServiceChargeRate ServiceChargeRate { get; set; }
-    public required bool IsActive { get; set; }
+    public bool IsActive { get; set; }
 }
