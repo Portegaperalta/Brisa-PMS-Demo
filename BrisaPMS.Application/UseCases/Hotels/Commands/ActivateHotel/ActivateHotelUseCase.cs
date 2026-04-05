@@ -18,7 +18,7 @@ public class ActivateHotelUseCase
         if (hotel is null)
             throw new ArgumentException($"Hotel with id {command.Id} not found");
         
-        hotel.SetAsInactive();
+        hotel.SetAsActive();
         await _repository.Update(hotel);
     }
 }
