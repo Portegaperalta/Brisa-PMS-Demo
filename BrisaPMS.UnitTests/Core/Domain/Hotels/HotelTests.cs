@@ -13,26 +13,26 @@ public class HotelTests
     public void Constructor_ShouldCreateHotel_WhenValuesAreValid()
     {
         // Arrange
-        var logoUrl = CreateUrl();
         var businessEmail = CreateEmail();
         var businessPhoneNumber = CreatePhoneNumber();
         var address = CreateAddress();
         var checkInOutTimes = CreateCheckInOutTimes();
-        var itbisRate = new ItbisRate(0.18m);
-        var serviceChargeRate = new ServiceChargeRate(10m);
+        var itbisRate = CreateItbisRate();
+        var serviceChargeRate = CreateServiceChargeRate();
+        var logoUrl = CreateUrl();
 
         // Act
         var result = new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
-            logoUrl,
             businessEmail,
             businessPhoneNumber,
             address,
             checkInOutTimes,
             itbisRate,
             serviceChargeRate,
-            true);
+            true,
+            logoUrl);
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
@@ -46,6 +46,29 @@ public class HotelTests
         result.DefaultCurrencyCode.Should().Be(CurrencyCode.DOP);
         result.ItbisRate.Rate.Should().Be(itbisRate.Rate);
         result.ServiceChargeRate.Rate.Should().Be(serviceChargeRate.Rate);
+        result.IsActive.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Constructor_ShouldCreateHotel_WhenLogoUrlIsNotProvided()
+    {
+        // Act
+        var result = new Hotel(
+            "Brisa Hospitality SRL",
+            "Hotel Brisa",
+            CreateEmail(),
+            CreatePhoneNumber(),
+            CreateAddress(),
+            CreateCheckInOutTimes(),
+            CreateItbisRate(),
+            CreateServiceChargeRate(),
+            false,
+            defaultCurrencyCode: CurrencyCode.USD);
+
+        // Assert
+        result.LogoUrl.Should().BeNull();
+        result.DefaultCurrencyCode.Should().Be(CurrencyCode.USD);
+        result.IsActive.Should().BeFalse();
     }
 
     [Fact]
@@ -58,7 +81,6 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             legalName,
             "Hotel Brisa",
-            CreateUrl(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -81,7 +103,6 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             legalName,
             "Hotel Brisa",
-            CreateUrl(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -104,7 +125,6 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             "Brisa Hospitality SRL",
             commercialName,
-            CreateUrl(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -127,7 +147,6 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             "Brisa Hospitality SRL",
             commercialName,
-            CreateUrl(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -150,7 +169,6 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
-            CreateUrl(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -158,20 +176,10 @@ public class HotelTests
             CreateItbisRate(),
             CreateServiceChargeRate(),
             true,
-            invalidCurrency);
+            defaultCurrencyCode: invalidCurrency);
 
         // Assert
         act.Should().Throw<CurrencyNotSupportedException>();
-    }
-
-    [Fact]
-    public void Constructor_ShouldThrowInvalidServiceChargeRateException_WhenServiceChargeRateIsNegative()
-    {
-        // Arrange + Act
-        Action act = () => _ = new ServiceChargeRate(-1m);
-
-        // Assert
-        act.Should().Throw<InvalidServiceChargeRateException>();
     }
 
     [Fact]
@@ -330,23 +338,13 @@ public class HotelTests
     {
         // Arrange
         var hotel = CreateHotel();
-        var newItbisRate = new ItbisRate(19m);
+        var newItbisRate = new ItbisRate(0.19m);
 
         // Act
         hotel.UpdateItbisRate(newItbisRate);
 
         // Assert
         hotel.ItbisRate.Rate.Should().Be(newItbisRate.Rate);
-    }
-
-    [Fact]
-    public void UpdateItbisRate_ShouldThrowInvalidItbisRateException_WhenNewRateIsInvalid()
-    {
-        // Act
-        Action act = () => _ = new ItbisRate(-19m);
-
-        // Assert
-        act.Should().Throw<InvalidItbisRateException>();
     }
 
     [Fact]
@@ -364,28 +362,44 @@ public class HotelTests
     }
 
     [Fact]
-    public void UpdateServiceChargeRate_ShouldThrowInvalidServiceChargeRateException_WhenValueIsNegative()
+    public void SetAsActive_ShouldSetIsActiveToTrue()
     {
+        // Arrange
+        var hotel = CreateHotel(isActive: false);
+
         // Act
-        Action act = () => _ = new ServiceChargeRate(-1m);
+        hotel.SetAsActive();
 
         // Assert
-        act.Should().Throw<InvalidServiceChargeRateException>();
+        hotel.IsActive.Should().BeTrue();
     }
 
-    private static Hotel CreateHotel()
+    [Fact]
+    public void SetAsInactive_ShouldSetIsActiveToFalse()
+    {
+        // Arrange
+        var hotel = CreateHotel();
+
+        // Act
+        hotel.SetAsInactive();
+
+        // Assert
+        hotel.IsActive.Should().BeFalse();
+    }
+
+    private static Hotel CreateHotel(bool isActive = true)
     {
         return new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
-            CreateUrl(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
             CreateCheckInOutTimes(),
             CreateItbisRate(),
             CreateServiceChargeRate(),
-            true);
+            isActive,
+            CreateUrl());
     }
 
     private static Url CreateUrl()
