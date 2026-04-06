@@ -33,7 +33,7 @@ public class CreateHotelUseCase
         var businessPhoneNumber = new PhoneNumber(command.BusinessPhoneNumber);
         var logoUrl = new Url(command.LogoUrl!);
         var address = new Address(command.Address1, command.Address2, command.City, command.Province, command.ZipCode);
-        var checkInOutTimes = new CheckInOutTimes(command.CheckInTime, command.CheckOutTime);
+        var checkOutPolicy = new CheckOutPolicy(command.CheckInTime,  command.CheckOutTime);
         var itbisRate = new ItbisRate(command.ItbisRate);
         var serviceChargeRate = new ServiceChargeRate(command.ServiceChargeRate);
         
@@ -44,7 +44,7 @@ public class CreateHotelUseCase
             businessEmail,
             businessPhoneNumber,
             address,
-            checkInOutTimes,
+            checkOutPolicy,
             itbisRate,
             serviceChargeRate,
             command.IsActive,
