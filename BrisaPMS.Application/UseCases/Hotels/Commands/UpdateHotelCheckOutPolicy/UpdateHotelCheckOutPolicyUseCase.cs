@@ -1,6 +1,6 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
-using BrisaPMS.Domain.Shared.ValueObjects;
+using BrisaPMS.Domain.Hotels;
 using FluentValidation;
 using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
@@ -32,11 +32,11 @@ public class UpdateHotelCheckOutPolicyUseCase
         if (hotel is null)
             throw new ArgumentException($"Hotel with id {command.HotelId} not found");
         
-        var newCheckOutPolicy = new CheckInOutTimes(command.CheckInTime, command.CheckOutTime);
+        var newCheckOutPolicy = new CheckOutPolicy(command.CheckInTime, command.CheckOutTime);
         
         try
         {
-            hotel.UpdateCheckInOutTimes(newCheckOutPolicy);
+            hotel.UpdateCheckOutPolicy(newCheckOutPolicy);
             await _repository.Update(hotel);
             await _unitOfWork.Persist();
         }
