@@ -5,5 +5,6 @@ namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolic
 public class UpdateHotelCheckOutPolicyCommand
 {
     public required Guid Id { get; set; }
-    public required CheckInOutTimes CheckInOutTimes { get; set; }
+    public DateTime CheckInTime { get; set; }
+    public DateTime CheckOutTime { get; set; }
 }
