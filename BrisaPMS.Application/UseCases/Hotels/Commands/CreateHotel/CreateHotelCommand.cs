@@ -18,7 +18,7 @@ public class CreateHotelCommand
     public required string ZipCode { get; set; }
     public required TimeOnly CheckInTime { get; set; }
     public required TimeOnly CheckOutTime { get; set; }
-    public CurrencyCode DefaultCurrencyCode { get; set; }
+    public string DefaultCurrencyCode { get; set; } = "DOP";
     public required decimal ItbisRate { get; set; }
     public required decimal ServiceChargeRate { get; set; }
     public bool IsActive { get; set; }
