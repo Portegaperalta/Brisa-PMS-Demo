@@ -1,3 +1,4 @@
+using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolicy;
@@ -5,10 +6,12 @@ namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolic
 public class UpdateHotelCheckOutPolicyUseCase
 {
     private readonly IHotelsRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
     
-    public UpdateHotelCheckOutPolicyUseCase(IHotelsRepository repository)
+    public UpdateHotelCheckOutPolicyUseCase(IHotelsRepository repository, IUnitOfWork unitOfWork)
     {
         _repository = repository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task Handle(UpdateHotelCheckOutPolicyCommand command)
@@ -17,8 +20,17 @@ public class UpdateHotelCheckOutPolicyUseCase
         
         if (hotel is null)
             throw new ArgumentException($"Hotel with id {command.Id} not found");
-        
-        hotel.UpdateCheckInOutTimes(command.CheckInOutTimes);
-        await _repository.Update(hotel);
+
+        try
+        {
+            hotel.UpdateCheckInOutTimes(command.CheckInOutTimes);
+            await _repository.Update(hotel);
+            await _unitOfWork.Persist();
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.Revert();
+            throw;
+        }
     }
 }
