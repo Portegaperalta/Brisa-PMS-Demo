@@ -2,7 +2,7 @@ using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Shared.ValueObjects;
 
-public class CheckInOutTimes
+public record CheckInOutTimes
 {
     public DateTime CheckInTime { get; }
     public DateTime CheckOutTime { get; }
