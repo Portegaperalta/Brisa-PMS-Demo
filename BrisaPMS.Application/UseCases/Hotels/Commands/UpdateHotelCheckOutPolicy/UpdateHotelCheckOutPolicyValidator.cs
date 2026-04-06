@@ -6,6 +6,9 @@ public class UpdateHotelCheckOutPolicyValidator : AbstractValidator<UpdateHotelC
 {
     public UpdateHotelCheckOutPolicyValidator()
     {
+        RuleFor(x => x.HotelId)
+            .NotEmpty().WithMessage("Field Hotel Id is required");
+        
         RuleFor(x => x.CheckInTime)
             .NotEmpty().WithMessage("The field  CheckInTime is required");
         

@@ -6,6 +6,9 @@ public class UpdateHotelAddressInfoValidator : AbstractValidator<UpdateHotelAddr
 {
     public UpdateHotelAddressInfoValidator()
     {
+        RuleFor(x => x.HotelId)
+            .NotEmpty().WithMessage("Field Hotel Id is required");
+        
         RuleFor(x => x.Address1)
             .NotEmpty().WithMessage("The field Address 1 is required")
             .MaximumLength(200).WithMessage("The field Address 1 can't exceed 200 characters");
