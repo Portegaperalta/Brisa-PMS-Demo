@@ -9,5 +9,5 @@ public class UpdateHotelBrandInfoCommand
     public required Guid Id { get; set; }
     public required string LegalName { get; set; }
     public required string CommercialName { get; set; }
-    public Url? LogoUrl { get; set; } 
+    public string? LogoUrl { get; set; } 
 }
