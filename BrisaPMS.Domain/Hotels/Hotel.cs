@@ -14,7 +14,7 @@ namespace BrisaPMS.Domain.Hotels
         public Email BusinessEmail { get; private set; }
         public PhoneNumber BusinessPhoneNumber { get; private set; }
         public Address Address { get; private set; }
-        public CheckInOutTimes CheckInOutTimes { get; private set; }
+        public CheckOutPolicy CheckOutPolicy { get; private set; }
         public CurrencyCode DefaultCurrencyCode { get; private set; }
         public ItbisRate ItbisRate { get; private set; }
         public ServiceChargeRate ServiceChargeRate  { get; private set; }
@@ -28,7 +28,7 @@ namespace BrisaPMS.Domain.Hotels
             Email businessEmail,
             PhoneNumber businessPhoneNumber,
             Address address,
-            CheckInOutTimes checkInOutTimes,
+            CheckOutPolicy checkOutPolicy,
             ItbisRate itbisRate,
             ServiceChargeRate serviceChargeRate,
             bool isActive = true,
@@ -52,7 +52,7 @@ namespace BrisaPMS.Domain.Hotels
             BusinessEmail = businessEmail;
             BusinessPhoneNumber = businessPhoneNumber;
             Address = address;
-            CheckInOutTimes = checkInOutTimes;
+            CheckOutPolicy = checkOutPolicy;
             DefaultCurrencyCode = defaultCurrencyCode;
             ItbisRate = itbisRate;
             ServiceChargeRate = serviceChargeRate;
@@ -85,8 +85,8 @@ namespace BrisaPMS.Domain.Hotels
         
         public void UpdateAddress(Address newAddress) => Address = newAddress;
         
-        public void UpdateCheckInOutTimes (CheckInOutTimes newCheckInOutTimes) 
-            => CheckInOutTimes = newCheckInOutTimes;
+        public void UpdateCheckOutPolicy (CheckOutPolicy newCheckOutPolicy) 
+            => CheckOutPolicy = newCheckOutPolicy;
 
         public void UpdateDefaultCurrencyCode(CurrencyCode newDefaultCurrencyCode)
         {
