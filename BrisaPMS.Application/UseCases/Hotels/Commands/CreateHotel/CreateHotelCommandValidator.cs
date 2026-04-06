@@ -22,6 +22,7 @@ namespace BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel
 
             RuleFor(x => x.BusinessPhoneNumber)
                  .NotEmpty().WithMessage("The field Business Phone Number is required")
+                 .Matches(@"^\+?[1-9]\d{{1,14}}$").WithMessage("Must be a valid phone number")
                  .MaximumLength(25).WithMessage("The field Business Phone Number can't exceed 25 characters");
 
             RuleFor(x => x.Address1)
