@@ -2,6 +2,7 @@ using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Hotels;
+using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentValidation;
 using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
@@ -34,6 +35,7 @@ public class CreateHotelUseCase
         var logoUrl = new Url(command.LogoUrl!);
         var address = new Address(command.Address1, command.Address2, command.City, command.Province, command.ZipCode);
         var checkOutPolicy = new CheckOutPolicy(command.CheckInTime,  command.CheckOutTime);
+        var defaultCurrencyCode = Enum.Parse<CurrencyCode>(command.DefaultCurrencyCode, ignoreCase: true);
         var itbisRate = new ItbisRate(command.ItbisRate);
         var serviceChargeRate = new ServiceChargeRate(command.ServiceChargeRate);
         
@@ -49,7 +51,7 @@ public class CreateHotelUseCase
             serviceChargeRate,
             command.IsActive,
             logoUrl,
-            command.DefaultCurrencyCode
+            defaultCurrencyCode
         );
         
         try
