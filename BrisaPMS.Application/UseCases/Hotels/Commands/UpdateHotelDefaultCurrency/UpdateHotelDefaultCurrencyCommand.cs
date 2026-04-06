@@ -4,6 +4,6 @@ namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurren
 
 public class UpdateHotelDefaultCurrencyCommand
 {
-    public required Guid Id { get; set; }
-    public required CurrencyCode CurrencyCode { get; set; }
+    public required Guid HotelId { get; set; }
+    public required string DefaultCurrencyCode { get; set; }
 }
