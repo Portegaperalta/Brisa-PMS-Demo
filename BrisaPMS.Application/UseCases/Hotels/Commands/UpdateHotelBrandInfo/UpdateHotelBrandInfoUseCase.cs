@@ -28,10 +28,10 @@ public class UpdateHotelBrandInfoUseCase
         if (validationResult.IsValid is not true)
             throw new ValidationException(validationResult);
         
-        var hotel = await _repository.GetById(command.Id);
+        var hotel = await _repository.GetById(command.HotelId);
         
         if (hotel is null)
-            throw new HotelNotFoundException(command.Id);
+            throw new HotelNotFoundException(command.HotelId);
 
         try
         {

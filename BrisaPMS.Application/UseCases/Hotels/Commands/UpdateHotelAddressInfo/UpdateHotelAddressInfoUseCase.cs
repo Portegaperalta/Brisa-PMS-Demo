@@ -27,10 +27,10 @@ public class UpdateHotelAddressInfoUseCase
         if (validationResult.IsValid is not true)
             throw new ValidationException(validationResult);
         
-        var hotel = await _repository.GetById(command.Id);
+        var hotel = await _repository.GetById(command.HotelId);
         
         if (hotel is null)
-            throw new ArgumentException($"Hotel with id {command.Id} not found");
+            throw new ArgumentException($"Hotel with id {command.HotelId} not found");
         
         var newAddress = new Address
             (

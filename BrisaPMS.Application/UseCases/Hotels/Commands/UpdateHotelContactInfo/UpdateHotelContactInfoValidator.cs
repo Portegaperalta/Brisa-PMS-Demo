@@ -6,7 +6,7 @@ public class UpdateHotelContactInfoValidator : AbstractValidator<UpdateHotelCont
 {
     public UpdateHotelContactInfoValidator()
     {
-        RuleFor(x => x.Id)
+        RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("Field Id is required.");
         
         RuleFor(x => x.BusinessEmail)
