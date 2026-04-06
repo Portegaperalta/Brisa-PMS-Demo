@@ -2,7 +2,7 @@ using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Hotels;
 
-public class CheckOutPolicy
+public record CheckOutPolicy
 {
     public TimeOnly CheckInTime { get; }
     public TimeOnly CheckOutTime { get; }
