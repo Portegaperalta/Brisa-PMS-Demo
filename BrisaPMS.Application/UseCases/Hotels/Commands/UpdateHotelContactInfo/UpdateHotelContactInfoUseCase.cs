@@ -31,7 +31,7 @@ public class UpdateHotelContactInfoUseCase
         var hotel = await _repository.GetById(command.HotelId);
         
         if (hotel is null)
-            throw new HotelNotFoundException(command.HotelId);
+            throw new NotFoundException("Hotel",command.HotelId);
         
         var newBusinessEmail = new Email(command.BusinessEmail);
         var newBusinessPhoneNumber = new PhoneNumber(command.BusinessPhoneNumber);
