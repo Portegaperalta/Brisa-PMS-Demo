@@ -10,7 +10,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using NSubstitute;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands;
+namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelContactInfo;
 
 public class UpdateHotelContactInfoUseCaseTests
 {
