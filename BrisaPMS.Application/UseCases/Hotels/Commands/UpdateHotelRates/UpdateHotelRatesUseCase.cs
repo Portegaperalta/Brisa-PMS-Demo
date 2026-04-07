@@ -1,25 +1,51 @@
+using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Domain.Billing;
+using FluentValidation;
+using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelRates;
 
 public class UpdateHotelRatesUseCase
 {
     private readonly IHotelsRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<UpdateHotelRatesCommand> _validator;
 
-    public UpdateHotelRatesUseCase(IHotelsRepository repository)
+    public UpdateHotelRatesUseCase(IHotelsRepository repository, IUnitOfWork unitOfWork,
+        IValidator<UpdateHotelRatesCommand> validator)
     {
         _repository = repository;
+        _unitOfWork = unitOfWork;
+        _validator = validator;
     }
 
     public async Task Handle(UpdateHotelRatesCommand command)
     {
-        var hotel = await _repository.GetById(command.Id);
+        var validationResult = await _validator.ValidateAsync(command);
+        
+        if (validationResult.IsValid is not true)
+            throw new ValidationException(validationResult);
+        
+        var hotel = await _repository.GetById(command.HotelId);
         
         if (hotel is null)
-            throw new ArgumentException($"Hotel with id {command.Id} not found");
+            throw new ArgumentException($"Hotel with id {command.HotelId} not found");
         
-        hotel.UpdateItbisRate(command.ItbisRate);
-        hotel.UpdateServiceChargeRate(command.ServiceChargeRate);
-        await _repository.Update(hotel);
+        var newItbisRate = new ItbisRate(command.ItbisRate);
+        var newServiceChargeRate = new ServiceChargeRate(command.ServiceChargeRate);
+
+        try
+        {
+            hotel.UpdateItbisRate(newItbisRate);
+            hotel.UpdateServiceChargeRate(newServiceChargeRate);
+            await _repository.Update(hotel);
+            await _unitOfWork.Persist();
+        }
+        catch (Exception)
+        {
+            await _unitOfWork.Revert();
+            throw;
+        }
     }
 }

@@ -16,7 +16,7 @@ public class HotelTests
         var businessEmail = CreateEmail();
         var businessPhoneNumber = CreatePhoneNumber();
         var address = CreateAddress();
-        var checkInOutTimes = CreateCheckInOutTimes();
+        var checkOutPolicy = CreateCheckOutPolicy();
         var itbisRate = CreateItbisRate();
         var serviceChargeRate = CreateServiceChargeRate();
         var logoUrl = CreateUrl();
@@ -28,7 +28,7 @@ public class HotelTests
             businessEmail,
             businessPhoneNumber,
             address,
-            checkInOutTimes,
+            checkOutPolicy,
             itbisRate,
             serviceChargeRate,
             true,
@@ -42,7 +42,7 @@ public class HotelTests
         result.BusinessEmail.Should().Be(businessEmail);
         result.BusinessPhoneNumber.Should().Be(businessPhoneNumber);
         result.Address.Should().Be(address);
-        result.CheckInOutTimes.Should().Be(checkInOutTimes);
+        result.CheckOutPolicy.Should().Be(checkOutPolicy);
         result.DefaultCurrencyCode.Should().Be(CurrencyCode.DOP);
         result.ItbisRate.Rate.Should().Be(itbisRate.Rate);
         result.ServiceChargeRate.Rate.Should().Be(serviceChargeRate.Rate);
@@ -59,7 +59,7 @@ public class HotelTests
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
-            CreateCheckInOutTimes(),
+            CreateCheckOutPolicy(),
             CreateItbisRate(),
             CreateServiceChargeRate(),
             false,
@@ -84,7 +84,7 @@ public class HotelTests
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
-            CreateCheckInOutTimes(),
+            CreateCheckOutPolicy(),
             CreateItbisRate(),
             CreateServiceChargeRate(),
             true);
@@ -106,7 +106,7 @@ public class HotelTests
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
-            CreateCheckInOutTimes(),
+            CreateCheckOutPolicy(),
             CreateItbisRate(),
             CreateServiceChargeRate(),
             true);
@@ -128,7 +128,7 @@ public class HotelTests
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
-            CreateCheckInOutTimes(),
+            CreateCheckOutPolicy(),
             CreateItbisRate(),
             CreateServiceChargeRate(),
             true);
@@ -150,7 +150,7 @@ public class HotelTests
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
-            CreateCheckInOutTimes(),
+            CreateCheckOutPolicy(),
             CreateItbisRate(),
             CreateServiceChargeRate(),
             true);
@@ -172,7 +172,7 @@ public class HotelTests
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
-            CreateCheckInOutTimes(),
+            CreateCheckOutPolicy(),
             CreateItbisRate(),
             CreateServiceChargeRate(),
             true,
@@ -291,19 +291,19 @@ public class HotelTests
     }
 
     [Fact]
-    public void UpdateCheckInOutTimes_ShouldUpdateCheckInOutTimes_WhenValueIsValid()
+    public void UpdateCheckOutPolicy_ShouldUpdateCheckOutPolicy_WhenValueIsValid()
     {
         // Arrange
         var hotel = CreateHotel();
-        var newCheckInOutTimes = new CheckInOutTimes(
-            new DateTime(2026, 3, 28, 15, 0, 0),
-            new DateTime(2026, 3, 29, 11, 0, 0));
+        var newCheckOutPolicy = new CheckOutPolicy(
+            new TimeOnly(11, 0),
+            new TimeOnly(13, 0));
 
         // Act
-        hotel.UpdateCheckInOutTimes(newCheckInOutTimes);
+        hotel.UpdateCheckOutPolicy(newCheckOutPolicy);
 
         // Assert
-        hotel.CheckInOutTimes.Should().Be(newCheckInOutTimes);
+        hotel.CheckOutPolicy.Should().Be(newCheckOutPolicy);
     }
 
     [Fact]
@@ -395,7 +395,7 @@ public class HotelTests
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
-            CreateCheckInOutTimes(),
+            CreateCheckOutPolicy(),
             CreateItbisRate(),
             CreateServiceChargeRate(),
             isActive,
@@ -422,11 +422,11 @@ public class HotelTests
         return new Address("123 Main Street", "Suite 4B", "Santo Domingo", "Distrito Nacional", "10101");
     }
 
-    private static CheckInOutTimes CreateCheckInOutTimes()
+    private static CheckOutPolicy CreateCheckOutPolicy()
     {
-        return new CheckInOutTimes(
-            new DateTime(2026, 3, 28, 14, 0, 0),
-            new DateTime(2026, 3, 29, 12, 0, 0));
+        return new CheckOutPolicy(
+            new TimeOnly(10, 0),
+            new TimeOnly(12, 0));
     }
 
     private static ItbisRate CreateItbisRate() => new ItbisRate(0.18m);

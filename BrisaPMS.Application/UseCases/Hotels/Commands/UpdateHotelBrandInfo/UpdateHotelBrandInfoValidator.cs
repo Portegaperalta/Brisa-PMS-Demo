@@ -6,7 +6,7 @@ public class UpdateHotelBrandInfoValidator : AbstractValidator<UpdateHotelBrandI
 {
     public UpdateHotelBrandInfoValidator()
     {
-        RuleFor(x => x.Id)
+        RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("Field Id is required");
         
         RuleFor(x => x.LegalName)
