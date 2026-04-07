@@ -28,7 +28,7 @@ public class UpdateHotelContactInfoUseCaseTests
     }
 
     [Fact]
-    public async Task Handle_UpdatesHotelContactInfo_WhenCommandIsValid()
+    public async Task Handle_UpdatesHotelContactInfo()
     {
         // Arrange
         var hotelId = Guid.NewGuid();

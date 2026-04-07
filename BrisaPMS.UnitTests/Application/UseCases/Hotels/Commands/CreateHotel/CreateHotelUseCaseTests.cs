@@ -26,7 +26,7 @@ public class CreateHotelUseCaseTests
     }
 
     [Fact]
-    public async Task Handle_ReturnsHotelId_WhenCommandIsValid()
+    public async Task Handle_CreatesHotelAndReturnsHotelId()
     {
         // Arrange
         var createHotelCommand = new CreateHotelCommand
