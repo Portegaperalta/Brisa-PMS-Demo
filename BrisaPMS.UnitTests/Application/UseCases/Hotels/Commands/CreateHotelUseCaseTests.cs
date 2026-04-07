@@ -63,47 +63,9 @@ public class CreateHotelUseCaseTests
         result.Should().NotBe(Guid.Empty);
     }
 
-    [Fact]
-    public async Task Handle_ThrowsValidationException_WhenRequiredFieldIsEmpty()
-    {
-        // Arrange
-        var createHotelCommand = new CreateHotelCommand
-        {
-            LegalName = "",
-            CommercialName = CreateCommercialName(),
-            LogoUrl = CreateLogoUrl(),
-            BusinessEmail = CreateBusinessEmail(),
-            BusinessPhoneNumber = CreateBusinessPhoneNumber(),
-            Address1 = CreateAddress1(),
-            Address2 = CreateAddress2(),
-            City = CreateCity(),
-            Province = CreateProvince(),
-            ZipCode = CreateZipCode(),
-            CheckInTime = CreateCheckInTime(),
-            CheckOutTime = CreateCheckOutTime(),
-            DefaultCurrencyCode = CreateDefaultCurrencyCode(),
-            ItbisRate = CreateItbisRate(),
-            ServiceChargeRate = CreateServiceChargeRate(),
-        };
-
-        var validationFailures = new List<ValidationFailure>
-        {
-            new(nameof(CreateHotelCommand.LegalName), $"The field Legal Name is required")
-        };
-
-        _validatorMock.ValidateAsync(Arg.Any<CreateHotelCommand>(), Arg.Any<CancellationToken>())
-                      .Returns(Task.FromResult(new ValidationResult(validationFailures)));
-
-        // Act
-        var act = async () => await _useCase.Handle(createHotelCommand);
-
-        // Assert
-        await act.Should().ThrowAsync<BrisaPMS.Application.Exceptions.ValidationException>();
-    }
-
     [Theory]
     [MemberData(nameof(GetRequiredFieldValidationCases))]
-    public async Task Handle_ThrowsValidationException_WhenRequiredFieldIsInvalid(
+    public async Task Handle_ThrowsValidationException_WhenRequiredFieldIsEmpty(
         Action<CreateHotelCommand> arrangeInvalidField,
         string propertyName,
         string errorMessage)
