@@ -31,7 +31,7 @@ public class UpdateHotelAddressInfoUseCaseTests
     public async Task Handle_UpdatesHotelAddressInfo()
     {
         // Arrange
-        var hotelId =  Guid.NewGuid();
+        var hotelId = Guid.NewGuid();
         var hotel = CreateHotel(hotelId);
         var newAddress1 = CreateAddress1();
         var newAddress2 = CreateAddress2();
@@ -50,19 +50,19 @@ public class UpdateHotelAddressInfoUseCaseTests
         };
 
         ArrangeSuccessfulValidation();
-        
+
         _repositoryMock.GetById(hotelId).Returns(hotel);
-        
+
         // Act
         var result = _useCase.Handle(command);
-        
+
         // Assert
         hotel.Address.Address1.Should().Be(newAddress1);
         hotel.Address.Address2.Should().Be(newAddress2);
         hotel.Address.City.Should().Be(newCity);
         hotel.Address.Province.Should().Be(newProvince);
         hotel.Address.ZipCode.Should().Be(newZipCode);
-        
+
         await _repositoryMock.Received(1).Update(hotel);
         await _unitOfWorkMock.Received(1).Persist();
         await _unitOfWorkMock.DidNotReceive().Revert();
@@ -72,29 +72,31 @@ public class UpdateHotelAddressInfoUseCaseTests
     public async Task Handle_ThrowsNotFoundException_WhenHotelDoesNotExist()
     {
         // Arrange
-        var hotelId =  Guid.NewGuid();
+        var hotelId = Guid.NewGuid();
         var command = CreateUpdateHotelAddressInfoCommand
         (
             hotelId,
-            CreateAddress1(), 
+            CreateAddress1(),
             CreateAddress2(),
-            CreateCity(), 
-            CreateProvince(), 
+            CreateCity(),
+            CreateProvince(),
             CreateZipCode()
         );
-        
+
+        ArrangeSuccessfulValidation();
+
         _repositoryMock.GetById(hotelId).Returns((Hotel?)null);
-        
+
         // Act
         var act = async () => await _useCase.Handle(command);
-        
+
         // Assert
         await act.Should().ThrowAsync<NotFoundException>();
         await _repositoryMock.DidNotReceive().Update(Arg.Any<Hotel>());
         await _unitOfWorkMock.DidNotReceive().Persist();
         await _unitOfWorkMock.DidNotReceive().Revert();
     }
-    
+
     // Helper methods
     private void ArrangeSuccessfulValidation()
     {
@@ -102,8 +104,8 @@ public class UpdateHotelAddressInfoUseCaseTests
             .Returns(new ValidationResult());
     }
 
-    private static UpdateHotelAddressInfoCommand 
-        CreateUpdateHotelAddressInfoCommand(Guid hotelId, string address1, string address2, string city, 
+    private static UpdateHotelAddressInfoCommand
+        CreateUpdateHotelAddressInfoCommand(Guid hotelId, string address1, string address2, string city,
             string province, string zipCode)
     {
         return new UpdateHotelAddressInfoCommand
@@ -116,7 +118,7 @@ public class UpdateHotelAddressInfoUseCaseTests
             ZipCode = zipCode
         };
     }
-    
+
     private static Hotel CreateHotel(Guid? hotelId = null)
     {
         return new Hotel(
@@ -138,6 +140,6 @@ public class UpdateHotelAddressInfoUseCaseTests
     private static string CreateAddress1() => "223 North street";
     private static string CreateAddress2() => "Suite 2C";
     private static string CreateCity() => "Santiago";
-    private static  string CreateProvince() => "Cibao";
+    private static string CreateProvince() => "Cibao";
     private static string CreateZipCode() => "105000";
 }
