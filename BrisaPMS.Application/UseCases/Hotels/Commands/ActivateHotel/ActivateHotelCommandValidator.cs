@@ -2,9 +2,9 @@
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.ActivateHotel;
 
-public class ActivateHotelValidator : AbstractValidator<ActivateHotelCommand>
+public class ActivateHotelCommandValidator : AbstractValidator<ActivateHotelCommand>
 {
-    public ActivateHotelValidator()
+    public ActivateHotelCommandValidator()
     {
         RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("Field Hotel Id is required");

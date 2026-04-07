@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurrency;
 
-public class UpdateHotelDefaultCurrencyValidator : AbstractValidator<UpdateHotelDefaultCurrencyCommand>
+public class UpdateHotelDefaultCurrencyCommandValidator : AbstractValidator<UpdateHotelDefaultCurrencyCommand>
 {
-    UpdateHotelDefaultCurrencyValidator()
+    UpdateHotelDefaultCurrencyCommandValidator()
     {
         RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("Field Hotel Id is required");

@@ -4,13 +4,13 @@ using FluentValidation.TestHelper;
 
 namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelAddressInfo;
 
-public class UpdateHotelAddressInfoValidatorTests
+public class UpdateHotelAddressInfoCommandValidatorTests
 {
-    private readonly UpdateHotelAddressInfoValidator _validator;
+    private readonly UpdateHotelAddressInfoCommandValidator _commandValidator;
 
-    public UpdateHotelAddressInfoValidatorTests()
+    public UpdateHotelAddressInfoCommandValidatorTests()
     {
-        _validator = new UpdateHotelAddressInfoValidator();
+        _commandValidator = new UpdateHotelAddressInfoCommandValidator();
     }
     
     [Fact]
@@ -20,7 +20,7 @@ public class UpdateHotelAddressInfoValidatorTests
         var command = CreateUpdateHotelAddressInfoCommand(Guid.Empty, "", "", "", "", "");
         
         // Act
-        var result =  _validator.TestValidate(command);
+        var result =  _commandValidator.TestValidate(command);
         
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.HotelId);
@@ -45,7 +45,7 @@ public class UpdateHotelAddressInfoValidatorTests
         );
         
         // Act
-        var result =  _validator.TestValidate(command);
+        var result =  _commandValidator.TestValidate(command);
         
         // Arrange
         result.ShouldHaveValidationErrorFor(x => x.Address1);
@@ -72,7 +72,7 @@ public class UpdateHotelAddressInfoValidatorTests
             );
         
         // Act
-        var result =  _validator.TestValidate(command);
+        var result =  _commandValidator.TestValidate(command);
         
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.ZipCode);
