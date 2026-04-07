@@ -28,7 +28,7 @@ public class UpdateHotelBrandInfoUseCaseTests
   }
 
   [Fact]
-  public async Task Handle_UpdatesHotelBrandInfo_WhenCommandIsValid()
+  public async Task Handle_UpdatesHotelBrandInfo()
   {
     // Arrange
     var hotelId = Guid.NewGuid();
