@@ -154,7 +154,7 @@ public class UpdateHotelBrandInfoUseCaseTests
     var act = async () => await _useCase.Handle(command);
 
     // Assert
-    await act.Should().ThrowAsync<HotelNotFoundException>();
+    await act.Should().ThrowAsync<NotFoundException>();
     await _repositoryMock.DidNotReceive().Update(Arg.Any<Hotel>());
     await _unitOfWorkMock.DidNotReceive().Persist();
     await _unitOfWorkMock.DidNotReceive().Revert();
