@@ -79,7 +79,7 @@ public class UpdateHotelBrandInfoUseCaseTests
   }
 
   [Fact]
-  public async Task Handle_ThrowsValidationException_WhenCommandFiledsAreEmpty()
+  public async Task Handle_ThrowsValidationException_WhenCommandFieldsAreEmpty()
   {
     // Arrange
     var command = CreateCommand(Guid.Empty, string.Empty, string.Empty, null);
