@@ -5,8 +5,6 @@ using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Hotels;
 using BrisaPMS.Domain.Shared.Enums; 
 using BrisaPMS.Domain.Shared.ValueObjects;
-using FluentValidation;
-using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel;
 
@@ -14,23 +12,15 @@ public class CreateHotelUseCase : IRequestHandler<CreateHotelCommand, Guid>
 {
     private readonly IHotelsRepository _repository;
     private readonly IUnitOfWork  _unitOfWork;
-    private readonly IValidator<CreateHotelCommand> _validator;
     
-    public CreateHotelUseCase(IHotelsRepository repository, IUnitOfWork unitOfWork, 
-        IValidator<CreateHotelCommand> validator)
+    public CreateHotelUseCase(IHotelsRepository repository, IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
-        _validator = validator;
     }
     
     public async Task<Guid> Handle(CreateHotelCommand command)
     {
-        var validationResult = await _validator.ValidateAsync(command);
-        
-        if (validationResult.IsValid is not true)
-            throw new ValidationException(validationResult);
-        
         var businessEmail = new Email(command.BusinessEmail);
         var businessPhoneNumber = new PhoneNumber(command.BusinessPhoneNumber);
         var logoUrl = new Url(command.LogoUrl!);

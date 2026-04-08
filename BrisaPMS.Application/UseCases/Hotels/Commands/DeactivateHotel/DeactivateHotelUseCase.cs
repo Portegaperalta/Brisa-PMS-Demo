@@ -2,8 +2,6 @@ using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.Utilities.Mediator;
-using FluentValidation;
-using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.DeactivateHotel;
 
@@ -11,23 +9,15 @@ public class DeactivateHotelUseCase : IRequestHandler<DeactivateHotelCommand, bo
 {
     private readonly IHotelsRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidator<DeactivateHotelCommand> _validator;
 
-    public DeactivateHotelUseCase(IHotelsRepository repository,  IUnitOfWork unitOfWork,
-        IValidator<DeactivateHotelCommand> validator)
+    public DeactivateHotelUseCase(IHotelsRepository repository,  IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
-        _validator = validator;
     }
 
     public async Task<bool> Handle(DeactivateHotelCommand command)
     {
-        var validationResult = await _validator.ValidateAsync(command);
-        
-        if (validationResult.IsValid is not true)
-            throw new ValidationException(validationResult);
-        
         var hotel = await _repository.GetById(command.HotelId);
         
         if (hotel is null)
