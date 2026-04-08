@@ -1,13 +1,14 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentValidation;
 using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelContactInfo;
 
-public class UpdateHotelContactInfoUseCase
+public class UpdateHotelContactInfoUseCase : IRequestHandler<UpdateHotelContactInfoCommand, bool>
 {
     private readonly IHotelsRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
@@ -21,7 +22,7 @@ public class UpdateHotelContactInfoUseCase
         _validator = validator;
     }
 
-    public async Task Handle(UpdateHotelContactInfoCommand command)
+    public async Task<bool> Handle(UpdateHotelContactInfoCommand command)
     {
         var validationResult = await _validator.ValidateAsync(command);
         
@@ -35,13 +36,15 @@ public class UpdateHotelContactInfoUseCase
         
         var newBusinessEmail = new Email(command.BusinessEmail);
         var newBusinessPhoneNumber = new PhoneNumber(command.BusinessPhoneNumber);
-
+        
+        hotel.UpdateBusinessEmail(newBusinessEmail);
+        hotel.UpdateBusinessPhoneNumber(newBusinessPhoneNumber);
+        
         try
         {
-            hotel.UpdateBusinessEmail(newBusinessEmail);
-            hotel.UpdateBusinessPhoneNumber(newBusinessPhoneNumber);
             await _repository.Update(hotel);
             await _unitOfWork.Persist();
+            return true;
         }
         catch (Exception)
         {

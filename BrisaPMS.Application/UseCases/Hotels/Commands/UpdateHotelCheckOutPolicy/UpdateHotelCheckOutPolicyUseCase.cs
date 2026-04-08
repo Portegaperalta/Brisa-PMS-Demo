@@ -2,12 +2,13 @@ using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Domain.Hotels;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.Utilities.Mediator;
 using FluentValidation;
 using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolicy;
 
-public class UpdateHotelCheckOutPolicyUseCase
+public class UpdateHotelCheckOutPolicyUseCase : IRequestHandler<UpdateHotelCheckOutPolicyCommand, bool>
 {
     private readonly IHotelsRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
@@ -21,7 +22,7 @@ public class UpdateHotelCheckOutPolicyUseCase
         _validator = validator;
     }
 
-    public async Task Handle(UpdateHotelCheckOutPolicyCommand command)
+    public async Task<bool> Handle(UpdateHotelCheckOutPolicyCommand command)
     {
         var validationResult = await _validator.ValidateAsync(command);
         
@@ -35,11 +36,13 @@ public class UpdateHotelCheckOutPolicyUseCase
 
         var newCheckOutPolicy = new CheckOutPolicy(command.CheckInTime, command.CheckOutTime);
         
+        hotel.UpdateCheckOutPolicy(newCheckOutPolicy);
+        
         try
         {
-            hotel.UpdateCheckOutPolicy(newCheckOutPolicy);
             await _repository.Update(hotel);
             await _unitOfWork.Persist();
+            return true;
         }
         catch (Exception)
         {

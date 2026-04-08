@@ -1,12 +1,13 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.Utilities.Mediator;
 using FluentValidation;
 using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.ActivateHotel;
 
-public class ActivateHotelUseCase
+public class ActivateHotelUseCase : IRequestHandler<ActivateHotelCommand, bool>
 {
     private readonly IHotelsRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
@@ -20,7 +21,7 @@ public class ActivateHotelUseCase
         _validator = validator;
     }
 
-    public async Task Handle(ActivateHotelCommand command)
+    public async Task<bool> Handle(ActivateHotelCommand command)
     {
         var validationResult = await _validator.ValidateAsync(command);
         
@@ -32,11 +33,13 @@ public class ActivateHotelUseCase
         if (hotel is null)
             throw new NotFoundException("Hotel", command.HotelId);
 
+        hotel.SetAsActive();
+        
         try
         {
-            hotel.SetAsActive();
             await _repository.Update(hotel);
             await _unitOfWork.Persist();
+            return true;
         }
         catch (Exception)
         {

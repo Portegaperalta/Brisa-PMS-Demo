@@ -1,13 +1,14 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentValidation;
 using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelBrandInfo;
 
-public class UpdateHotelBrandInfoUseCase
+public class UpdateHotelBrandInfoUseCase : IRequestHandler<UpdateHotelBrandInfoCommand, bool>
 {
     private readonly IHotelsRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
@@ -21,7 +22,7 @@ public class UpdateHotelBrandInfoUseCase
         _validator = validator;
     }
 
-    public async Task Handle(UpdateHotelBrandInfoCommand command)
+    public async Task<bool> Handle(UpdateHotelBrandInfoCommand command)
     {
         var validationResult = await _validator.ValidateAsync(command);
         
@@ -33,19 +34,20 @@ public class UpdateHotelBrandInfoUseCase
         if (hotel is null)
             throw new NotFoundException("Hotel",command.HotelId);
 
+        hotel.UpdateLegalName(command.LegalName);
+        hotel.UpdateCommercialName(command.CommercialName);
+            
+        if (command.LogoUrl is not null)
+        {
+            var newLogo = new Url(command.LogoUrl);
+            hotel.UpdateLogoUrl(newLogo);
+        }
+        
         try
         {
-            hotel.UpdateLegalName(command.LegalName);
-            hotel.UpdateCommercialName(command.CommercialName);
-            
-            if (command.LogoUrl is not null)
-            {
-                var newLogo = new Url(command.LogoUrl);
-                hotel.UpdateLogoUrl(newLogo);
-            }
-            
             await _repository.Update(hotel);
             await _unitOfWork.Persist();
+            return true;
         }
         catch (Exception)
         {

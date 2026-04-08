@@ -1,6 +1,7 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentValidation;
@@ -8,7 +9,7 @@ using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurrency;
 
-public class UpdateHotelDefaultCurrencyUseCase
+public class UpdateHotelDefaultCurrencyUseCase : IRequestHandler<UpdateHotelDefaultCurrencyCommand, bool>
 {
     private readonly IHotelsRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
@@ -22,7 +23,7 @@ public class UpdateHotelDefaultCurrencyUseCase
         _validator = validator;
     }
 
-    public async Task Handle(UpdateHotelDefaultCurrencyCommand command)
+    public async Task<bool> Handle(UpdateHotelDefaultCurrencyCommand command)
     {
         var validationResult = await _validator.ValidateAsync(command);
         
@@ -36,11 +37,13 @@ public class UpdateHotelDefaultCurrencyUseCase
 
         var newDefaultCurrencyCode = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), command.DefaultCurrencyCode);
         
+        hotel.UpdateDefaultCurrencyCode(newDefaultCurrencyCode);
+        
         try
         {
-            hotel.UpdateDefaultCurrencyCode(newDefaultCurrencyCode);
             await _repository.Update(hotel);
             await _unitOfWork.Persist();
+            return true;
         }
         catch (Exception)
         {

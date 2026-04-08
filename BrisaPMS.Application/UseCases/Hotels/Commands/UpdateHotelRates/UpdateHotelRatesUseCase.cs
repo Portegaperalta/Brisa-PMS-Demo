@@ -1,13 +1,14 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Billing;
 using FluentValidation;
 using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelRates;
 
-public class UpdateHotelRatesUseCase
+public class UpdateHotelRatesUseCase : IRequestHandler<UpdateHotelRatesCommand, bool>
 {
     private readonly IHotelsRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
@@ -21,7 +22,7 @@ public class UpdateHotelRatesUseCase
         _validator = validator;
     }
 
-    public async Task Handle(UpdateHotelRatesCommand command)
+    public async Task<bool> Handle(UpdateHotelRatesCommand command)
     {
         var validationResult = await _validator.ValidateAsync(command);
         
@@ -35,13 +36,15 @@ public class UpdateHotelRatesUseCase
 
         var newItbisRate = new ItbisRate(command.ItbisRate);
         var newServiceChargeRate = new ServiceChargeRate(command.ServiceChargeRate);
+        
+        hotel.UpdateItbisRate(newItbisRate);
+        hotel.UpdateServiceChargeRate(newServiceChargeRate);
 
         try
         {
-            hotel.UpdateItbisRate(newItbisRate);
-            hotel.UpdateServiceChargeRate(newServiceChargeRate);
             await _repository.Update(hotel);
             await _unitOfWork.Persist();
+            return true;
         }
         catch (Exception)
         {
