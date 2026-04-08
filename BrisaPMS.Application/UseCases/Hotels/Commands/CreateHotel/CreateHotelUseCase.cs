@@ -1,15 +1,16 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Hotels;
-using BrisaPMS.Domain.Shared.Enums;
+using BrisaPMS.Domain.Shared.Enums; 
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentValidation;
 using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel;
 
-public class CreateHotelUseCase
+public class CreateHotelUseCase : IRequestHandler<CreateHotelCommand, Guid>
 {
     private readonly IHotelsRepository _repository;
     private readonly IUnitOfWork  _unitOfWork;
