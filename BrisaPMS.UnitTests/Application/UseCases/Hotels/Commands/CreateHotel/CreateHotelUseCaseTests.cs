@@ -7,6 +7,7 @@ using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 
 namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.CreateHotel;
 
@@ -63,7 +64,28 @@ public class CreateHotelUseCaseTests
         result.Should().NotBe(Guid.Empty);
     }
 
+    [Fact]
+    public async Task Handle_MakesRollBack_WhenExceptionIsThrown()
+    {
+        // Arrange
+        var command = CreateValidCommand();
+        _repositoryMock.Create(Arg.Any<Hotel>()).Throws<Exception>();
+        ArrangeSuccessfulValidation(command);
+
+        // Act
+        var act = async () => await _useCase.Handle(command);
+
+        // Assert
+        await act.Should().ThrowAsync<Exception>();
+        await _unitOfWorkMock.Received(1).Revert();
+    }
+
     // Helper functions
+    private void ArrangeSuccessfulValidation(CreateHotelCommand command)
+    {
+        _validatorMock.ValidateAsync(command).Returns(new ValidationResult());
+    }
+
     private static CreateHotelCommand CreateValidCommand()
     {
         return new CreateHotelCommand
@@ -85,7 +107,7 @@ public class CreateHotelUseCaseTests
             ServiceChargeRate = CreateServiceChargeRate(),
         };
     }
-    
+
     private static string CreateLegalName() => "Brisa S.R.L";
     private static string CreateCommercialName() => "Brisa Hotel";
     private static string CreateLogoUrl() => "https://testlogourl.jpg";
