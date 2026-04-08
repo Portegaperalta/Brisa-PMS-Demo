@@ -5,11 +5,11 @@ namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurren
 
 public class UpdateHotelDefaultCurrencyCommandValidator : AbstractValidator<UpdateHotelDefaultCurrencyCommand>
 {
-    UpdateHotelDefaultCurrencyCommandValidator()
+    public UpdateHotelDefaultCurrencyCommandValidator()
     {
         RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("Field Hotel Id is required");
-        
+
         RuleFor(x => x.DefaultCurrencyCode)
             .NotEmpty().WithMessage("CurrencyCode is required")
             .MaximumLength(3).WithMessage("CurrencyCode cannot exceed 3 characters")
