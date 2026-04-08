@@ -1,8 +1,9 @@
+using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelAddressInfo;
 
-public class UpdateHotelAddressInfoCommand
+public class UpdateHotelAddressInfoCommand : IRequest<bool>
 {
     public required Guid HotelId {get; set;}
     public required string Address1 {get; set;}
