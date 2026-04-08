@@ -27,6 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Application\UseCases\Hotels\Commands\UpdateHotelCheckOutPolicy\" />
+    <Folder Include="Application\UseCases\Hotels\Commands\UpdateHotelRates\" />
     <Folder Include="Core\Domain\Discounts\" />
   </ItemGroup>
 

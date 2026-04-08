@@ -2,9 +2,9 @@
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolicy;
 
-public class UpdateHotelCheckOutPolicyValidator : AbstractValidator<UpdateHotelCheckOutPolicyCommand>
+public class UpdateHotelCheckOutPolicyCommandValidator : AbstractValidator<UpdateHotelCheckOutPolicyCommand>
 {
-    public UpdateHotelCheckOutPolicyValidator()
+    public UpdateHotelCheckOutPolicyCommandValidator()
     {
         RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("Field Hotel Id is required");

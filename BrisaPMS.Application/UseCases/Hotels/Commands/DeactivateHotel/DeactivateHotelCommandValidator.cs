@@ -2,9 +2,9 @@
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.DeactivateHotel;
 
-public class DeactivateHotelValidator : AbstractValidator<DeactivateHotelCommand>
+public class DeactivateHotelCommandValidator : AbstractValidator<DeactivateHotelCommand>
 {
-    public DeactivateHotelValidator()
+    public DeactivateHotelCommandValidator()
     {
         RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("Field Hotel Id is required");

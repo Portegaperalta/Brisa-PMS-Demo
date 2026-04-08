@@ -2,9 +2,9 @@ using FluentValidation;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelContactInfo;
 
-public class UpdateHotelContactInfoValidator : AbstractValidator<UpdateHotelContactInfoCommand>
+public class UpdateHotelContactInfoCommandValidator : AbstractValidator<UpdateHotelContactInfoCommand>
 {
-    public UpdateHotelContactInfoValidator()
+    public UpdateHotelContactInfoCommandValidator()
     {
         RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("Field Id is required.");

@@ -3,13 +3,13 @@ using FluentValidation;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurrency;
 
-public class UpdateHotelDefaultCurrencyValidator : AbstractValidator<UpdateHotelDefaultCurrencyCommand>
+public class UpdateHotelDefaultCurrencyCommandValidator : AbstractValidator<UpdateHotelDefaultCurrencyCommand>
 {
-    UpdateHotelDefaultCurrencyValidator()
+    public UpdateHotelDefaultCurrencyCommandValidator()
     {
         RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("Field Hotel Id is required");
-        
+
         RuleFor(x => x.DefaultCurrencyCode)
             .NotEmpty().WithMessage("CurrencyCode is required")
             .MaximumLength(3).WithMessage("CurrencyCode cannot exceed 3 characters")

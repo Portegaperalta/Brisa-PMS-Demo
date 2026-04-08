@@ -2,9 +2,9 @@
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelRates;
 
-public class UpdateHotelRatesValidator : AbstractValidator<UpdateHotelRatesCommand>
+public class UpdateHotelRatesCommandValidator : AbstractValidator<UpdateHotelRatesCommand>
 {
-    public UpdateHotelRatesValidator()
+    public UpdateHotelRatesCommandValidator()
     {
         RuleFor(x => x.HotelId)
             .NotEmpty().WithMessage("Field Hotel Id is required");

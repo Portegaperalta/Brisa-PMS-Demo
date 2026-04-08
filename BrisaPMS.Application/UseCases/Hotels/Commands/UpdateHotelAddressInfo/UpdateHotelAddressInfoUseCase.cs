@@ -1,6 +1,7 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Domain.Shared.ValueObjects;
+using BrisaPMS.Application.Exceptions;
 using FluentValidation;
 using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
@@ -30,7 +31,7 @@ public class UpdateHotelAddressInfoUseCase
         var hotel = await _repository.GetById(command.HotelId);
         
         if (hotel is null)
-            throw new ArgumentException($"Hotel with id {command.HotelId} not found");
+            throw new NotFoundException("Hotel", command.HotelId);
         
         var newAddress = new Address
             (
