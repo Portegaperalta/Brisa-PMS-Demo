@@ -56,7 +56,7 @@ public class UpdateHotelBrandInfoUseCaseTests
   }
 
   [Fact]
-  public async Task Handle_ThrowsHotelNotFoundException_WhenHotelDoesNotExist()
+  public async Task Handle_ThrowsNotFoundException_WhenHotelDoesNotExist()
   {
     // Arrange
     var hotelId = Guid.NewGuid();
