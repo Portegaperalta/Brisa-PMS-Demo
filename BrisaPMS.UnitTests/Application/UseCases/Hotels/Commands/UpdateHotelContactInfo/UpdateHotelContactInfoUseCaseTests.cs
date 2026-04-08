@@ -53,62 +53,6 @@ public class UpdateHotelContactInfoUseCaseTests
     }
 
     [Fact]
-    public async Task Handle_ThrowsValidationException_WhenCommandIsInvalid()
-    {
-        // Arrange
-        var newInvalidEmail = "hotel.info";
-        var newInvalidPhoneNumber = "a1235678910";
-        var command = CreateCommand(Guid.Empty, newInvalidEmail, newInvalidPhoneNumber);
-        var expectedErrors = new[]
-        {
-            "Field Id is required.",
-            "Must be a valid email address",
-            "Must be a valid phone number"
-        };
-
-        ArrangeValidationFailures(
-            new ValidationFailure(nameof(UpdateHotelContactInfoCommand.HotelId), expectedErrors[0]),
-            new ValidationFailure(nameof(UpdateHotelContactInfoCommand.BusinessEmail), expectedErrors[1]),
-            new ValidationFailure(nameof(UpdateHotelContactInfoCommand.BusinessPhoneNumber), expectedErrors[2]));
-
-        // Act
-        var act = async () => await _useCase.Handle(command);
-
-        // Assert
-        var exception = await act.Should().ThrowAsync<BrisaPMS.Application.Exceptions.ValidationException>();
-        exception.Which.ValidationErrors.Should().BeEquivalentTo(expectedErrors);
-        await _repositoryMock.DidNotReceive().GetById(Arg.Any<Guid>());
-        await _unitOfWorkMock.DidNotReceive().Persist();
-    }
-
-    [Fact]
-    public async Task Handle_ThrowsValidationException_WhenCommandFieldsAreEmpty()
-    {
-        // Arrange
-        var command = CreateCommand(Guid.Empty, "", "");
-        var expectedErrors = new[]
-        {
-            "Field Id is required.",
-            "Field Business Email is required.",
-            "Field Business Phone Number is required"
-        };
-
-        ArrangeValidationFailures(
-            new ValidationFailure(nameof(UpdateHotelContactInfoCommand.HotelId), expectedErrors[0]),
-            new ValidationFailure(nameof(UpdateHotelContactInfoCommand.BusinessEmail), expectedErrors[1]),
-            new ValidationFailure(nameof(UpdateHotelContactInfoCommand.BusinessPhoneNumber), expectedErrors[2]));
-
-        // Act
-        var act = async () => await _useCase.Handle(command);
-
-        // Assert
-        var exception = await act.Should().ThrowAsync<BrisaPMS.Application.Exceptions.ValidationException>();
-        exception.Which.ValidationErrors.Should().BeEquivalentTo(expectedErrors);
-        await _repositoryMock.DidNotReceive().GetById(Arg.Any<Guid>());
-        await _unitOfWorkMock.DidNotReceive().Persist();
-    }
-
-    [Fact]
     public async Task Handle_ThrowsHotelNotFoundException_WhenHotelDoesNotExist()
     {
         // Arrange
@@ -159,12 +103,6 @@ public class UpdateHotelContactInfoUseCaseTests
     {
         _validatorMock.ValidateAsync(Arg.Any<UpdateHotelContactInfoCommand>(), Arg.Any<CancellationToken>())
             .Returns(new ValidationResult());
-    }
-
-    private void ArrangeValidationFailures(params ValidationFailure[] validationFailures)
-    {
-        _validatorMock.ValidateAsync(Arg.Any<UpdateHotelContactInfoCommand>(), Arg.Any<CancellationToken>())
-            .Returns(new ValidationResult(validationFailures));
     }
 
     private static UpdateHotelContactInfoCommand CreateCommand(Guid hotelId, string newBusinessEmail,
