@@ -1,10 +1,11 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Rooms;
 
 namespace BrisaPMS.Application.UseCases.Rooms.Commands.CreateRoom;
 
-public class CreateRoomUseCase
+public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
 {
     private readonly IRoomsRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
@@ -17,18 +18,18 @@ public class CreateRoomUseCase
 
     public async Task<Guid> Handle(CreateRoomCommand command)
     {
+        var room = new Room
+        (
+            command.HotelId,
+            command.RoomTypeId,
+            command.Number,
+            command.Floor,
+            command.AvailabilityStatus,
+            command.HygieneStatus
+        );
+        
         try
         {
-            var room = new Room
-            (
-                command.HotelId,
-                command.RoomTypeId,
-                command.Number,
-                command.Floor,
-                command.AvailabilityStatus,
-                command.HygieneStatus
-            );
-
             var response = await _repository.Create(room);
             await _unitOfWork.Persist();
             return response.Id;
