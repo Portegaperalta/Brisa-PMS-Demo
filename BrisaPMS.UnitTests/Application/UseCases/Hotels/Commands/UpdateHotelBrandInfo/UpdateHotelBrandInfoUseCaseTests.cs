@@ -7,7 +7,6 @@ using BrisaPMS.Domain.Hotels;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 using FluentValidation;
-using FluentValidation.Results;
 using NSubstitute;
 
 namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelBrandInfo;
@@ -15,16 +14,14 @@ namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelBra
 public class UpdateHotelBrandInfoUseCaseTests
 {
   private readonly IHotelsRepository _repositoryMock;
-  private readonly IValidator<UpdateHotelBrandInfoCommand> _validatorMock;
   private readonly IUnitOfWork _unitOfWorkMock;
   private readonly UpdateHotelBrandInfoUseCase _useCase;
 
   public UpdateHotelBrandInfoUseCaseTests()
   {
     _repositoryMock = Substitute.For<IHotelsRepository>();
-    _validatorMock = Substitute.For<IValidator<UpdateHotelBrandInfoCommand>>();
     _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-    _useCase = new UpdateHotelBrandInfoUseCase(_repositoryMock, _unitOfWorkMock, _validatorMock);
+    _useCase = new UpdateHotelBrandInfoUseCase(_repositoryMock, _unitOfWorkMock);
   }
 
   [Fact]
@@ -37,8 +34,6 @@ public class UpdateHotelBrandInfoUseCaseTests
     var newCommercialName = "Brisa Beach Hotel";
     var newLogoUrl = "https://example.com/new-logo.png";
     var command = CreateCommand(hotelId, newLegalName, newCommercialName, newLogoUrl);
-
-    ArrangeSuccessfulValidation();
 
     _repositoryMock.GetById(hotelId).Returns(hotel);
 
@@ -62,8 +57,6 @@ public class UpdateHotelBrandInfoUseCaseTests
     var hotelId = Guid.NewGuid();
     var command = CreateCommand(hotelId, CreateLegalName(), CreateCommercialName(), CreateLogoUrl());
 
-    ArrangeSuccessfulValidation();
-
     _repositoryMock.GetById(hotelId).Returns((Hotel?)null);
 
     // Act
@@ -84,8 +77,6 @@ public class UpdateHotelBrandInfoUseCaseTests
     var hotel = CreateHotel(hotelId);
     var command = CreateCommand(hotelId, CreateLegalName(), CreateCommercialName(), CreateLogoUrl());
 
-    ArrangeSuccessfulValidation();
-
     _repositoryMock.GetById(hotelId).Returns(hotel);
 
     _repositoryMock
@@ -102,18 +93,6 @@ public class UpdateHotelBrandInfoUseCaseTests
   }
 
   // Helper functions
-  private void ArrangeSuccessfulValidation()
-  {
-    _validatorMock.ValidateAsync(Arg.Any<UpdateHotelBrandInfoCommand>(), Arg.Any<CancellationToken>())
-        .Returns(new ValidationResult());
-  }
-
-  private void ArrangeValidationFailures(params ValidationFailure[] validationFailures)
-  {
-    _validatorMock.ValidateAsync(Arg.Any<UpdateHotelBrandInfoCommand>(), Arg.Any<CancellationToken>())
-        .Returns(new ValidationResult(validationFailures));
-  }
-
   private static UpdateHotelBrandInfoCommand CreateCommand(Guid hotelId, string legalName,
       string commercialName, string? logoUrl)
   {

@@ -7,7 +7,6 @@ using BrisaPMS.Domain.Hotels;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 using FluentValidation;
-using FluentValidation.Results;
 using NSubstitute;
 
 namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelRates;
@@ -15,16 +14,14 @@ namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelRat
 public class UpdateHotelRatesUseCaseTests
 {
     private readonly IHotelsRepository _repositoryMock;
-    private readonly IValidator<UpdateHotelRatesCommand> _validatorMock;
     private readonly IUnitOfWork _unitOfWorkMock;
     private readonly UpdateHotelRatesUseCase _useCase;
 
     public UpdateHotelRatesUseCaseTests()
     {
         _repositoryMock = Substitute.For<IHotelsRepository>();
-        _validatorMock = Substitute.For<IValidator<UpdateHotelRatesCommand>>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _useCase = new UpdateHotelRatesUseCase(_repositoryMock, _unitOfWorkMock, _validatorMock);
+        _useCase = new UpdateHotelRatesUseCase(_repositoryMock, _unitOfWorkMock);
     }
 
     [Fact]
@@ -36,8 +33,6 @@ public class UpdateHotelRatesUseCaseTests
         var newItbisRate = 0.19m;
         var newServiceChargeRate = 0.12m;
         var command = CreateCommand(hotelId, newItbisRate, newServiceChargeRate);
-
-        ArrangeSuccessfulValidation();
 
         _repositoryMock.GetById(hotelId).Returns(hotel);
 
@@ -59,8 +54,6 @@ public class UpdateHotelRatesUseCaseTests
         var hotelId = Guid.NewGuid();
         var command = CreateCommand(hotelId, CreateItbisRate(), CreateServiceChargeRate());
 
-        ArrangeSuccessfulValidation();
-
         _repositoryMock.GetById(hotelId).Returns((Hotel?)null);
 
         // Act
@@ -81,8 +74,6 @@ public class UpdateHotelRatesUseCaseTests
         var hotel = CreateHotel(hotelId);
         var command = CreateCommand(hotelId, CreateItbisRate(), CreateServiceChargeRate());
 
-        ArrangeSuccessfulValidation();
-
         _repositoryMock.GetById(hotelId).Returns(hotel);
 
         _repositoryMock
@@ -99,12 +90,6 @@ public class UpdateHotelRatesUseCaseTests
     }
 
     // Helper functions
-    private void ArrangeSuccessfulValidation()
-    {
-        _validatorMock.ValidateAsync(Arg.Any<UpdateHotelRatesCommand>(), Arg.Any<CancellationToken>())
-            .Returns(new ValidationResult());
-    }
-
     private static UpdateHotelRatesCommand CreateCommand(Guid hotelId, decimal itbisRate, decimal serviceChargeRate)
     {
         return new UpdateHotelRatesCommand

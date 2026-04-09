@@ -7,7 +7,6 @@ using BrisaPMS.Domain.Hotels;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 using FluentValidation;
-using FluentValidation.Results;
 using NSubstitute;
 
 namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolicy;
@@ -15,16 +14,14 @@ namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelChe
 public class UpdateHotelCheckOutPolicyUseCaseTests
 {
   private readonly IHotelsRepository _repositoryMock;
-  private readonly IValidator<UpdateHotelCheckOutPolicyCommand> _validatorMock;
   private readonly IUnitOfWork _unitOfWorkMock;
   private readonly UpdateHotelCheckOutPolicyUseCase _useCase;
 
   public UpdateHotelCheckOutPolicyUseCaseTests()
   {
     _repositoryMock = Substitute.For<IHotelsRepository>();
-    _validatorMock = Substitute.For<IValidator<UpdateHotelCheckOutPolicyCommand>>();
     _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-    _useCase = new UpdateHotelCheckOutPolicyUseCase(_repositoryMock, _unitOfWorkMock, _validatorMock);
+    _useCase = new UpdateHotelCheckOutPolicyUseCase(_repositoryMock, _unitOfWorkMock);
   }
 
   [Fact]
@@ -36,8 +33,6 @@ public class UpdateHotelCheckOutPolicyUseCaseTests
     var newCheckInTime = new TimeOnly(11, 0);
     var newCheckOutTime = new TimeOnly(13, 0);
     var command = CreateCommand(hotelId, newCheckInTime, newCheckOutTime);
-
-    ArrangeSuccessfulValidation();
 
     _repositoryMock.GetById(hotelId).Returns(hotel);
 
@@ -53,40 +48,11 @@ public class UpdateHotelCheckOutPolicyUseCaseTests
   }
 
   [Fact]
-  public async Task Handle_ThrowsValidationException_WhenCommandIsInvalid()
-  {
-    // Arrange
-    var command = CreateCommand(Guid.Empty, default, default);
-    var expectedErrors = new[]
-    {
-            "Field Hotel Id is required",
-            "The field  CheckInTime is required",
-            "The field  CheckOutTime is required"
-        };
-
-    ArrangeValidationFailures(
-        new ValidationFailure(nameof(UpdateHotelCheckOutPolicyCommand.HotelId), expectedErrors[0]),
-        new ValidationFailure(nameof(UpdateHotelCheckOutPolicyCommand.CheckInTime), expectedErrors[1]),
-        new ValidationFailure(nameof(UpdateHotelCheckOutPolicyCommand.CheckOutTime), expectedErrors[2]));
-
-    // Act
-    var act = async () => await _useCase.Handle(command);
-
-    // Assert
-    var exception = await act.Should().ThrowAsync<BrisaPMS.Application.Exceptions.ValidationException>();
-    exception.Which.ValidationErrors.Should().BeEquivalentTo(expectedErrors);
-    await _repositoryMock.DidNotReceive().GetById(Arg.Any<Guid>());
-    await _unitOfWorkMock.DidNotReceive().Persist();
-  }
-
-  [Fact]
   public async Task Handle_ThrowsNotFoundException_WhenHotelDoesNotExist()
   {
     // Arrange
     var hotelId = Guid.NewGuid();
     var command = CreateCommand(hotelId, CreateCheckInTime(), CreateCheckOutTime());
-
-    ArrangeSuccessfulValidation();
 
     _repositoryMock.GetById(hotelId).Returns((Hotel?)null);
 
@@ -108,8 +74,6 @@ public class UpdateHotelCheckOutPolicyUseCaseTests
     var hotel = CreateHotel(hotelId);
     var command = CreateCommand(hotelId, CreateCheckInTime(), CreateCheckOutTime());
 
-    ArrangeSuccessfulValidation();
-
     _repositoryMock.GetById(hotelId).Returns(hotel);
 
     _repositoryMock
@@ -126,18 +90,6 @@ public class UpdateHotelCheckOutPolicyUseCaseTests
   }
 
   // Helper functions
-  private void ArrangeSuccessfulValidation()
-  {
-    _validatorMock.ValidateAsync(Arg.Any<UpdateHotelCheckOutPolicyCommand>(), Arg.Any<CancellationToken>())
-        .Returns(new ValidationResult());
-  }
-
-  private void ArrangeValidationFailures(params ValidationFailure[] validationFailures)
-  {
-    _validatorMock.ValidateAsync(Arg.Any<UpdateHotelCheckOutPolicyCommand>(), Arg.Any<CancellationToken>())
-        .Returns(new ValidationResult(validationFailures));
-  }
-
   private static UpdateHotelCheckOutPolicyCommand CreateCommand(
       Guid hotelId,
       TimeOnly checkInTime,

@@ -8,7 +8,6 @@ using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 using FluentValidation;
-using FluentValidation.Results;
 using NSubstitute;
 
 namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurrency;
@@ -16,16 +15,14 @@ namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelDef
 public class UpdateHotelDefaultCurrencyUseCaseTests
 {
   private readonly IHotelsRepository _repositoryMock;
-  private readonly IValidator<UpdateHotelDefaultCurrencyCommand> _validatorMock;
   private readonly IUnitOfWork _unitOfWorkMock;
   private readonly UpdateHotelDefaultCurrencyUseCase _useCase;
 
   public UpdateHotelDefaultCurrencyUseCaseTests()
   {
     _repositoryMock = Substitute.For<IHotelsRepository>();
-    _validatorMock = Substitute.For<IValidator<UpdateHotelDefaultCurrencyCommand>>();
     _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-    _useCase = new UpdateHotelDefaultCurrencyUseCase(_repositoryMock, _unitOfWorkMock, _validatorMock);
+    _useCase = new UpdateHotelDefaultCurrencyUseCase(_repositoryMock, _unitOfWorkMock);
   }
 
   [Fact]
@@ -36,8 +33,6 @@ public class UpdateHotelDefaultCurrencyUseCaseTests
     var hotel = CreateHotel(hotelId);
     var newDefaultCurrencyCode = "USD";
     var command = CreateCommand(hotelId, newDefaultCurrencyCode);
-
-    ArrangeSuccessfulValidation();
 
     _repositoryMock.GetById(hotelId).Returns(hotel);
 
@@ -57,8 +52,6 @@ public class UpdateHotelDefaultCurrencyUseCaseTests
     // Arrange
     var hotelId = Guid.NewGuid();
     var command = CreateCommand(hotelId, CreateDefaultCurrencyCode());
-
-    ArrangeSuccessfulValidation();
 
     _repositoryMock.GetById(hotelId).Returns((Hotel?)null);
 
@@ -80,8 +73,6 @@ public class UpdateHotelDefaultCurrencyUseCaseTests
     var hotel = CreateHotel(hotelId);
     var command = CreateCommand(hotelId, CreateDefaultCurrencyCode());
 
-    ArrangeSuccessfulValidation();
-
     _repositoryMock.GetById(hotelId).Returns(hotel);
 
     _repositoryMock
@@ -98,12 +89,6 @@ public class UpdateHotelDefaultCurrencyUseCaseTests
   }
 
   // Helper functions
-  private void ArrangeSuccessfulValidation()
-  {
-    _validatorMock.ValidateAsync(Arg.Any<UpdateHotelDefaultCurrencyCommand>(), Arg.Any<CancellationToken>())
-        .Returns(new ValidationResult());
-  }
-
   private static UpdateHotelDefaultCurrencyCommand CreateCommand(Guid hotelId, string defaultCurrencyCode)
   {
     return new UpdateHotelDefaultCurrencyCommand
