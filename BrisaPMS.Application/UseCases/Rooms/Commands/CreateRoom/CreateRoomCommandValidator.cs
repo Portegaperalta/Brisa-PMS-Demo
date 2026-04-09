@@ -22,12 +22,14 @@ public class CreateRoomCommandValidator : AbstractValidator<CreateRoomCommand>
         
         RuleFor(x => x.AvailabilityStatus)
             .NotEmpty().WithMessage("The field Availability Status is required")
-            .Must(x => Enum.IsDefined<RoomAvailabilityStatus>(x))
-            .WithMessage("Room availability status not supported");
+            .MaximumLength(11).WithMessage("The field Availability Status cannot exceed 11 characters")
+            .Must(x => Enum.IsDefined(typeof(RoomAvailabilityStatus), x)) 
+            .WithMessage("Availability status not supported");
         
         RuleFor(x => x.HygieneStatus)
             .NotEmpty().WithMessage("The field Hygiene Status is required")
-            .Must(x => Enum.IsDefined<RoomHygieneStatus>(x))
-            .WithMessage("Room hygiene status not supported");
+            .MaximumLength(11).WithMessage("The field Hygiene Status cannot exceed 11 characters")
+            .Must(x => Enum.IsDefined(typeof(RoomHygieneStatus), x))
+            .WithMessage("Hygiene status not supported");
     }
 }
