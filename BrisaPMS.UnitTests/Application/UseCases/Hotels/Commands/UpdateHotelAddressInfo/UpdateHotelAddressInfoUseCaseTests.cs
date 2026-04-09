@@ -7,7 +7,6 @@ using BrisaPMS.Domain.Hotels;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 using FluentValidation;
-using FluentValidation.Results;
 using NSubstitute;
 
 namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelAddressInfo;
@@ -15,16 +14,14 @@ namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelAdd
 public class UpdateHotelAddressInfoUseCaseTests
 {
     private readonly IHotelsRepository _repositoryMock;
-    private readonly IValidator<UpdateHotelAddressInfoCommand> _validatorMock;
     private readonly IUnitOfWork _unitOfWorkMock;
     private readonly UpdateHotelAddressInfoUseCase _useCase;
 
     public UpdateHotelAddressInfoUseCaseTests()
     {
         _repositoryMock = Substitute.For<IHotelsRepository>();
-        _validatorMock = Substitute.For<IValidator<UpdateHotelAddressInfoCommand>>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _useCase = new UpdateHotelAddressInfoUseCase(_repositoryMock, _unitOfWorkMock, _validatorMock);
+        _useCase = new UpdateHotelAddressInfoUseCase(_repositoryMock, _unitOfWorkMock);
     }
 
     [Fact]
@@ -49,12 +46,10 @@ public class UpdateHotelAddressInfoUseCaseTests
             ZipCode = newZipCode
         };
 
-        ArrangeSuccessfulValidation();
-
         _repositoryMock.GetById(hotelId).Returns(hotel);
 
         // Act
-        var result = _useCase.Handle(command);
+        await _useCase.Handle(command);
 
         // Assert
         hotel.Address.Address1.Should().Be(newAddress1);
@@ -83,8 +78,6 @@ public class UpdateHotelAddressInfoUseCaseTests
             CreateZipCode()
         );
 
-        ArrangeSuccessfulValidation();
-
         _repositoryMock.GetById(hotelId).Returns((Hotel?)null);
 
         // Act
@@ -98,12 +91,6 @@ public class UpdateHotelAddressInfoUseCaseTests
     }
 
     // Helper methods
-    private void ArrangeSuccessfulValidation()
-    {
-        _validatorMock.ValidateAsync(Arg.Any<UpdateHotelAddressInfoCommand>(), Arg.Any<CancellationToken>())
-            .Returns(new ValidationResult());
-    }
-
     private static UpdateHotelAddressInfoCommand
         CreateUpdateHotelAddressInfoCommand(Guid hotelId, string address1, string address2, string city,
             string province, string zipCode)

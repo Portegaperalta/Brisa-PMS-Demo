@@ -15,16 +15,14 @@ namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.DeactivateHote
 public class DeactivateHotelUseCaseTests
 {
     private readonly IHotelsRepository _repositoryMock;
-    private readonly IValidator<DeactivateHotelCommand> _validatorMock;
     private readonly IUnitOfWork _unitOfWorkMock;
     private readonly DeactivateHotelUseCase _useCase;
 
     public DeactivateHotelUseCaseTests()
     {
         _repositoryMock = Substitute.For<IHotelsRepository>();
-        _validatorMock = Substitute.For<IValidator<DeactivateHotelCommand>>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _useCase = new DeactivateHotelUseCase(_repositoryMock, _unitOfWorkMock, _validatorMock);
+        _useCase = new DeactivateHotelUseCase(_repositoryMock, _unitOfWorkMock);
     }
 
     [Fact]
@@ -34,8 +32,6 @@ public class DeactivateHotelUseCaseTests
         var hotelId = Guid.NewGuid();
         var hotel = CreateHotel(hotelId, isActive: true);
         var command = CreateCommand(hotelId);
-
-        ArrangeSuccessfulValidation();
 
         _repositoryMock.GetById(hotelId).Returns(hotel);
 
@@ -55,8 +51,6 @@ public class DeactivateHotelUseCaseTests
         // Arrange
         var hotelId = Guid.NewGuid();
         var command = CreateCommand(hotelId);
-
-        ArrangeSuccessfulValidation();
 
         _repositoryMock.GetById(hotelId).Returns((Hotel?)null);
 
@@ -78,8 +72,6 @@ public class DeactivateHotelUseCaseTests
         var hotel = CreateHotel(hotelId, isActive: true);
         var command = CreateCommand(hotelId);
 
-        ArrangeSuccessfulValidation();
-
         _repositoryMock.GetById(hotelId).Returns(hotel);
 
         _repositoryMock
@@ -96,12 +88,6 @@ public class DeactivateHotelUseCaseTests
     }
 
     // Helper functions
-    private void ArrangeSuccessfulValidation()
-    {
-        _validatorMock.ValidateAsync(Arg.Any<DeactivateHotelCommand>(), Arg.Any<CancellationToken>())
-            .Returns(new ValidationResult());
-    }
-
     private static DeactivateHotelCommand CreateCommand(Guid hotelId)
     {
         return new DeactivateHotelCommand

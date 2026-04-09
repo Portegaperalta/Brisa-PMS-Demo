@@ -7,7 +7,6 @@ using BrisaPMS.Domain.Hotels;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 using FluentValidation;
-using FluentValidation.Results;
 using NSubstitute;
 
 namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.ActivateHotel;
@@ -15,16 +14,14 @@ namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.ActivateHotel;
 public class ActivateHotelUseCaseTests
 {
     private readonly IHotelsRepository _repositoryMock;
-    private readonly IValidator<ActivateHotelCommand> _validatorMock;
     private readonly IUnitOfWork _unitOfWorkMock;
     private readonly ActivateHotelUseCase _useCase;
 
     public ActivateHotelUseCaseTests()
     {
         _repositoryMock = Substitute.For<IHotelsRepository>();
-        _validatorMock = Substitute.For<IValidator<ActivateHotelCommand>>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _useCase = new ActivateHotelUseCase(_repositoryMock, _unitOfWorkMock, _validatorMock);
+        _useCase = new ActivateHotelUseCase(_repositoryMock, _unitOfWorkMock);
     }
 
     [Fact]
@@ -34,8 +31,6 @@ public class ActivateHotelUseCaseTests
         var hotelId = Guid.NewGuid();
         var hotel = CreateHotel(hotelId, isActive: false);
         var command = CreateCommand(hotelId);
-
-        ArrangeSuccessfulValidation();
 
         _repositoryMock.GetById(hotelId).Returns(hotel);
 
@@ -55,8 +50,6 @@ public class ActivateHotelUseCaseTests
         // Arrange
         var hotelId = Guid.NewGuid();
         var command = CreateCommand(hotelId);
-
-        ArrangeSuccessfulValidation();
 
         _repositoryMock.GetById(hotelId).Returns((Hotel?)null);
 
@@ -78,8 +71,6 @@ public class ActivateHotelUseCaseTests
         var hotel = CreateHotel(hotelId, isActive: false);
         var command = CreateCommand(hotelId);
 
-        ArrangeSuccessfulValidation();
-
         _repositoryMock.GetById(hotelId).Returns(hotel);
 
         _repositoryMock
@@ -96,11 +87,6 @@ public class ActivateHotelUseCaseTests
     }
 
     // Helper functions
-    private void ArrangeSuccessfulValidation()
-    {
-        _validatorMock.ValidateAsync(Arg.Any<ActivateHotelCommand>(), Arg.Any<CancellationToken>())
-            .Returns(new ValidationResult());
-    }
 
     private static ActivateHotelCommand CreateCommand(Guid hotelId)
     {

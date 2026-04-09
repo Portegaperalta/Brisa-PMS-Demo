@@ -15,16 +15,14 @@ namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelCon
 public class UpdateHotelContactInfoUseCaseTests
 {
     private readonly IHotelsRepository _repositoryMock;
-    private readonly IValidator<UpdateHotelContactInfoCommand> _validatorMock;
     private readonly IUnitOfWork _unitOfWorkMock;
     private readonly UpdateHotelContactInfoUseCase _useCase;
 
     public UpdateHotelContactInfoUseCaseTests()
     {
         _repositoryMock = Substitute.For<IHotelsRepository>();
-        _validatorMock = Substitute.For<IValidator<UpdateHotelContactInfoCommand>>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _useCase = new UpdateHotelContactInfoUseCase(_repositoryMock, _unitOfWorkMock, _validatorMock);
+        _useCase = new UpdateHotelContactInfoUseCase(_repositoryMock, _unitOfWorkMock);
     }
 
     [Fact]
@@ -36,8 +34,6 @@ public class UpdateHotelContactInfoUseCaseTests
         var newBusinessEmail = "newEmail@brisa.com";
         var newBusinessPhoneNumber = "+19817779999";
         var command = CreateCommand(hotelId, newBusinessEmail, newBusinessPhoneNumber);
-
-        ArrangeSuccessfulValidation();
 
         _repositoryMock.GetById(hotelId).Returns(hotel);
 
@@ -59,8 +55,6 @@ public class UpdateHotelContactInfoUseCaseTests
         var hotelId = Guid.NewGuid();
         var command = CreateCommand(hotelId, CreateBusinessEmail(), CreateBusinessPhoneNumber());
 
-        ArrangeSuccessfulValidation();
-
         _repositoryMock.GetById(hotelId).Returns((Hotel?)null);
 
         // Act
@@ -81,8 +75,6 @@ public class UpdateHotelContactInfoUseCaseTests
         var hotel = CreateHotel(hotelId);
         var command = CreateCommand(hotelId, CreateBusinessEmail(), CreateBusinessPhoneNumber());
 
-        ArrangeSuccessfulValidation();
-
         _repositoryMock.GetById(hotelId).Returns(hotel);
 
         _repositoryMock
@@ -99,12 +91,6 @@ public class UpdateHotelContactInfoUseCaseTests
     }
 
     // Helper functions
-    private void ArrangeSuccessfulValidation()
-    {
-        _validatorMock.ValidateAsync(Arg.Any<UpdateHotelContactInfoCommand>(), Arg.Any<CancellationToken>())
-            .Returns(new ValidationResult());
-    }
-
     private static UpdateHotelContactInfoCommand CreateCommand(Guid hotelId, string newBusinessEmail,
     string newBusinessPhoneNumber)
     {

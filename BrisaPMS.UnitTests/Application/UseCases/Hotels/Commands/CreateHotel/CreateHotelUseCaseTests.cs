@@ -1,11 +1,8 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
-using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel;
 using BrisaPMS.Domain.Hotels;
 using FluentAssertions;
-using FluentValidation;
-using FluentValidation.Results;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
@@ -14,16 +11,14 @@ namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.CreateHotel;
 public class CreateHotelUseCaseTests
 {
     private IHotelsRepository _repositoryMock;
-    private IValidator<CreateHotelCommand> _validatorMock;
     private IUnitOfWork _unitOfWorkMock;
     private CreateHotelUseCase _useCase;
 
     public CreateHotelUseCaseTests()
     {
         _repositoryMock = Substitute.For<IHotelsRepository>();
-        _validatorMock = Substitute.For<IValidator<CreateHotelCommand>>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _useCase = new CreateHotelUseCase(_repositoryMock, _unitOfWorkMock, _validatorMock);
+        _useCase = new CreateHotelUseCase(_repositoryMock, _unitOfWorkMock);
     }
 
     [Fact]
@@ -49,9 +44,6 @@ public class CreateHotelUseCaseTests
             ServiceChargeRate = 0.10m,
         };
 
-        _validatorMock.ValidateAsync(Arg.Any<CreateHotelCommand>(), Arg.Any<CancellationToken>())
-                      .Returns(new ValidationResult());
-
         _repositoryMock.Create(Arg.Any<Hotel>())
                        .Returns(callInfo => callInfo.Arg<Hotel>());
 
@@ -70,7 +62,6 @@ public class CreateHotelUseCaseTests
         // Arrange
         var command = CreateValidCommand();
         _repositoryMock.Create(Arg.Any<Hotel>()).Throws<Exception>();
-        ArrangeSuccessfulValidation(command);
 
         // Act
         var act = async () => await _useCase.Handle(command);
@@ -81,11 +72,6 @@ public class CreateHotelUseCaseTests
     }
 
     // Helper functions
-    private void ArrangeSuccessfulValidation(CreateHotelCommand command)
-    {
-        _validatorMock.ValidateAsync(command).Returns(new ValidationResult());
-    }
-
     private static CreateHotelCommand CreateValidCommand()
     {
         return new CreateHotelCommand

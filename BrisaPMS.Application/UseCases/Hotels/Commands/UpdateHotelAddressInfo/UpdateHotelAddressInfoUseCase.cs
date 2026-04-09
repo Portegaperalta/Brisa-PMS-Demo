@@ -2,32 +2,23 @@ using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using BrisaPMS.Application.Exceptions;
-using FluentValidation;
-using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
+using BrisaPMS.Application.Utilities.Mediator;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelAddressInfo;
 
-public class UpdateHotelAddressInfoUseCase
+public class UpdateHotelAddressInfoUseCase : IRequestHandler<UpdateHotelAddressInfoCommand, bool>
 {
     private  readonly IHotelsRepository _repository;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IValidator<UpdateHotelAddressInfoCommand> _validator;
 
-    public UpdateHotelAddressInfoUseCase(IHotelsRepository repository, IUnitOfWork unitOfWork,
-        IValidator<UpdateHotelAddressInfoCommand> validator)
+    public UpdateHotelAddressInfoUseCase(IHotelsRepository repository, IUnitOfWork unitOfWork)
     {
         _repository = repository;
         _unitOfWork = unitOfWork;
-        _validator = validator;
     }
 
-    public async Task Handle(UpdateHotelAddressInfoCommand command)
+    public async Task<bool> Handle(UpdateHotelAddressInfoCommand command)
     {
-        var validationResult = await _validator.ValidateAsync(command);
-        
-        if (validationResult.IsValid is not true)
-            throw new ValidationException(validationResult);
-        
         var hotel = await _repository.GetById(command.HotelId);
         
         if (hotel is null)
@@ -47,6 +38,7 @@ public class UpdateHotelAddressInfoUseCase
             hotel.UpdateAddress(newAddress);
             await _repository.Update(hotel);
             await _unitOfWork.Persist();
+            return true;
         }
         catch (Exception)
         {

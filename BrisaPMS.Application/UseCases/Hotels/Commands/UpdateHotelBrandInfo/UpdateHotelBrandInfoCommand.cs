@@ -1,6 +1,8 @@
+using BrisaPMS.Application.Utilities.Mediator;
+
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelBrandInfo;
 
-public class UpdateHotelBrandInfoCommand
+public class UpdateHotelBrandInfoCommand : IRequest<bool>
 {
     public required Guid HotelId { get; set; }
     public required string LegalName { get; set; }
