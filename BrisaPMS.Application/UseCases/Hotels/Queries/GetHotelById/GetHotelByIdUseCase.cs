@@ -1,12 +1,13 @@
 ﻿using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.UseCases.Hotels.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Queries.GetHotelById;
 
 public class GetHotelByIdUseCase : IRequestHandler<GetHotelByIdQuery, HotelDto>
 {
-    private IHotelsRepository _repository;
+    private readonly IHotelsRepository _repository;
 
     public GetHotelByIdUseCase(IHotelsRepository repository) { _repository = repository; }
     

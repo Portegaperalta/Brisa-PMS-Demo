@@ -34,10 +34,10 @@ public class Room
         if(string.IsNullOrWhiteSpace(number))
             throw new EmptyRequiredFieldException("Room number");
         
-        if(Enum.IsDefined<RoomAvailabilityStatus>(availabilityStatus) is false)
+        if(Enum.IsDefined<RoomAvailabilityStatus>(availabilityStatus) is not true)
             throw new BusinessRuleException("Invalid availability status");
         
-        if (Enum.IsDefined<RoomHygieneStatus>(hygieneStatus) is false)
+        if (Enum.IsDefined<RoomHygieneStatus>(hygieneStatus) is not true)
             throw new BusinessRuleException("Invalid hygiene status");
 
         Id = Guid.CreateVersion7();
@@ -70,7 +70,7 @@ public class Room
 
     public void UpdateAvailabilityStatus(RoomAvailabilityStatus newAvailabilityStatus)
     {
-        if(Enum.IsDefined<RoomAvailabilityStatus>(newAvailabilityStatus) is false)
+        if(Enum.IsDefined<RoomAvailabilityStatus>(newAvailabilityStatus) is not true)
             throw new BusinessRuleException("Invalid availability status");
         
         AvailabilityStatus = newAvailabilityStatus;
@@ -78,7 +78,7 @@ public class Room
 
     public void UpdateHygieneStatus(RoomHygieneStatus newHygieneStatus)
     {
-        if (Enum.IsDefined<RoomHygieneStatus>(newHygieneStatus) is false)
+        if (Enum.IsDefined<RoomHygieneStatus>(newHygieneStatus) is not true)
             throw new BusinessRuleException("Invalid hygiene status");
         
         HygieneStatus = newHygieneStatus;

@@ -49,7 +49,7 @@ public class InventoryItem
         if (string.IsNullOrEmpty(category))
             throw new EmptyRequiredFieldException("Category");
         
-        if (Enum.IsDefined<UnitOfMeasure>(unitOfMeasure) is false)
+        if (Enum.IsDefined<UnitOfMeasure>(unitOfMeasure) is not true)
             throw new BusinessRuleException("Unit of measure not supported");
         
         if (currentStock < 0m)

@@ -1,8 +1,8 @@
 ﻿using BrisaPMS.Domain.Hotels;
 
-namespace BrisaPMS.Application.UseCases.Hotels.Queries.GetHotelById;
+namespace BrisaPMS.Application.UseCases.Hotels.Shared;
 
-public static class MapperExtensions
+public static class MapperExtension
 {
     public static HotelDto ToDto(this Hotel hotel)
     {

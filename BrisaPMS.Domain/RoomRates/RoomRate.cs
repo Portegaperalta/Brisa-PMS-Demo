@@ -1,7 +1,7 @@
 ﻿using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
-namespace BrisaPMS.Domain.Rooms;
+namespace BrisaPMS.Domain.RoomRates;
 
 public class RoomRate
 {
@@ -27,7 +27,7 @@ public class RoomRate
         if (string.IsNullOrWhiteSpace(name))
             throw new EmptyRequiredFieldException("Room rate name");
         
-        if (Enum.IsDefined<RoomRateType>(type) is false)
+        if (Enum.IsDefined<RoomRateType>(type) is not true)
             throw new BusinessRuleException("Invalid room rate type");
 
         Id = Guid.CreateVersion7();
@@ -48,7 +48,7 @@ public class RoomRate
 
     public void UpdateType(RoomRateType newType)
     {
-        if (Enum.IsDefined<RoomRateType>(newType) is false)
+        if (Enum.IsDefined<RoomRateType>(newType) is not true)
             throw new BusinessRuleException("Invalid room rate type");
         
         Type = newType;

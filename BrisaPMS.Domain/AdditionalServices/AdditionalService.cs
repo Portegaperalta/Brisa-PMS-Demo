@@ -26,7 +26,7 @@ public class AdditionalService
         if (string.IsNullOrWhiteSpace(description))
             throw new EmptyRequiredFieldException("Additional service description");
         
-        if (Enum.IsDefined<CurrencyCode>(currencyCode) is false)
+        if (Enum.IsDefined<CurrencyCode>(currencyCode) is not true)
             throw new BusinessRuleException("Invalid currency code");
 
         Id = Guid.CreateVersion7();
@@ -56,7 +56,7 @@ public class AdditionalService
 
     public void UpdateCurrencyCode(CurrencyCode newCurrencyCode)
     {
-        if (Enum.IsDefined<CurrencyCode>(newCurrencyCode) is false)
+        if (Enum.IsDefined<CurrencyCode>(newCurrencyCode) is not true)
             throw new BusinessRuleException("Invalid currency code");
         
         CurrencyCode = newCurrencyCode;
