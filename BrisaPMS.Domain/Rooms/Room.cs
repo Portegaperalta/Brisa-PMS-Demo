@@ -51,13 +51,7 @@ public class Room
         RoomType = roomType;
     }
 
-    public void UpdateRoomType(Guid  newRoomTypeId)
-    {
-        if (newRoomTypeId == Guid.Empty)
-            throw new EmptyRequiredFieldException("Room TypeId");
-        
-        RoomTypeId = newRoomTypeId;
-    }
+    public void ChangeRoomType(RoomType newRoomType) => RoomType = newRoomType;
 
     public void UpdateNumber(string newRoomNumber)
     {
