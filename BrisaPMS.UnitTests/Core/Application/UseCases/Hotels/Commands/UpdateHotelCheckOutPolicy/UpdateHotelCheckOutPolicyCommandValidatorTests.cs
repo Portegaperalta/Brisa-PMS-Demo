@@ -1,7 +1,7 @@
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolicy;
 using FluentValidation.TestHelper;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolicy;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolicy;
 
 public class UpdateHotelCheckOutPolicyCommandValidatorTests
 {

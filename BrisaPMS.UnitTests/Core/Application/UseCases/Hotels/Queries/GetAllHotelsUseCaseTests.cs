@@ -7,7 +7,7 @@ using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 using NSubstitute;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Queries;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Queries;
 
 public class GetAllHotelsUseCaseTests
 {

@@ -1,7 +1,7 @@
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurrency;
 using FluentValidation.TestHelper;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurrency;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurrency;
 
 public class UpdateHotelDefaultCurrencyCommandValidatorTests
 {

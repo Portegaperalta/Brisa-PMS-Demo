@@ -1,7 +1,7 @@
 using BrisaPMS.Application.UseCases.Hotels.Commands.ActivateHotel;
 using FluentValidation.TestHelper;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.ActivateHotel;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Commands.ActivateHotel;
 
 public class ActivateHotelCommandValidatorTests
 {

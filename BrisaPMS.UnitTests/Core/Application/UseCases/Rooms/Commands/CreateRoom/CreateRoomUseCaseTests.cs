@@ -11,7 +11,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Rooms.Commands.CreateRoom;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Rooms.Commands.CreateRoom;
 
 public class CreateRoomUseCaseTests
 {

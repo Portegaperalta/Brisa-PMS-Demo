@@ -10,7 +10,7 @@ using FluentAssertions;
 using FluentValidation;
 using NSubstitute;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurrency;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurrency;
 
 public class UpdateHotelDefaultCurrencyUseCaseTests
 {

@@ -6,7 +6,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.CreateHotel;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Commands.CreateHotel;
 
 public class CreateHotelUseCaseTests
 {

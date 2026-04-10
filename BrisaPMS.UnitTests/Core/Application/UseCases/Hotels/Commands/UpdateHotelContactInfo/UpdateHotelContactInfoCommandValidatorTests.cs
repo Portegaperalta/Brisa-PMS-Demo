@@ -1,7 +1,7 @@
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelContactInfo;
 using FluentValidation.TestHelper;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelContactInfo;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Commands.UpdateHotelContactInfo;
 
 public class UpdateHotelContactInfoCommandValidatorTests
 {
