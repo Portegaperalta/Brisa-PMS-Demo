@@ -7,9 +7,14 @@ using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolicy;
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelContactInfo;
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelDefaultCurrency;
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelRates;
+using BrisaPMS.Application.UseCases.Hotels.Queries.GetAllHotels;
 using BrisaPMS.Application.UseCases.Hotels.Queries.GetHotelById;
+using BrisaPMS.Application.UseCases.Rooms.Commands.CreateRoom;
+using BrisaPMS.Application.UseCases.RoomTypes.Commands.CreateRoomType;
 using BrisaPMS.Application.Utilities.Mediator;
+using BrisaPMS.Domain.Hotels;
 using Microsoft.Extensions.DependencyInjection;
+using HotelDto = BrisaPMS.Application.UseCases.Hotels.Queries.GetHotelById.HotelDto;
 
 namespace BrisaPMS.Application;
 
@@ -20,7 +25,7 @@ public static class ApplicationServicesRegistration
     {
         services.AddTransient<IMediator, SimpleMediator>();
         
-        // Hotel commands
+        // Hotels services
         services.AddScoped<IRequestHandler<ActivateHotelCommand, bool>,
                                     ActivateHotelUseCase>();
         
@@ -48,8 +53,15 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<UpdateHotelRatesCommand, bool>,
                                      UpdateHotelRatesUseCase>();
         
-        // Hotel queries
         services.AddScoped<IRequestHandler<GetHotelByIdQuery, HotelDto>, GetHotelByIdUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllHotelsQuery, List<HotelDto>, GetAllHotelsUseCase>>();
+        
+        // Room types services
+        services.AddScoped<IRequestHandler<CreateRoomTypeCommand, Guid>, CreateRoomTypeUseCase>();
+        
+        // Rooms services
+        services.AddScoped<IRequestHandler<CreateRoomCommand, Guid>, CreateRoomUseCase>();
         
         return services;
     }
