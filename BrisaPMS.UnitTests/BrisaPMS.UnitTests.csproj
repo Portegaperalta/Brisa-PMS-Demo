@@ -27,6 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Core\Application\UseCases\Rooms\" />
+    <Folder Include="Core\Application\UseCases\Rooms\Commands\" />
+    <Folder Include="Core\Application\UseCases\Rooms\Commands\CreateRoom\" />
     <Folder Include="Core\Domain\Discounts\" />
   </ItemGroup>
 
