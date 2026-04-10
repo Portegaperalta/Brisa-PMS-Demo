@@ -18,7 +18,9 @@ public class CreateRoomCommandValidator : AbstractValidator<CreateRoomCommand>
             .MaximumLength(100).WithMessage("The field Number cannot exceed 100 characters");
 
         RuleFor(x => x.Floor)
-            .NotEmpty().WithMessage("The field Floor is required");
+            .NotEmpty().WithMessage("The field Floor is required")
+            .GreaterThanOrEqualTo(-200).WithMessage("The field floor can't be less than -200")
+            .LessThanOrEqualTo(200).WithMessage("The field floor can't be greater than 200");
         
         RuleFor(x => x.AvailabilityStatus)
             .NotEmpty().WithMessage("The field Availability Status is required")
