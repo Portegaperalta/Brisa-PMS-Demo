@@ -27,8 +27,8 @@ public class RoomType
         if (string.IsNullOrWhiteSpace(name))
             throw new EmptyRequiredFieldException("Room type name");
         
-        if (baseRate < 0)
-            throw new BusinessRuleException("BaseRate can't be negative");
+        if (baseRate is < 0 or > 100)
+            throw new BusinessRuleException("Base Rate must be between 0% and 100%");
         
         if (totalBeds is < 1 or > 20)
             throw new BusinessRuleException("Amount of Beds must be between 1 and 20");
@@ -36,11 +36,11 @@ public class RoomType
         if (Enum.IsDefined<BedType>(bedType) is not true)
             throw new BusinessRuleException("Bed type not supported");
         
-        if (maxOccupancyAdults <= 0)
-            throw new BusinessRuleException("Room type must allow at least 1 adult");
+        if (maxOccupancyAdults is <= 0 or > 16)
+            throw new BusinessRuleException("Max occupancy adults must be between 1 and 16");
         
-        if (maxOccupancyChildren < 0)
-            throw new BusinessRuleException("Max Occupancy Children can't be negative");
+        if (maxOccupancyChildren is < 0 or > 10)
+            throw new BusinessRuleException("Max occupancy children must be  between 0 and 10");
 
         Id = Guid.CreateVersion7();
         Name = name;
@@ -65,8 +65,8 @@ public class RoomType
 
     public void UpdateBaseRate(decimal newBaseRate)
     {
-        if (newBaseRate < 0)
-            throw new BusinessRuleException("BaseRate can't be negative");
+        if (newBaseRate is < 0 or > 100)
+            throw new BusinessRuleException("Base Rate must be between 0% and 100%");
         
         BaseRate = newBaseRate;
     }
@@ -89,16 +89,16 @@ public class RoomType
 
     public void UpdateMaxOccupancyAdults(int newMaxOccupancyAdults)
     {
-        if (newMaxOccupancyAdults <= 0)
-            throw new BusinessRuleException("Max Occupancy Adults can't be less or equal than zero");
+        if (newMaxOccupancyAdults is < 1 or > 16)
+            throw new BusinessRuleException("Max occupancy adults must be between 1 and 16");
         
         MaxOccupancyAdults = newMaxOccupancyAdults;
     }
 
     public void UpdateMaxOccupancyChildren(int newMaxOccupancyChildren)
     {
-        if (newMaxOccupancyChildren < 0)
-            throw new BusinessRuleException("Max Occupancy Children can't less than zero");
+        if (newMaxOccupancyChildren is < 0 or > 10)
+            throw new BusinessRuleException("Max occupancy children must be  between 0 and 10");
         
         MaxOccupancyChildren = newMaxOccupancyChildren;
     }
