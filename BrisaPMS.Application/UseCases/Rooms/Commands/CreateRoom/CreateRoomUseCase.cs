@@ -14,7 +14,7 @@ public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateRoomUseCase(IRoomsRepository roomsRepository, IHotelsRepository hotelsRepository,
-        IRoomTypesRepository roomTypesRepository,IUnitOfWork unitOfWork)
+        IRoomTypesRepository roomTypesRepository, IUnitOfWork unitOfWork)
     {
         _roomsRepository = roomsRepository;
         _hotelsRepository = hotelsRepository;
@@ -25,17 +25,18 @@ public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
     public async Task<Guid> Handle(CreateRoomCommand command)
     {
         var hotel = await _hotelsRepository.GetById(command.HotelId);
-        var roomType = await _roomTypesRepository.GetById(command.RoomTypeId);
 
         if (hotel is null)
             throw new NotFoundException("Hotel", command.HotelId);
-        
+
+        var roomType = await _roomTypesRepository.GetById(command.RoomTypeId);
+
         if (roomType is null)
             throw new NotFoundException("Room Type", command.RoomTypeId);
-        
+
         var availabilityStatus = Enum.Parse<RoomAvailabilityStatus>(command.AvailabilityStatus);
         var hygieneStatus = Enum.Parse<RoomHygieneStatus>(command.HygieneStatus);
-        
+
         var room = new Room
         (
             command.HotelId,
@@ -45,7 +46,7 @@ public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
             availabilityStatus,
             hygieneStatus
         );
-        
+
         try
         {
             var response = await _roomsRepository.Create(room);
