@@ -1,4 +1,5 @@
 using BrisaPMS.Domain.Rooms;
+using BrisaPMS.Domain.RoomTypes;
 using BrisaPMS.Domain.Shared.Exceptions;
 using FluentAssertions;
 
@@ -11,21 +12,20 @@ public class RoomTests
     {
         // Arrange
         var hotelId = Guid.NewGuid();
-        var roomTypeId = Guid.NewGuid();
+        var roomType = CreateRoomType();
 
         // Act
         var result = new Room(
             hotelId,
-            roomTypeId,
             "201",
             2,
             RoomAvailabilityStatus.Available,
-            RoomHygieneStatus.Clean);
+            RoomHygieneStatus.Clean,
+            roomType);
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
         result.HotelId.Should().Be(hotelId);
-        result.RoomTypeId.Should().Be(roomTypeId);
         result.Number.Should().Be("201");
         result.Floor.Should().Be(2);
         result.AvailabilityStatus.Should().Be(RoomAvailabilityStatus.Available);
@@ -33,6 +33,7 @@ public class RoomTests
         result.LastCleanedAt.Should().BeNull();
         result.LastCleanedBy.Should().BeNull();
         result.NeedsRestocking.Should().BeFalse();
+        result.RoomType.Should().BeSameAs(roomType);
     }
 
     [Fact]
@@ -44,30 +45,11 @@ public class RoomTests
         // Act
         Action act = () => _ = new Room(
             hotelId,
-            Guid.NewGuid(),
             "101",
             1,
             RoomAvailabilityStatus.Available,
-            RoomHygieneStatus.Clean);
-
-        // Assert
-        act.Should().Throw<EmptyRequiredFieldException>();
-    }
-
-    [Fact]
-    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenRoomTypeIdIsEmpty()
-    {
-        // Arrange
-        var roomTypeId = Guid.Empty;
-
-        // Act
-        Action act = () => _ = new Room(
-            Guid.NewGuid(),
-            roomTypeId,
-            "101",
-            1,
-            RoomAvailabilityStatus.Available,
-            RoomHygieneStatus.Clean);
+            RoomHygieneStatus.Clean,
+            CreateRoomType());
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -81,11 +63,11 @@ public class RoomTests
         // Act
         Action act = () => _ = new Room(
             Guid.NewGuid(),
-            Guid.NewGuid(),
             roomNumber!,
             1,
             RoomAvailabilityStatus.Available,
-            RoomHygieneStatus.Clean);
+            RoomHygieneStatus.Clean,
+            CreateRoomType());
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -100,11 +82,11 @@ public class RoomTests
         // Act
         Action act = () => _ = new Room(
             Guid.NewGuid(),
-            Guid.NewGuid(),
             "101",
             1,
             invalidAvailabilityStatus,
-            RoomHygieneStatus.Clean);
+            RoomHygieneStatus.Clean,
+            CreateRoomType());
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -119,41 +101,28 @@ public class RoomTests
         // Act
         Action act = () => _ = new Room(
             Guid.NewGuid(),
-            Guid.NewGuid(),
             "101",
             1,
             RoomAvailabilityStatus.Available,
-            invalidHygieneStatus);
+            invalidHygieneStatus,
+            CreateRoomType());
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
     }
 
     [Fact]
-    public void UpdateRoomType_ShouldUpdateRoomTypeId_WhenValueIsValid()
+    public void ChangeRoomType_ShouldUpdateRoomType_WhenValueIsValid()
     {
         // Arrange
         var room = CreateRoom();
-        var newRoomTypeId = Guid.NewGuid();
+        var newRoomType = CreateRoomType("Suite Presidencial");
 
         // Act
-        room.UpdateRoomType(newRoomTypeId);
+        room.ChangeRoomType(newRoomType);
 
         // Assert
-        room.RoomTypeId.Should().Be(newRoomTypeId);
-    }
-
-    [Fact]
-    public void UpdateRoomType_ShouldThrowEmptyRequiredFieldException_WhenValueIsEmpty()
-    {
-        // Arrange
-        var room = CreateRoom();
-
-        // Act
-        Action act = () => room.UpdateRoomType(Guid.Empty);
-
-        // Assert
-        act.Should().Throw<EmptyRequiredFieldException>();
+        room.RoomType.Should().BeSameAs(newRoomType);
     }
 
     [Fact]
@@ -309,10 +278,22 @@ public class RoomTests
     {
         return new Room(
             Guid.NewGuid(),
-            Guid.NewGuid(),
             "101",
             1,
             RoomAvailabilityStatus.Available,
-            RoomHygieneStatus.Clean);
+            RoomHygieneStatus.Clean,
+            CreateRoomType());
+    }
+
+    private static RoomType CreateRoomType(string name = "Deluxe Suite")
+    {
+        return new RoomType(
+            name,
+            25m,
+            2,
+            BedType.Queen,
+            2,
+            1,
+            "Spacious suite with ocean view");
     }
 }
