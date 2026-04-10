@@ -1,4 +1,4 @@
-﻿namespace BrisaPMS.Application.UseCases.Hotels.Queries.GetHotelById;
+﻿namespace BrisaPMS.Application.UseCases.Hotels.Shared;
 
 public class HotelDto
 {
