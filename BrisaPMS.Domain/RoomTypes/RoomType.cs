@@ -37,10 +37,10 @@ public class RoomType
             throw new BusinessRuleException("Bed type not supported");
         
         if (maxOccupancyAdults <= 0)
-            throw new BusinessRuleException("Max Occupancy Adults can't be less  or equal than zero");
+            throw new BusinessRuleException("Room type must allow at least 1 adult");
         
         if (maxOccupancyChildren < 0)
-            throw new BusinessRuleException("Max Occupancy Children can't less than zero");
+            throw new BusinessRuleException("Max Occupancy Children can't be negative");
 
         Id = Guid.CreateVersion7();
         Name = name;
