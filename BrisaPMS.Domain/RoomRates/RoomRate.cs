@@ -1,7 +1,7 @@
 ﻿using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
-namespace BrisaPMS.Domain.Rooms;
+namespace BrisaPMS.Domain.RoomRates;
 
 public class RoomRate
 {

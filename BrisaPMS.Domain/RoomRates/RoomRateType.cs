@@ -1,4 +1,4 @@
-﻿namespace BrisaPMS.Domain.Rooms;
+﻿namespace BrisaPMS.Domain.RoomRates;
 
 public enum RoomRateType
 {

@@ -1,6 +1,6 @@
 ﻿using BrisaPMS.Domain.Shared.Exceptions;
 
-namespace BrisaPMS.Domain.Rooms;
+namespace BrisaPMS.Domain.RoomRates;
 
 public class RoomRateTimeInterval
 {
