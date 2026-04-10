@@ -33,7 +33,7 @@ public class RoomType
         if (totalBeds <= 0)
             throw new BusinessRuleException("Room type must have at least 1 Bed");
         
-        if (Enum.IsDefined<BedType>(bedType) is false)
+        if (Enum.IsDefined<BedType>(bedType) is not true)
             throw new BusinessRuleException("Bed type not supported");
         
         if (maxOccupancyAdults <= 0)

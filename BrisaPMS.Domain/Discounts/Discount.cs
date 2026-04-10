@@ -62,7 +62,7 @@ public class Discount
 
     public void UpdateTimeInterval(DiscountTimeInterval newTimeInterval)
     {
-        if (IsActive is false)
+        if (IsActive is not true)
             throw new BusinessRuleException("Discount not active, unable to update time interval");
         
         TimeInterval = newTimeInterval;

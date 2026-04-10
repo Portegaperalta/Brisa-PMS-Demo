@@ -37,10 +37,10 @@ public class HouseKeepingTask
         if (assignedBy == Guid.Empty)
             throw new EmptyRequiredFieldException("Assigned By");
         
-        if (Enum.IsDefined<HouseKeepingTaskType>(type) is false)
+        if (Enum.IsDefined<HouseKeepingTaskType>(type) is not true)
             throw new BusinessRuleException("Invalid houseKeeping task type");
         
-        if (Enum.IsDefined<TaskPriority>(priority) is false)
+        if (Enum.IsDefined<TaskPriority>(priority) is not true)
             throw new  BusinessRuleException("Invalid task priority");
 
         Id = Guid.CreateVersion7();
@@ -72,7 +72,7 @@ public class HouseKeepingTask
 
     public void ChangeTaskType(HouseKeepingTaskType newType)
     {
-        if (Enum.IsDefined<HouseKeepingTaskType>(newType) is false)
+        if (Enum.IsDefined<HouseKeepingTaskType>(newType) is not true)
             throw new BusinessRuleException("Invalid task type");
 
         Type = Status switch
@@ -85,7 +85,7 @@ public class HouseKeepingTask
 
     public void ChangePriority(TaskPriority newPriority)
     {
-        if (Enum.IsDefined<TaskPriority>(newPriority) is false)
+        if (Enum.IsDefined<TaskPriority>(newPriority) is not true)
             throw new BusinessRuleException("Invalid task priority");
 
         Priority = Status switch
@@ -152,7 +152,7 @@ public class HouseKeepingTask
 
     public void UpdateIncidentDescription(string newIncidentDescription)
     {
-        if (IncidentReported is false)
+        if (IncidentReported is not true)
             throw new BusinessRuleException("An incident needs to be reported to modify its description");
         
         if (string.IsNullOrWhiteSpace(newIncidentDescription))
