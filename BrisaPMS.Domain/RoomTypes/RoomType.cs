@@ -30,8 +30,8 @@ public class RoomType
         if (baseRate < 0)
             throw new BusinessRuleException("BaseRate can't be negative");
         
-        if (totalBeds <= 0)
-            throw new BusinessRuleException("Room type must have at least 1 Bed");
+        if (totalBeds is < 1 or > 20)
+            throw new BusinessRuleException("Amount of Beds must be between 1 and 20");
         
         if (Enum.IsDefined<BedType>(bedType) is not true)
             throw new BusinessRuleException("Bed type not supported");
@@ -73,7 +73,7 @@ public class RoomType
 
     public void UpdateTotalBeds(int newTotalBeds)
     {
-        if (newTotalBeds <= 0)
+        if (newTotalBeds is < 1 or > 20)
             throw new BusinessRuleException("Room type must have at least 1 Bed");
         
         TotalBeds = newTotalBeds;

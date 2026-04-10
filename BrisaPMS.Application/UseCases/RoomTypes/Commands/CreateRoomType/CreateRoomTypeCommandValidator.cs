@@ -22,7 +22,7 @@ public class CreateRoomTypeCommandValidator : AbstractValidator<CreateRoomTypeCo
         RuleFor(x => x.TotalBeds)
             .NotEmpty().WithMessage("The field Total Beds is required.")
             .GreaterThanOrEqualTo(1).WithMessage("The field Total Beds must be  greater than or equal to 1.")
-            .LessThanOrEqualTo(100).WithMessage("The field Total Beds can't be greater than 100.");
+            .LessThanOrEqualTo(20).WithMessage("The field Total Beds can't be greater than 100.");
         
         RuleFor(x => x.BedType)
             .NotEmpty().WithMessage("The field Bed Type is required.")
