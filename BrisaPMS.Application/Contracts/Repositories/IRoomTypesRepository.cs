@@ -1,4 +1,4 @@
-using BrisaPMS.Domain.Rooms;
+using BrisaPMS.Domain.RoomTypes;
 
 namespace BrisaPMS.Application.Contracts.Repositories;
 

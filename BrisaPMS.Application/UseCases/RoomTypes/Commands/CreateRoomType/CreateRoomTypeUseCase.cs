@@ -1,7 +1,7 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Utilities.Mediator;
-using BrisaPMS.Domain.Rooms;
+using BrisaPMS.Domain.RoomTypes;
 
 namespace BrisaPMS.Application.UseCases.RoomTypes.Commands.CreateRoomType;
 

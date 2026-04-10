@@ -1,4 +1,4 @@
-using BrisaPMS.Domain.Rooms;
+using BrisaPMS.Domain.RoomTypes;
 using FluentValidation;
 
 namespace BrisaPMS.Application.UseCases.RoomTypes.Commands.CreateRoomType;
