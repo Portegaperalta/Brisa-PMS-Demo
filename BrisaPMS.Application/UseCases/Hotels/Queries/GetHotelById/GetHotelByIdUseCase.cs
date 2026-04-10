@@ -1,5 +1,6 @@
 ﻿using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.UseCases.Hotels.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Queries.GetHotelById;

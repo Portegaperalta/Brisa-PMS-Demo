@@ -1,4 +1,5 @@
-﻿using BrisaPMS.Application.Utilities.Mediator;
+﻿using BrisaPMS.Application.UseCases.Hotels.Shared;
+using BrisaPMS.Application.Utilities.Mediator;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Queries.GetHotelById;
 
