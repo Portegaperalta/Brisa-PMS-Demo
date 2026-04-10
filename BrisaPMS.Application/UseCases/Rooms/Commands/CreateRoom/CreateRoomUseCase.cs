@@ -24,14 +24,14 @@ public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
 
     public async Task<Guid> Handle(CreateRoomCommand command)
     {
-        var hotel = await _hotelsRepository.GetById(command.HotelId);
+        var hotelExists = await _hotelsRepository.Exists(command.HotelId);
 
-        if (hotel is null)
+        if (hotelExists is not true)
             throw new NotFoundException("Hotel", command.HotelId);
 
-        var roomType = await _roomTypesRepository.GetById(command.RoomTypeId);
+        var roomTypeExists = await _roomTypesRepository.Exists(command.RoomTypeId);
 
-        if (roomType is null)
+        if (roomTypeExists is not true)
             throw new NotFoundException("Room Type", command.RoomTypeId);
 
         var availabilityStatus = Enum.Parse<RoomAvailabilityStatus>(command.AvailabilityStatus);
