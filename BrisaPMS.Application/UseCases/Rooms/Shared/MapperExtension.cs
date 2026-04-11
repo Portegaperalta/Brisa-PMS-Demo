@@ -2,9 +2,9 @@
 
 namespace BrisaPMS.Application.UseCases.Rooms.Shared;
 
-public class MapperExtension
+public static class MapperExtension
 {
-    public static RoomDto ToDto(Room room)
+    public static RoomDto ToDto(this Room room)
     {
         return new RoomDto
         {
