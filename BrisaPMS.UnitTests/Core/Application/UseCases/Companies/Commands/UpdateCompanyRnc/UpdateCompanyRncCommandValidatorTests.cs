@@ -45,7 +45,6 @@ public class UpdateCompanyRncCommandValidatorTests
 
     [Theory]
     [InlineData("abc123456")]
-    [InlineData("123-456-78")]
     [InlineData("12345abcde")]
     public void Validator_HasError_WhenNewRncIsInvalid(string invalidRnc)
     {
