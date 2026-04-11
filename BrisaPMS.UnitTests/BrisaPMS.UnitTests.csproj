@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <Folder Include="Core\Application\UseCases\Rooms\Commands\ChangeRoomType\" />
+    <Folder Include="Core\Application\UseCases\Rooms\Commands\UpdateAvailabilityStatus\" />
     <Folder Include="Core\Domain\Discounts\" />
   </ItemGroup>
 
