@@ -51,13 +51,22 @@ public class Room
         RoomType = roomType;
     }
 
-    public void ChangeRoomType(RoomType newRoomType) => RoomType = newRoomType;
+    public void ChangeRoomType(RoomType newRoomType)
+    {
+        if (AvailabilityStatus == RoomAvailabilityStatus.Occupied)
+            throw new BusinessRuleException("Room is currently occupied. room type can't be changed");
+        
+        RoomType = newRoomType;
+    }
 
     public void UpdateNumber(string newRoomNumber)
     {
         if (string.IsNullOrWhiteSpace(newRoomNumber))
             throw new EmptyRequiredFieldException("Room number");
-
+        
+        if (AvailabilityStatus == RoomAvailabilityStatus.Occupied)
+            throw new BusinessRuleException("Room is currently occupied, number can't be changed");
+        
         Number = newRoomNumber;
     }
 

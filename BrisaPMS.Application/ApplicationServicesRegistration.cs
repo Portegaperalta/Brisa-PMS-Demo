@@ -16,6 +16,11 @@ using BrisaPMS.Application.UseCases.Rooms.Commands.SetAsPendingRestock;
 using BrisaPMS.Application.UseCases.Rooms.Commands.SetAsRestocked;
 using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateAvailabilityStatus;
 using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateHygieneStatus;
+using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateRoomNumber;
+using BrisaPMS.Application.UseCases.Rooms.Queries.GetAllRooms;
+using BrisaPMS.Application.UseCases.Rooms.Queries.GetAllRoomsByHotelId;
+using BrisaPMS.Application.UseCases.Rooms.Queries.GetRoomById;
+using BrisaPMS.Application.UseCases.Rooms.Shared;
 using BrisaPMS.Application.UseCases.RoomTypes.Commands.CreateRoomType;
 using BrisaPMS.Application.Utilities.Mediator;
 using Microsoft.Extensions.DependencyInjection;
@@ -59,15 +64,23 @@ public static class ApplicationServicesRegistration
         
         services.AddScoped<IRequestHandler<GetHotelByIdQuery, HotelDto>, GetHotelByIdUseCase>();
         
-        services.AddScoped<IRequestHandler<GetAllHotelsQuery, List<HotelDto>>, GetAllHotelsUseCase>();
+        services.AddScoped<IRequestHandler<GetAllHotelsQuery, List<HotelDto>>,
+                                    GetAllHotelsUseCase>();
         
         // Room types services
         services.AddScoped<IRequestHandler<CreateRoomTypeCommand, Guid>, CreateRoomTypeUseCase>();
         
         // Rooms services
+        services.AddScoped<IRequestHandler<ChangeRoomTypeCommand, bool>, 
+                                    ChangeRoomTypeUseCase>();
+        
         services.AddScoped<IRequestHandler<CreateRoomCommand, Guid>, CreateRoomUseCase>();
         
-        services.AddScoped<IRequestHandler<ChangeRoomTypeCommand, bool>, ChangeRoomTypeUseCase>();
+        services.AddScoped<IRequestHandler<SetAsPendingRestockCommand, bool>, 
+                                      SetAsPendingRestockUseCase>();
+        
+        services.AddScoped<IRequestHandler<SetAsRestockedCommand, bool>,
+                                     SetAsRestockedUseCase>();
         
         services.AddScoped<IRequestHandler<UpdateAvailabilityStatusCommand, bool>,
                                     UpdateAvailabilityStatusUseCase>();
@@ -75,11 +88,17 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<UpdateHygieneStatusCommand, bool>,
                                     UpdateHygieneStatusUseCase>();
 
-        services.AddScoped<IRequestHandler<SetAsPendingRestockCommand, bool>, 
-                                    SetAsPendingRestockUseCase>();
+        services.AddScoped<IRequestHandler<UpdateRoomNumberCommand, bool>,
+                                    UpdateRoomNumberUseCase>();
 
-        services.AddScoped<IRequestHandler<SetAsRestockedCommand, bool>,
-                                    SetAsRestockedUseCase>();
+        services.AddScoped<IRequestHandler<GetAllRoomsQuery, List<RoomDto>>,
+                                    GetAllRoomsUseCase>();
+        
+        services.AddScoped<IRequestHandler<GetAllRoomsByHotelIdQuery, List<RoomDto>>,
+                                    GetAllRoomsByHotelIdUseCase>();
+        
+        services.AddScoped<IRequestHandler<GetRoomByIdQuery, RoomDto>,
+                                     GetRoomByIdUseCase>();
         
         return services;
     }
