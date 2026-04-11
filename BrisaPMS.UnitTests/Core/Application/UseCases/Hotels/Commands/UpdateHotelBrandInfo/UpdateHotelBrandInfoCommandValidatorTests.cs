@@ -1,7 +1,7 @@
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelBrandInfo;
 using FluentValidation.TestHelper;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.UpdateHotelBrandInfo;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Commands.UpdateHotelBrandInfo;
 
 public class UpdateHotelBrandInfoCommandValidatorTests
 {

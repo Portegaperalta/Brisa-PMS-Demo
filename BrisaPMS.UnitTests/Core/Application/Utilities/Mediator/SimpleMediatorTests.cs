@@ -5,7 +5,7 @@ using FluentValidation;
 using NSubstitute;
 using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
-namespace BrisaPMS.UnitTests.Application.Utilities.Mediator;
+namespace BrisaPMS.UnitTests.Core.Application.Utilities.Mediator;
 
 public class SimpleMediatorTests
 {

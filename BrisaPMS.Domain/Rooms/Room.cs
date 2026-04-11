@@ -1,3 +1,4 @@
+using BrisaPMS.Domain.RoomTypes;
 using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Rooms;
@@ -6,7 +7,6 @@ public class Room
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init ; }
-    public Guid RoomTypeId { get; private set; }
     public string Number { get; private set ; }
     public int Floor { get; init ; }
     public RoomAvailabilityStatus AvailabilityStatus { get; private set ; }
@@ -15,21 +15,20 @@ public class Room
     public Guid? LastCleanedBy { get; private set ; }
     public bool NeedsRestocking { get; private set ; }
     
+    public RoomType RoomType { get; private set ; }
+    
     public Room
     (
         Guid hotelId,
-        Guid roomTypeId,
         string number,
         int floor,
         RoomAvailabilityStatus availabilityStatus,
-        RoomHygieneStatus hygieneStatus
+        RoomHygieneStatus hygieneStatus,
+        RoomType roomType
     )
     {
         if (hotelId == Guid.Empty)
             throw new EmptyRequiredFieldException("HotelId");
-        
-        if (roomTypeId == Guid.Empty)
-            throw new EmptyRequiredFieldException("RoomTypeId");
         
         if(string.IsNullOrWhiteSpace(number))
             throw new EmptyRequiredFieldException("Room number");
@@ -42,7 +41,6 @@ public class Room
 
         Id = Guid.CreateVersion7();
         HotelId = hotelId;
-        RoomTypeId = roomTypeId;
         Number = number;
         Floor = floor;
         AvailabilityStatus = availabilityStatus;
@@ -50,15 +48,10 @@ public class Room
         LastCleanedAt = null;
         LastCleanedBy = null;
         NeedsRestocking = false;
+        RoomType = roomType;
     }
 
-    public void UpdateRoomType(Guid  newRoomTypeId)
-    {
-        if (newRoomTypeId == Guid.Empty)
-            throw new EmptyRequiredFieldException("Room TypeId");
-        
-        RoomTypeId = newRoomTypeId;
-    }
+    public void ChangeRoomType(RoomType newRoomType) => RoomType = newRoomType;
 
     public void UpdateNumber(string newRoomNumber)
     {
@@ -80,6 +73,9 @@ public class Room
     {
         if (Enum.IsDefined<RoomHygieneStatus>(newHygieneStatus) is not true)
             throw new BusinessRuleException("Invalid hygiene status");
+        
+        if (newHygieneStatus == RoomHygieneStatus.Clean && AvailabilityStatus == RoomAvailabilityStatus.Occupied)
+            throw new BusinessRuleException("Room is currently occupied, hygiene status can't be set as clean");
         
         HygieneStatus = newHygieneStatus;
     }

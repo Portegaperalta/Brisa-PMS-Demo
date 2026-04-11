@@ -24,9 +24,9 @@ public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
 
     public async Task<Guid> Handle(CreateRoomCommand command)
     {
-        var hotel = await _hotelsRepository.GetById(command.HotelId);
+        var hotelExists = await _hotelsRepository.Exists(command.HotelId);
 
-        if (hotel is null)
+        if (hotelExists is not true)
             throw new NotFoundException("Hotel", command.HotelId);
 
         var roomType = await _roomTypesRepository.GetById(command.RoomTypeId);
@@ -40,11 +40,11 @@ public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
         var room = new Room
         (
             command.HotelId,
-            command.RoomTypeId,
             command.Number,
             command.Floor,
             availabilityStatus,
-            hygieneStatus
+            hygieneStatus,
+            roomType
         );
 
         try

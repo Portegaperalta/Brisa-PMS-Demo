@@ -1,7 +1,7 @@
 using BrisaPMS.Application.UseCases.Rooms.Commands.CreateRoom;
 using FluentValidation.TestHelper;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Rooms.Commands.CreateRoom;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Rooms.Commands.CreateRoom;
 
 public class CreateRoomCommandValidatorTests
 {

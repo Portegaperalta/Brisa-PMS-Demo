@@ -2,16 +2,13 @@ using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Rooms.Commands.CreateRoom;
-using BrisaPMS.Domain.Billing;
-using BrisaPMS.Domain.Hotels;
-using BrisaPMS.Domain.RoomTypes;
 using BrisaPMS.Domain.Rooms;
-using BrisaPMS.Domain.Shared.ValueObjects;
+using BrisaPMS.Domain.RoomTypes;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Rooms.Commands.CreateRoom;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Rooms.Commands.CreateRoom;
 
 public class CreateRoomUseCaseTests
 {
@@ -45,10 +42,10 @@ public class CreateRoomUseCaseTests
     var hotelId = Guid.NewGuid();
     var roomTypeId = Guid.NewGuid();
     var command = CreateCommand(hotelId, roomTypeId);
+    var roomType = CreateRoomType(roomTypeId);
 
-    _hotelsRepositoryMock.GetById(hotelId).Returns(CreateHotel(hotelId));
-
-    _roomTypesRepositoryMock.GetById(roomTypeId).Returns(CreateRoomType(roomTypeId));
+    _hotelsRepositoryMock.Exists(hotelId).Returns(true);
+    _roomTypesRepositoryMock.GetById(roomTypeId).Returns(roomType);
 
     _roomsRepositoryMock.Create(Arg.Any<Room>())
         .Returns(callInfo => callInfo.Arg<Room>());
@@ -57,17 +54,17 @@ public class CreateRoomUseCaseTests
     var result = await _useCase.Handle(command);
 
     // Assert
-    await _hotelsRepositoryMock.Received(1).GetById(hotelId);
+    await _hotelsRepositoryMock.Received(1).Exists(hotelId);
 
     await _roomTypesRepositoryMock.Received(1).GetById(roomTypeId);
 
     await _roomsRepositoryMock.Received(1).Create(Arg.Is<Room>(room =>
         room.HotelId == hotelId &&
-        room.RoomTypeId == roomTypeId &&
         room.Number == command.Number &&
         room.Floor == command.Floor &&
         room.AvailabilityStatus == RoomAvailabilityStatus.Available &&
-        room.HygieneStatus == RoomHygieneStatus.Clean));
+        room.HygieneStatus == RoomHygieneStatus.Clean &&
+        room.RoomType == roomType));
 
     await _unitOfWorkMock.Received(1).Persist();
 
@@ -82,7 +79,7 @@ public class CreateRoomUseCaseTests
     // Arrange
     var command = CreateCommand(Guid.NewGuid(), Guid.NewGuid());
 
-    _hotelsRepositoryMock.GetById(command.HotelId).Returns((Hotel?)null);
+    _hotelsRepositoryMock.Exists(command.HotelId).Returns(false);
 
     // Act
     var act = async () => await _useCase.Handle(command);
@@ -103,7 +100,7 @@ public class CreateRoomUseCaseTests
     var roomTypeId = Guid.NewGuid();
     var command = CreateCommand(hotelId, roomTypeId);
 
-    _hotelsRepositoryMock.GetById(hotelId).Returns(CreateHotel(hotelId));
+    _hotelsRepositoryMock.Exists(hotelId).Returns(true);
     _roomTypesRepositoryMock.GetById(roomTypeId).Returns((RoomType?)null);
 
     // Act
@@ -111,6 +108,8 @@ public class CreateRoomUseCaseTests
 
     // Assert
     await act.Should().ThrowAsync<NotFoundException>();
+    await _hotelsRepositoryMock.Received(1).Exists(hotelId);
+    await _roomTypesRepositoryMock.Received(1).GetById(roomTypeId);
     await _roomsRepositoryMock.DidNotReceive().Create(Arg.Any<Room>());
     await _unitOfWorkMock.DidNotReceive().Persist();
     await _unitOfWorkMock.DidNotReceive().Revert();
@@ -123,9 +122,10 @@ public class CreateRoomUseCaseTests
     var hotelId = Guid.NewGuid();
     var roomTypeId = Guid.NewGuid();
     var command = CreateCommand(hotelId, roomTypeId);
+    var roomType = CreateRoomType(roomTypeId);
 
-    _hotelsRepositoryMock.GetById(hotelId).Returns(CreateHotel(hotelId));
-    _roomTypesRepositoryMock.GetById(roomTypeId).Returns(CreateRoomType(roomTypeId));
+    _hotelsRepositoryMock.Exists(hotelId).Returns(true);
+    _roomTypesRepositoryMock.GetById(roomTypeId).Returns(roomType);
     _roomsRepositoryMock.Create(Arg.Any<Room>()).Throws<InvalidOperationException>();
 
     // Act
@@ -150,24 +150,6 @@ public class CreateRoomUseCaseTests
     };
   }
 
-  private static Hotel CreateHotel(Guid? hotelId = null)
-  {
-    return new Hotel(
-        "Brisa Hospitality SRL",
-        "Hotel Brisa",
-        new Email("contact@hotelbrisa.com"),
-        new PhoneNumber("+18095551234"),
-        new Address("123 Main Street", "Suite 4B", "Santo Domingo", "Distrito Nacional", "10101"),
-        new CheckOutPolicy(new TimeOnly(10, 0), new TimeOnly(12, 0)),
-        new ItbisRate(0.18m),
-        new ServiceChargeRate(0.10m),
-        true,
-        new Url("https://example.com/logo.png"))
-    {
-      Id = hotelId ?? Guid.NewGuid()
-    };
-  }
-
   private static RoomType CreateRoomType(Guid? roomTypeId = null)
   {
     return new RoomType(
@@ -182,4 +164,5 @@ public class CreateRoomUseCaseTests
       Id = roomTypeId ?? Guid.NewGuid()
     };
   }
+
 }

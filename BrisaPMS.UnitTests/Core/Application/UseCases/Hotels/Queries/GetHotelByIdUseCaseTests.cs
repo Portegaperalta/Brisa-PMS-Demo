@@ -8,7 +8,7 @@ using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Queries;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Queries;
 
 public class GetHotelByIdUseCaseTests
 {

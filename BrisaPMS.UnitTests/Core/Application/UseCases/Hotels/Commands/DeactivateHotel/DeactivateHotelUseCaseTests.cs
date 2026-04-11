@@ -10,7 +10,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using NSubstitute;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.DeactivateHotel;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Commands.DeactivateHotel;
 
 public class DeactivateHotelUseCaseTests
 {

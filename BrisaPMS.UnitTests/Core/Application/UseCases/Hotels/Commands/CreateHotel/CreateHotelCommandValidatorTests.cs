@@ -1,7 +1,7 @@
 using BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel;
 using FluentValidation.TestHelper;
 
-namespace BrisaPMS.UnitTests.Application.UseCases.Hotels.Commands.CreateHotel;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Commands.CreateHotel;
 
 public class CreateHotelCommandValidatorTests
 {
