@@ -126,6 +126,21 @@ public class RoomTests
     }
 
     [Fact]
+    public void ChangeRoomType_ShouldThrowBusinessRuleException_WhenRoomIsOccupied()
+    {
+        // Arrange
+        var room = CreateRoom();
+        var newRoomType = CreateRoomType("Suite Presidencial");
+        room.UpdateAvailabilityStatus(RoomAvailabilityStatus.Occupied);
+
+        // Act
+        Action act = () => room.ChangeRoomType(newRoomType);
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
     public void UpdateNumber_ShouldUpdateNumber_WhenValueIsValid()
     {
         // Arrange
@@ -136,6 +151,20 @@ public class RoomTests
 
         // Assert
         room.Number.Should().Be("305");
+    }
+
+    [Fact]
+    public void UpdateNumber_ShouldThrowBusinessRuleException_WhenRoomIsOccupied()
+    {
+        // Arrange
+        var room = CreateRoom();
+        room.UpdateAvailabilityStatus(RoomAvailabilityStatus.Occupied);
+
+        // Act
+        Action act = () => room.UpdateNumber("305");
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
     }
 
     [Theory]
