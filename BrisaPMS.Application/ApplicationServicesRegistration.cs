@@ -10,7 +10,12 @@ using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelRates;
 using BrisaPMS.Application.UseCases.Hotels.Queries.GetAllHotels;
 using BrisaPMS.Application.UseCases.Hotels.Queries.GetHotelById;
 using BrisaPMS.Application.UseCases.Hotels.Shared;
+using BrisaPMS.Application.UseCases.Rooms.Commands.ChangeRoomType;
 using BrisaPMS.Application.UseCases.Rooms.Commands.CreateRoom;
+using BrisaPMS.Application.UseCases.Rooms.Commands.SetAsPendingRestock;
+using BrisaPMS.Application.UseCases.Rooms.Commands.SetAsRestocked;
+using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateAvailabilityStatus;
+using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateHygieneStatus;
 using BrisaPMS.Application.UseCases.RoomTypes.Commands.CreateRoomType;
 using BrisaPMS.Application.Utilities.Mediator;
 using Microsoft.Extensions.DependencyInjection;
@@ -53,7 +58,7 @@ public static class ApplicationServicesRegistration
                                      UpdateHotelRatesUseCase>();
         
         services.AddScoped<IRequestHandler<GetHotelByIdQuery, HotelDto>, GetHotelByIdUseCase>();
-
+        
         services.AddScoped<IRequestHandler<GetAllHotelsQuery, List<HotelDto>>, GetAllHotelsUseCase>();
         
         // Room types services
@@ -61,6 +66,20 @@ public static class ApplicationServicesRegistration
         
         // Rooms services
         services.AddScoped<IRequestHandler<CreateRoomCommand, Guid>, CreateRoomUseCase>();
+        
+        services.AddScoped<IRequestHandler<ChangeRoomTypeCommand, bool>, ChangeRoomTypeUseCase>();
+        
+        services.AddScoped<IRequestHandler<UpdateAvailabilityStatusCommand, bool>,
+                                    UpdateAvailabilityStatusUseCase>();
+        
+        services.AddScoped<IRequestHandler<UpdateHygieneStatusCommand, bool>,
+                                    UpdateHygieneStatusUseCase>();
+
+        services.AddScoped<IRequestHandler<SetAsPendingRestockCommand, bool>, 
+                                    SetAsPendingRestockUseCase>();
+
+        services.AddScoped<IRequestHandler<SetAsRestockedCommand, bool>,
+                                    SetAsRestockedUseCase>();
         
         return services;
     }
