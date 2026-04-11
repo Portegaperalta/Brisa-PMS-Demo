@@ -208,6 +208,20 @@ public class RoomTests
     }
 
     [Fact]
+    public void UpdateHygieneStatus_ShouldThrowBusinessRuleException_WhenSettingCleanWhileRoomIsOccupied()
+    {
+        // Arrange
+        var room = CreateRoom();
+        room.UpdateAvailabilityStatus(RoomAvailabilityStatus.Occupied);
+
+        // Act
+        Action act = () => room.UpdateHygieneStatus(RoomHygieneStatus.Clean);
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
     public void UpdateLastCleanedAt_ShouldSetLastCleanedAt()
     {
         // Arrange
