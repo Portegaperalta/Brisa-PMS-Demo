@@ -24,7 +24,7 @@ public class UpdateHotelDefaultCurrencyUseCase : IRequestHandler<UpdateHotelDefa
         if (hotel is null)
             throw new NotFoundException("Hotel", command.HotelId);
 
-        var newDefaultCurrencyCode = (CurrencyCode)Enum.Parse(typeof(CurrencyCode), command.DefaultCurrencyCode);
+        var newDefaultCurrencyCode = Enum.Parse<CurrencyCode>(command.DefaultCurrencyCode);
         
         hotel.UpdateDefaultCurrencyCode(newDefaultCurrencyCode);
         
