@@ -17,6 +17,10 @@ using BrisaPMS.Application.UseCases.Rooms.Commands.SetAsRestocked;
 using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateAvailabilityStatus;
 using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateHygieneStatus;
 using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateRoomNumber;
+using BrisaPMS.Application.UseCases.Rooms.Queries.GetAllRooms;
+using BrisaPMS.Application.UseCases.Rooms.Queries.GetAllRoomsByHotelId;
+using BrisaPMS.Application.UseCases.Rooms.Queries.GetRoomById;
+using BrisaPMS.Application.UseCases.Rooms.Shared;
 using BrisaPMS.Application.UseCases.RoomTypes.Commands.CreateRoomType;
 using BrisaPMS.Application.Utilities.Mediator;
 using Microsoft.Extensions.DependencyInjection;
@@ -86,6 +90,15 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<UpdateRoomNumberCommand, bool>,
                                     UpdateRoomNumberUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllRoomsQuery, List<RoomDto>>,
+                                    GetAllRoomsUseCase>();
+        
+        services.AddScoped<IRequestHandler<GetAllRoomsByHotelIdQuery, List<RoomDto>>,
+                                    GetAllRoomsByHotelIdUseCase>();
+        
+        services.AddScoped<IRequestHandler<GetRoomByIdQuery, RoomDto>,
+                                     GetRoomByIdUseCase>();
         
         return services;
     }
