@@ -74,6 +74,9 @@ public class Room
         if (Enum.IsDefined<RoomHygieneStatus>(newHygieneStatus) is not true)
             throw new BusinessRuleException("Invalid hygiene status");
         
+        if (newHygieneStatus == RoomHygieneStatus.Clean && AvailabilityStatus == RoomAvailabilityStatus.Occupied)
+            throw new BusinessRuleException("Room is currently occupied, hygiene status can't be set as clean");
+        
         HygieneStatus = newHygieneStatus;
     }
     
