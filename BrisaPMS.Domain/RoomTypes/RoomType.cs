@@ -10,8 +10,7 @@ public class RoomType
     public decimal BaseRate {get; private set;}
     public int TotalBeds { get; private set; }
     public BedType BedType { get; private set; }
-    public int MaxOccupancyAdults { get; private set ; }
-    public int MaxOccupancyChildren { get; private set ; }
+    public OccupancyPolicy OccupancyPolicy { get; private set; }
 
     public RoomType
     (
@@ -19,8 +18,7 @@ public class RoomType
         decimal baseRate,
         int totalBeds,
         BedType  bedType,
-        int maxOccupancyAdults,
-        int maxOccupancyChildren,
+        OccupancyPolicy occupancyPolicy,
         string? description = null
     )
     {
@@ -35,12 +33,6 @@ public class RoomType
         
         if (Enum.IsDefined<BedType>(bedType) is not true)
             throw new BusinessRuleException("Bed type not supported");
-        
-        if (maxOccupancyAdults is <= 0 or > 16)
-            throw new BusinessRuleException("Max occupancy adults must be between 1 and 16");
-        
-        if (maxOccupancyChildren is < 0 or > 10)
-            throw new BusinessRuleException("Max occupancy children must be  between 0 and 10");
 
         Id = Guid.CreateVersion7();
         Name = name;
@@ -48,8 +40,7 @@ public class RoomType
         BaseRate = baseRate;
         TotalBeds = totalBeds;
         BedType = bedType;
-        MaxOccupancyAdults = maxOccupancyAdults;
-        MaxOccupancyChildren = maxOccupancyChildren;
+        OccupancyPolicy = occupancyPolicy;
     }
 
     public void UpdateName(string newName)
@@ -87,19 +78,6 @@ public class RoomType
         BedType = newBedType;
     }
 
-    public void UpdateMaxOccupancyAdults(int newMaxOccupancyAdults)
-    {
-        if (newMaxOccupancyAdults is < 1 or > 16)
-            throw new BusinessRuleException("Max occupancy adults must be between 1 and 16");
-        
-        MaxOccupancyAdults = newMaxOccupancyAdults;
-    }
-
-    public void UpdateMaxOccupancyChildren(int newMaxOccupancyChildren)
-    {
-        if (newMaxOccupancyChildren is < 0 or > 10)
-            throw new BusinessRuleException("Max occupancy children must be  between 0 and 10");
-        
-        MaxOccupancyChildren = newMaxOccupancyChildren;
-    }
+    public void UpdateOccupancyPolicy(OccupancyPolicy newOccupancyPolicy) 
+        => OccupancyPolicy = newOccupancyPolicy;
 }
