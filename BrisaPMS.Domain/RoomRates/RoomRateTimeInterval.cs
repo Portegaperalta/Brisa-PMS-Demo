@@ -2,7 +2,7 @@
 
 namespace BrisaPMS.Domain.RoomRates;
 
-public class RoomRateTimeInterval
+public record RoomRateTimeInterval
 {
     public DateTime ValidFrom { get; }
     public DateTime ValidTo { get; }
