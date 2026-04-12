@@ -1,4 +1,10 @@
-﻿using BrisaPMS.Application.UseCases.Hotels.Commands.ActivateHotel;
+﻿using BrisaPMS.Application.UseCases.Companies;
+using BrisaPMS.Application.UseCases.Companies.Commands.UpdateCompanyAddressInfo;
+using BrisaPMS.Application.UseCases.Companies.Commands.UpdateCompanyBrandInfo;
+using BrisaPMS.Application.UseCases.Companies.Commands.UpdateCompanyContactInfo;
+using BrisaPMS.Application.UseCases.Companies.Commands.UpdateCompanyRnc;
+using BrisaPMS.Application.UseCases.Companies.Queries.GetCompanyInfo;
+using BrisaPMS.Application.UseCases.Hotels.Commands.ActivateHotel;
 using BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel;
 using BrisaPMS.Application.UseCases.Hotels.Commands.DeactivateHotel;
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelAddressInfo;
@@ -33,6 +39,22 @@ public static class ApplicationServicesRegistration
         this IServiceCollection services)
     {
         services.AddTransient<IMediator, SimpleMediator>();
+        
+        // Companies services
+        services.AddScoped<IRequestHandler<UpdateCompanyAddressInfoCommand, bool>,
+                                    UpdateCompanyAddressInfoUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateCompanyBrandInfoCommand, bool>,
+                                UpdateCompanyBrandInfoUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateCompanyContactInfoCommand, bool>,
+                                UpdateCompanyContactInfoUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateCompanyRncCommand, bool>,
+                                    UpdateCompanyRncUseCase>();
+
+        services.AddScoped<IRequestHandler<GetCompanyInfoQuery, CompanyDto>, 
+                                    GetCompanyInfoUseCase>();
         
         // Hotels services
         services.AddScoped<IRequestHandler<ActivateHotelCommand, bool>,
