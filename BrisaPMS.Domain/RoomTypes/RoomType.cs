@@ -1,3 +1,4 @@
+using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.RoomTypes;
@@ -7,7 +8,7 @@ public class RoomType
     public Guid Id { get; init; }
     public string Name { get; private set; }
     public string? Description { get; private set; }
-    public decimal BaseRate {get; private set;}
+    public RoomBaseRate BaseRate {get; private set;}
     public int TotalBeds { get; private set; }
     public BedType BedType { get; private set; }
     public OccupancyPolicy OccupancyPolicy { get; private set; }
@@ -15,7 +16,7 @@ public class RoomType
     public RoomType
     (
         string name,
-        decimal baseRate,
+        RoomBaseRate baseRate,
         int totalBeds,
         BedType  bedType,
         OccupancyPolicy occupancyPolicy,
@@ -24,9 +25,6 @@ public class RoomType
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new EmptyRequiredFieldException("Room type name");
-        
-        if (baseRate is < 0 or > 100)
-            throw new BusinessRuleException("Base Rate must be between 0% and 100%");
         
         if (totalBeds is < 1 or > 20)
             throw new BusinessRuleException("Amount of Beds must be between 1 and 20");
@@ -54,13 +52,7 @@ public class RoomType
     public void UpdateDescription(string newDescription)
         => Description = newDescription;
 
-    public void UpdateBaseRate(decimal newBaseRate)
-    {
-        if (newBaseRate is < 0 or > 100)
-            throw new BusinessRuleException("Base Rate must be between 0% and 100%");
-        
-        BaseRate = newBaseRate;
-    }
+    public void UpdateBaseRate(RoomBaseRate newBaseRate) => BaseRate = newBaseRate;
 
     public void UpdateTotalBeds(int newTotalBeds)
     {
