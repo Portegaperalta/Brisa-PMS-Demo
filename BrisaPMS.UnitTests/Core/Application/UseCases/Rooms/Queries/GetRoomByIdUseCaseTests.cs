@@ -41,8 +41,8 @@ public class GetRoomByIdUseCaseTests
     result.Floor.Should().Be(room.Floor);
     result.Type.Should().Be(room.RoomType.Name);
     result.TotalBeds.Should().Be(room.RoomType.TotalBeds);
-    result.MaxOccupancyAdults.Should().Be(room.RoomType.MaxOccupancyAdults);
-    result.MaxOccupancyChildren.Should().Be(room.RoomType.MaxOccupancyChildren);
+    result.MaxOccupancyAdults.Should().Be(room.RoomType.OccupancyPolicy.MaxOccupancyAdults);
+    result.MaxOccupancyChildren.Should().Be(room.RoomType.OccupancyPolicy.MaxOccupancyChildren);
     result.BaseRate.Should().Be(room.RoomType.BaseRate);
     result.AvailabilityStatus.Should().Be(room.AvailabilityStatus.ToString());
     result.HygieneStatus.Should().Be(room.HygieneStatus.ToString());
@@ -89,6 +89,6 @@ public class GetRoomByIdUseCaseTests
 
   private static RoomType CreateRoomType(string name = "Deluxe Suite")
   {
-    return new RoomType(name, 25m, 2, BedType.Queen, 2, 1, "Spacious suite with ocean view");
+      return new RoomType(name, 25m, 2, BedType.Queen, new OccupancyPolicy(2, 1), "Spacious suite with ocean view");
   }
 }

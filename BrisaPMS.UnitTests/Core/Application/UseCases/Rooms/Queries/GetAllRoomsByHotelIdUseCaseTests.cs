@@ -80,13 +80,12 @@ public class GetAllRoomsByHotelIdUseCaseTests
 
   private static RoomType CreateRoomType(string name = "Deluxe Suite")
   {
-    return new RoomType(
-        name,
-        25m,
-        2,
-        BedType.Queen,
-        2,
-        1,
-        "Spacious suite with ocean view");
+      return new RoomType(
+          name,
+          25m,
+          2,
+          BedType.Queen,
+          new OccupancyPolicy(2, 1),
+          "Spacious suite with ocean view");
   }
 }

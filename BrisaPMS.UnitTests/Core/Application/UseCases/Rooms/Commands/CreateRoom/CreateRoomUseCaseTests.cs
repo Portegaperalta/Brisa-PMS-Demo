@@ -157,8 +157,7 @@ public class CreateRoomUseCaseTests
         25m,
         2,
         BedType.Queen,
-        2,
-        1,
+        new OccupancyPolicy(2, 1),
         "Spacious suite with ocean view")
     {
       Id = roomTypeId ?? Guid.NewGuid()

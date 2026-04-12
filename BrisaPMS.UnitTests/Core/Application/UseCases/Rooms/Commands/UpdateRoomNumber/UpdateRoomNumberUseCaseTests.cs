@@ -117,8 +117,7 @@ public class UpdateRoomNumberUseCaseTests
         25m,
         2,
         BedType.Queen,
-        2,
-        1,
+        new OccupancyPolicy(2, 1),
         "Spacious suite with ocean view");
   }
 }
