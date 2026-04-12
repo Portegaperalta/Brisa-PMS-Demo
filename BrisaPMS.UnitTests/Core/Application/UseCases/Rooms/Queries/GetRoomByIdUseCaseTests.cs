@@ -1,6 +1,7 @@
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Rooms.Queries.GetRoomById;
+using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.RoomTypes;
 using BrisaPMS.Domain.Rooms;
 using FluentAssertions;
@@ -43,7 +44,7 @@ public class GetRoomByIdUseCaseTests
     result.TotalBeds.Should().Be(room.RoomType.TotalBeds);
     result.MaxOccupancyAdults.Should().Be(room.RoomType.OccupancyPolicy.MaxOccupancyAdults);
     result.MaxOccupancyChildren.Should().Be(room.RoomType.OccupancyPolicy.MaxOccupancyChildren);
-    result.BaseRate.Should().Be(room.RoomType.BaseRate);
+    result.BaseRate.Should().Be(room.RoomType.BaseRate.Rate);
     result.AvailabilityStatus.Should().Be(room.AvailabilityStatus.ToString());
     result.HygieneStatus.Should().Be(room.HygieneStatus.ToString());
     result.LastCleanedAt.Should().Be(room.LastCleanedAt);
@@ -89,6 +90,14 @@ public class GetRoomByIdUseCaseTests
 
   private static RoomType CreateRoomType(string name = "Deluxe Suite")
   {
-      return new RoomType(name, 25m, 2, BedType.Queen, new OccupancyPolicy(2, 1), "Spacious suite with ocean view");
+      return new RoomType
+        (
+          name,
+          new RoomBaseRate(0.25m),
+          2,
+          BedType.Queen, 
+          new OccupancyPolicy(2, 1),
+          "Spacious suite with ocean view"
+        );
   }
 }

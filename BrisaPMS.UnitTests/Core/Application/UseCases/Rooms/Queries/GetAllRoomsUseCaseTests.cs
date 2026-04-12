@@ -1,5 +1,6 @@
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.UseCases.Rooms.Queries.GetAllRooms;
+using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.RoomTypes;
 using BrisaPMS.Domain.Rooms;
 using FluentAssertions;
@@ -59,7 +60,7 @@ public class GetAllRoomsUseCaseTests
   {
       return new RoomType(
           name,
-          25m,
+          new RoomBaseRate(0.25m),
           2,
           BedType.Queen,
           new OccupancyPolicy(2, 1),

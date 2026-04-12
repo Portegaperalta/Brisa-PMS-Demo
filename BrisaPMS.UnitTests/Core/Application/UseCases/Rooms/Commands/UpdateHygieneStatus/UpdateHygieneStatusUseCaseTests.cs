@@ -2,6 +2,7 @@ using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateHygieneStatus;
+using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Rooms;
 using BrisaPMS.Domain.RoomTypes;
 using FluentAssertions;
@@ -152,7 +153,7 @@ public class UpdateHygieneStatusUseCaseTests
   {
     return new RoomType(
         "Deluxe Suite",
-        25m,
+        new RoomBaseRate(0.25m),
         2,
         BedType.Queen,
         new OccupancyPolicy(2, 1),
