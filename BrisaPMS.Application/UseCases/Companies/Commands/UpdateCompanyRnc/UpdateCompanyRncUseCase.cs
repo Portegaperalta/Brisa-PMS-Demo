@@ -1,11 +1,12 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Application.UseCases.Companies.Commands.UpdateCompanyRnc;
 
-public class UpdateCompanyRncUseCase
+public class UpdateCompanyRncUseCase : IRequestHandler<UpdateCompanyRncCommand, bool>
 {
     private readonly ICompaniesRepository  _companiesRepository;
     private readonly IUnitOfWork  _unitOfWork;
