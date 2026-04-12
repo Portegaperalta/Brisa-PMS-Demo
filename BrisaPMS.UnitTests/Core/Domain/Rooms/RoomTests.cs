@@ -1,3 +1,4 @@
+using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Rooms;
 using BrisaPMS.Domain.RoomTypes;
 using BrisaPMS.Domain.Shared.Exceptions;
@@ -332,11 +333,10 @@ public class RoomTests
     {
         return new RoomType(
             name,
-            25m,
+            new RoomBaseRate(0.10m),
             2,
             BedType.Queen,
-            2,
-            1,
+            new OccupancyPolicy(2, 1),
             "Spacious suite with ocean view");
     }
 }

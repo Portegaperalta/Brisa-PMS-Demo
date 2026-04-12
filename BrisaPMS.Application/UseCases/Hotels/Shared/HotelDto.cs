@@ -2,21 +2,21 @@
 
 public class HotelDto
 {
-    public Guid Id { get; set; }
-    public string LegalName { get; set; }
-    public string CommercialName { get; set; }
-    public string? LogoUrl { get; set; }
-    public string BusinessEmail { get; set; }
-    public string BusinessPhoneNumber { get; set; }
-    public string Address1 { get; set; }
-    public string? Address2 { get; set; }
-    public string City { get; set; }
-    public string Province { get; set; }
-    public string ZipCode { get; set; }
-    public TimeOnly CheckInTime { get; set; }
-    public TimeOnly CheckOutTime { get; set; }
-    public string DefaultCurrencyCode { get; set; }
-    public decimal ItbisRate { get; set; }
-    public decimal ServiceChargeRate { get; set; }
-    public bool IsActive { get; set; }
+    public Guid Id { get; init; }
+    public required string LegalName { get; init; }
+    public required string CommercialName { get; init; }
+    public string? LogoUrl { get; init; }
+    public required string BusinessEmail { get; init; }
+    public required string BusinessPhoneNumber { get; init; }
+    public required string Address1 { get; init; }
+    public string? Address2 { get; init; }
+    public required string City { get; init;}
+    public required string Province { get; init; }
+    public required string ZipCode { get; init; }
+    public required TimeOnly CheckInTime { get; init; }
+    public required TimeOnly CheckOutTime { get; init; }
+    public required string DefaultCurrencyCode { get; init; }
+    public required decimal ItbisRate { get; init; }
+    public required decimal ServiceChargeRate { get; init; }
+    public required bool IsActive { get; init;}
 }

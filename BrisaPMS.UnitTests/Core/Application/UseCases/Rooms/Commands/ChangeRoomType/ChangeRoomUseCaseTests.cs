@@ -2,6 +2,7 @@ using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Rooms.Commands.ChangeRoomType;
+using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Rooms;
 using BrisaPMS.Domain.RoomTypes;
 using FluentAssertions;
@@ -141,7 +142,7 @@ public class ChangeRoomUseCaseTests
         RoomHygieneStatus.Clean,
         CreateRoomType())
     {
-      Id = roomId ?? Guid.NewGuid()
+        Id = roomId ?? Guid.NewGuid()
     };
   }
 
@@ -149,11 +150,10 @@ public class ChangeRoomUseCaseTests
   {
     return new RoomType(
         name,
-        25m,
+        new RoomBaseRate(0.10m),
         2,
         BedType.Queen,
-        2,
-        1,
+        new OccupancyPolicy(2, 1),
         "Spacious suite with ocean view")
     {
       Id = roomTypeId ?? Guid.NewGuid()

@@ -27,6 +27,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Core/Application/UseCases/Companies/" />
+    <Folder Include="Core/Application/UseCases/Companies/Commands/" />
+    <Folder Include="Core/Application/UseCases/Companies/Commands/UpdateCompanyAddressInfo/" />
+    <Folder Include="Core/Application/UseCases/Companies/Commands/UpdateCompanyBrandInfo/" />
+    <Folder Include="Core\Application\UseCases\Companies\Commands\UpdateCompanyContactInfo\" />
+    <Folder Include="Core\Application\UseCases\Companies\Commands\UpdateCompanyRnc\" />
+    <Folder Include="Core\Application\UseCases\Companies\Queries\" />
     <Folder Include="Core\Application\UseCases\Rooms\Commands\ChangeRoomType\" />
     <Folder Include="Core\Application\UseCases\Rooms\Commands\UpdateAvailabilityStatus\" />
     <Folder Include="Core\Application\UseCases\Rooms\Commands\UpdateHygieneStatus\" />
