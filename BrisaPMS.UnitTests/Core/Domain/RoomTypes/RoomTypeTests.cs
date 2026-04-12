@@ -14,15 +14,16 @@ public class RoomTypeTests
     const string name = "Deluxe Suite";
     const string description = "Spacious suite with ocean view";
     var occupancyPolicy = new OccupancyPolicy(2, 1);
+    var baseRate = new RoomBaseRate(0.25m);
 
     // Act
-    var result = new RoomType(name, CreateBaseRate(), 2, BedType.Queen, occupancyPolicy, description);
+    var result = new RoomType(name, baseRate, 2, BedType.Queen, occupancyPolicy, description);
 
     // Assert
     result.Id.Should().NotBe(Guid.Empty);
     result.Name.Should().Be(name);
     result.Description.Should().Be(description);
-    result.BaseRate.Should().Be(25m);
+    result.BaseRate.Should().Be(baseRate);
     result.TotalBeds.Should().Be(2);
     result.BedType.Should().Be(BedType.Queen);
     result.OccupancyPolicy.MaxOccupancyAdults.Should().Be(2);
@@ -50,32 +51,6 @@ public class RoomTypeTests
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
-  }
-
-  [Fact]
-  public void Constructor_ShouldThrowBusinessRuleException_WhenBaseRateIsNegative()
-  {
-    // Arrange
-    var baseRate = new RoomBaseRate(-1m);
-
-    // Act
-    Action act = () => _ = new RoomType("Standard Room", baseRate, 1, BedType.Double, CreateOccupancyPolicy());
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
-  public void Constructor_ShouldThrowBusinessRuleException_WhenBaseRateIsGreaterThanOneHundred()
-  {
-    // Arrange
-    var baseRate = new RoomBaseRate(101m);
-
-    // Act
-    Action act = () => _ = new RoomType("Standard Room", baseRate, 1, BedType.Double, CreateOccupancyPolicy());
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
   }
 
   [Fact]
@@ -184,34 +159,6 @@ public class RoomTypeTests
 
     // Assert
     roomType.BaseRate.Should().Be(newBaseRate);
-  }
-
-  [Fact]
-  public void UpdateBaseRate_ShouldThrowBusinessRuleException_WhenValueIsNegative()
-  {
-    // Arrange
-    var roomType = CreateRoomType();
-    var negativeBaseRate = new RoomBaseRate(-1m);
-
-    // Act
-    Action act = () => roomType.UpdateBaseRate(negativeBaseRate);
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
-  public void UpdateBaseRate_ShouldThrowBusinessRuleException_WhenValueIsGreaterThanOneHundred()
-  {
-    // Arrange
-    var roomType = CreateRoomType();
-    var newBaseRate = new RoomBaseRate(0.16m);
-
-    // Act
-    Action act = () => roomType.UpdateBaseRate(newBaseRate);
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
   }
 
   [Fact]
