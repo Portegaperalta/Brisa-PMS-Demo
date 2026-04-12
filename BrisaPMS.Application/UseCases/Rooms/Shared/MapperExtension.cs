@@ -16,7 +16,7 @@ public static class MapperExtension
             TotalBeds = room.RoomType.TotalBeds,
             MaxOccupancyAdults = room.RoomType.OccupancyPolicy.MaxOccupancyAdults,
             MaxOccupancyChildren = room.RoomType.OccupancyPolicy.MaxOccupancyChildren,
-            BaseRate = room.RoomType.BaseRate,
+            BaseRate = room.RoomType.BaseRate.Rate,
             AvailabilityStatus = room.AvailabilityStatus.ToString(),
             HygieneStatus =  room.HygieneStatus.ToString(),
             LastCleanedAt = room.LastCleanedAt,

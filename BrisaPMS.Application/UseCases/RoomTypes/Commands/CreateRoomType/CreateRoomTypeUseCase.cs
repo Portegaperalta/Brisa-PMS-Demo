@@ -1,6 +1,7 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Utilities.Mediator;
+using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.RoomTypes;
 
 namespace BrisaPMS.Application.UseCases.RoomTypes.Commands.CreateRoomType;
@@ -20,11 +21,12 @@ public class CreateRoomTypeUseCase : IRequestHandler<CreateRoomTypeCommand, Guid
     {
         var bedType = Enum.Parse<BedType>(command.BedType);
         var occupancyPolicy = new OccupancyPolicy(command.MaxOccupancyAdults, command.MaxOccupancyChildren);
+        var baseRate = new RoomBaseRate(command.BaseRate);
 
         var roomType = new RoomType
         (
             command.Name,
-            command.BaseRate,
+            baseRate,
             command.TotalBeds,
             bedType,
             occupancyPolicy,
