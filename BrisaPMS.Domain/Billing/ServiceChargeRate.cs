@@ -6,12 +6,9 @@ public record ServiceChargeRate
 
     public ServiceChargeRate(decimal rate)
     {
-        if (rate < 0)
-            throw new InvalidServiceChargeRateException("Service charge rate can't be negative");
+        if (rate is < 0 or > 100)
+            throw new InvalidServiceChargeRateException("Service charge rate must be between 0% and 100%");
         
-        if (rate > 100)
-            throw new InvalidServiceChargeRateException("Service charge rate can't be over 100");
-
         Rate = rate;
     }
 };
