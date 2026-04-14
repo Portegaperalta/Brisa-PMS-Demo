@@ -84,8 +84,7 @@ public class GetAllRoomsByHotelIdUseCaseTests
       return new RoomType(
           name,
           new RoomBaseRate(0.25m),
-          2,
-          BedType.Queen,
+          new RoomBed(BedType.Double, 1),
           new OccupancyPolicy(2, 1),
           "Spacious suite with ocean view");
   }
