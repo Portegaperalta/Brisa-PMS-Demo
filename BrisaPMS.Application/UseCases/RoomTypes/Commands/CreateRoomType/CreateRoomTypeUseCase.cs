@@ -20,6 +20,7 @@ public class CreateRoomTypeUseCase : IRequestHandler<CreateRoomTypeCommand, Guid
     public async Task<Guid> Handle(CreateRoomTypeCommand command)
     {
         var bedType = Enum.Parse<BedType>(command.BedType);
+        var beds = new RoomBed(bedType, command.TotalBeds);
         var occupancyPolicy = new OccupancyPolicy(command.MaxOccupancyAdults, command.MaxOccupancyChildren);
         var baseRate = new RoomBaseRate(command.BaseRate);
 
@@ -27,8 +28,7 @@ public class CreateRoomTypeUseCase : IRequestHandler<CreateRoomTypeCommand, Guid
         (
             command.Name,
             baseRate,
-            command.TotalBeds,
-            bedType,
+            beds,
             occupancyPolicy,
             command.Description
         );

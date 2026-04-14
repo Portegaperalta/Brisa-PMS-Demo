@@ -14,17 +14,19 @@ public class RoomTypeTests
     const string name = "Deluxe Suite";
     const string description = "Spacious suite with ocean view";
     var occupancyPolicy = new OccupancyPolicy(2, 1);
+    var beds = new RoomBed(BedType.Queen, 2);
+    var baseRate = new RoomBaseRate(25m);
 
     // Act
-    var result = new RoomType(name, CreateBaseRate(), 2, BedType.Queen, occupancyPolicy, description);
+    var result = new RoomType(name, baseRate, beds, occupancyPolicy, description);
 
     // Assert
     result.Id.Should().NotBe(Guid.Empty);
     result.Name.Should().Be(name);
     result.Description.Should().Be(description);
-    result.BaseRate.Should().Be(25m);
-    result.TotalBeds.Should().Be(2);
-    result.BedType.Should().Be(BedType.Queen);
+    result.BaseRate.Should().Be(baseRate);
+    result.Beds.NumberOfBeds.Should().Be(2);
+    result.Beds.BedType.Should().Be(BedType.Queen);
     result.OccupancyPolicy.MaxOccupancyAdults.Should().Be(2);
     result.OccupancyPolicy.MaxOccupancyChildren.Should().Be(1);
   }
@@ -32,8 +34,11 @@ public class RoomTypeTests
   [Fact]
   public void Constructor_ShouldCreateRoomType_WhenDescriptionIsNotProvided()
   {
+    // Arrange
+    var beds = new RoomBed(BedType.Double, 1);
+
     // Act
-    var result = new RoomType("Standard Room", CreateBaseRate(), 1, BedType.Double, CreateOccupancyPolicy());
+    var result = new RoomType("Standard Room", CreateBaseRate(), beds, CreateOccupancyPolicy());
 
     // Assert
     result.Description.Should().BeNull();
@@ -45,60 +50,21 @@ public class RoomTypeTests
   [InlineData(" ")]
   public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenNameIsNullOrWhiteSpace(string? name)
   {
+    // Arrange
+    var beds = new RoomBed(BedType.Double, 1);
+
     // Act
-    Action act = () => _ = new RoomType(name!, CreateBaseRate(), 1, BedType.Double, CreateOccupancyPolicy());
+    Action act = () => _ = new RoomType(name!, CreateBaseRate(), beds, CreateOccupancyPolicy());
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
   }
 
   [Fact]
-  public void Constructor_ShouldThrowBusinessRuleException_WhenBaseRateIsNegative()
-  {
-    // Arrange
-    var baseRate = new RoomBaseRate(-1m);
-
-    // Act
-    Action act = () => _ = new RoomType("Standard Room", baseRate, 1, BedType.Double, CreateOccupancyPolicy());
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
-  public void Constructor_ShouldThrowBusinessRuleException_WhenBaseRateIsGreaterThanOneHundred()
-  {
-    // Arrange
-    var baseRate = new RoomBaseRate(101m);
-
-    // Act
-    Action act = () => _ = new RoomType("Standard Room", baseRate, 1, BedType.Double, CreateOccupancyPolicy());
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
-  public void Constructor_ShouldThrowBusinessRuleException_WhenTotalBedsIsZeroOrLess()
-  {
-    // Arrange
-    const int totalBeds = 0;
-
-    // Act
-    Action act = () => _ = new RoomType("Standard Room", CreateBaseRate(), totalBeds, BedType.Double, CreateOccupancyPolicy());
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
   public void Constructor_ShouldThrowBusinessRuleException_WhenBedTypeIsInvalid()
   {
-    // Arrange
-    var invalidBedType = (BedType)999;
-
     // Act
-    Action act = () => _ = new RoomType("Standard Room", CreateBaseRate(), 1, invalidBedType, CreateOccupancyPolicy());
+    Action act = () => _ = new RoomBed((BedType)999, 1);
 
     // Assert
     act.Should().Throw<BusinessRuleException>();
@@ -187,81 +153,41 @@ public class RoomTypeTests
   }
 
   [Fact]
-  public void UpdateBaseRate_ShouldThrowBusinessRuleException_WhenValueIsNegative()
+  public void UpdateRoomBeds_ShouldUpdateRoomBeds_WhenValueIsValid()
   {
     // Arrange
     var roomType = CreateRoomType();
-    var negativeBaseRate = new RoomBaseRate(-1m);
+    var newBeds = new RoomBed(BedType.King, 3);
 
     // Act
-    Action act = () => roomType.UpdateBaseRate(negativeBaseRate);
+    roomType.UpdateRoomBeds(newBeds);
+
+    // Assert
+    roomType.Beds.NumberOfBeds.Should().Be(3);
+    roomType.Beds.BedType.Should().Be(BedType.King);
+  }
+
+  [Fact]
+  public void UpdateRoomBeds_ShouldThrowBusinessRuleException_WhenNumberOfBedsIsZeroOrLess()
+  {
+    // Arrange
+    var roomType = CreateRoomType();
+
+    // Act
+    Action act = () => roomType.UpdateRoomBeds(new RoomBed(BedType.King, 0));
 
     // Assert
     act.Should().Throw<BusinessRuleException>();
   }
 
   [Fact]
-  public void UpdateBaseRate_ShouldThrowBusinessRuleException_WhenValueIsGreaterThanOneHundred()
-  {
-    // Arrange
-    var roomType = CreateRoomType();
-    var newBaseRate = new RoomBaseRate(0.16m);
-
-    // Act
-    Action act = () => roomType.UpdateBaseRate(newBaseRate);
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
-  public void UpdateTotalBeds_ShouldUpdateTotalBeds_WhenValueIsValid()
+  public void UpdateRoomBeds_ShouldThrowBusinessRuleException_WhenBedTypeIsInvalid()
   {
     // Arrange
     var roomType = CreateRoomType();
 
     // Act
-    roomType.UpdateTotalBeds(3);
-
-    // Assert
-    roomType.TotalBeds.Should().Be(3);
-  }
-
-  [Fact]
-  public void UpdateTotalBeds_ShouldThrowBusinessRuleException_WhenValueIsZeroOrLess()
-  {
-    // Arrange
-    var roomType = CreateRoomType();
-
-    // Act
-    Action act = () => roomType.UpdateTotalBeds(0);
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
-  public void UpdateBedType_ShouldUpdateBedType_WhenValueIsValid()
-  {
-    // Arrange
-    var roomType = CreateRoomType();
-
-    // Act
-    roomType.UpdateBedType(BedType.King);
-
-    // Assert
-    roomType.BedType.Should().Be(BedType.King);
-  }
-
-  [Fact]
-  public void UpdateBedType_ShouldThrowBusinessRuleException_WhenValueIsInvalid()
-  {
-    // Arrange
-    var roomType = CreateRoomType();
-    var invalidBedType = (BedType)999;
-
-    // Act
-    Action act = () => roomType.UpdateBedType(invalidBedType);
+    Action act = () => roomType.UpdateRoomBeds(new RoomBed((BedType)999, 1));
 
     // Assert
     act.Should().Throw<BusinessRuleException>();
@@ -313,8 +239,7 @@ public class RoomTypeTests
     return new RoomType(
         "Deluxe Suite",
         new RoomBaseRate(0.5m),
-        2,
-        BedType.Queen,
+        new RoomBed(BedType.Queen, 2),
         CreateOccupancyPolicy(),
         "Spacious suite with ocean view");
   }

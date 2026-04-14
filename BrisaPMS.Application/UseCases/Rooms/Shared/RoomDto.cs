@@ -8,6 +8,7 @@ public class RoomDto
     public required int Floor { get; init; }
     public required string Type { get; init; }
     public required int TotalBeds { get; init; }
+    public required string BedType { get; init; }
     public required int MaxOccupancyAdults { get; init; }
     public required int MaxOccupancyChildren { get; init; }
     public required decimal BaseRate { get; init; }
