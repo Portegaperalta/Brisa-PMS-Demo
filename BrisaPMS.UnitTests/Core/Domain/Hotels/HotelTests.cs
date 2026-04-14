@@ -13,6 +13,7 @@ public class HotelTests
     public void Constructor_ShouldCreateHotel_WhenValuesAreValid()
     {
         // Arrange
+        var rnc =  CreateRnc();
         var businessEmail = CreateEmail();
         var businessPhoneNumber = CreatePhoneNumber();
         var address = CreateAddress();
@@ -25,6 +26,7 @@ public class HotelTests
         var result = new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
+            rnc,
             businessEmail,
             businessPhoneNumber,
             address,
@@ -56,6 +58,7 @@ public class HotelTests
         var result = new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -81,6 +84,7 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             legalName,
             "Hotel Brisa",
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -103,6 +107,7 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             legalName,
             "Hotel Brisa",
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -125,6 +130,7 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             "Brisa Hospitality SRL",
             commercialName,
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -147,6 +153,7 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             "Brisa Hospitality SRL",
             commercialName,
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -169,6 +176,7 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -392,6 +400,7 @@ public class HotelTests
         return new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -401,6 +410,8 @@ public class HotelTests
             isActive,
             CreateUrl());
     }
+
+    private static Rnc CreateRnc() => new Rnc("123456789");
 
     private static Url CreateUrl()
     {
