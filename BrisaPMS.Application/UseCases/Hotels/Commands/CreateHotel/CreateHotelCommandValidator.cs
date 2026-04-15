@@ -15,6 +15,13 @@ namespace BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel
             RuleFor(x => x.CommercialName)
                 .NotEmpty().WithMessage("The field Commercial Name is required")
                 .MaximumLength(250).WithMessage("The field Commercial Name can't exceed 250 characters");
+
+            RuleFor(x => x.Rnc)
+                .NotEmpty().WithMessage("The field  Rnc is required.")
+                .MinimumLength(9).WithMessage("The field  Rnc must be minimum 9 characters long.")
+                .MaximumLength(11).WithMessage("The field  Rnc can't exceed 11 characters.")
+                .Matches(@"^[0-9]+(-[0-9]+)*$")
+                .WithMessage("RNC must contain only numbers and dashes");
             
             RuleFor(x => x.LogoUrl)
                 .MaximumLength(2048).WithMessage("The field LogoUrl can't exceed 2048 characters");
