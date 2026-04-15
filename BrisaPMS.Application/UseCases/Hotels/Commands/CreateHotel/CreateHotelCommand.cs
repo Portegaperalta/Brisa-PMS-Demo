@@ -9,6 +9,7 @@ public class CreateHotelCommand : IRequest<Guid>
 {
     public required string LegalName { get; set; }
     public required string CommercialName { get; set; }
+    public required string Rnc {get; set;}
     public string? LogoUrl { get; set; } = null;
     public required string BusinessEmail { get; set; }
     public required string BusinessPhoneNumber { get; set; }
