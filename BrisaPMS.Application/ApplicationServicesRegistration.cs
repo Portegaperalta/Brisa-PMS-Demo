@@ -28,6 +28,13 @@ using BrisaPMS.Application.UseCases.Rooms.Queries.GetAllRoomsByHotelId;
 using BrisaPMS.Application.UseCases.Rooms.Queries.GetRoomById;
 using BrisaPMS.Application.UseCases.Rooms.Shared;
 using BrisaPMS.Application.UseCases.RoomTypes.Commands.CreateRoomType;
+using BrisaPMS.Application.UseCases.RoomTypes.Commands.UpdateRoomTypeBaseRate;
+using BrisaPMS.Application.UseCases.RoomTypes.Commands.UpdateRoomTypeBedsInfo;
+using BrisaPMS.Application.UseCases.RoomTypes.Commands.UpdateRoomTypeGeneralInfo;
+using BrisaPMS.Application.UseCases.RoomTypes.Commands.UpdateRoomTypeOccupancyPolicy;
+using BrisaPMS.Application.UseCases.RoomTypes.Queries.GetAllRoomTypes;
+using BrisaPMS.Application.UseCases.RoomTypes.Queries.GetRoomTypeById;
+using BrisaPMS.Application.UseCases.RoomTypes.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -90,7 +97,26 @@ public static class ApplicationServicesRegistration
                                     GetAllHotelsUseCase>();
         
         // Room types services
-        services.AddScoped<IRequestHandler<CreateRoomTypeCommand, Guid>, CreateRoomTypeUseCase>();
+        services.AddScoped<IRequestHandler<CreateRoomTypeCommand, Guid>,
+                                    CreateRoomTypeUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateRoomTypeBaseRateCommand, bool>,
+                                    UpdateRoomTypeBaseRateUseCase>();
+        
+        services.AddScoped<IRequestHandler<UpdateRoomTypeBedsInfoCommand, bool>, 
+                                    UpdateRoomTypeBedsInfoUseCase>();
+        
+        services.AddScoped<IRequestHandler<UpdateRoomTypeGeneralInfoCommand, bool>,
+                                    UpdateRoomTypeGeneralInfoUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateRoomTypeOccupancyPolicyCommand, bool>,
+                                    UpdateRoomTypeOccupancyPolicyUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllRoomTypesQuery, List<RoomTypeDto>>,
+                                     GetAllRoomTypesUseCase>();
+
+        services.AddScoped<IRequestHandler<GetRoomTypeByIdQuery, RoomTypeDto>,
+                                    GetRoomTypeByIdUseCase>();
         
         // Rooms services
         services.AddScoped<IRequestHandler<ChangeRoomTypeCommand, bool>, 
@@ -99,10 +125,10 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<CreateRoomCommand, Guid>, CreateRoomUseCase>();
         
         services.AddScoped<IRequestHandler<SetAsPendingRestockCommand, bool>, 
-                                      SetAsPendingRestockUseCase>();
+                                    SetAsPendingRestockUseCase>();
         
         services.AddScoped<IRequestHandler<SetAsRestockedCommand, bool>,
-                                     SetAsRestockedUseCase>();
+                                    SetAsRestockedUseCase>();
         
         services.AddScoped<IRequestHandler<UpdateAvailabilityStatusCommand, bool>,
                                     UpdateAvailabilityStatusUseCase>();
