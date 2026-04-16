@@ -13,6 +13,7 @@ public class CreateGuestCommand : IRequest<Guid>
     public string? Rnc { get; set; }
     public required string Email { get; set; }
     public required string PhoneNumber { get; set; }
+    public required string PreferredCurrency {get; set;}
     public required bool IsVip  { get; set; }
     public string? Notes { get; set; }
 }
