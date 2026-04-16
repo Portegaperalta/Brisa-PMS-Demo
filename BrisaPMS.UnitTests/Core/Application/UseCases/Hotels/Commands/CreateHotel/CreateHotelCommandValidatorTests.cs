@@ -19,6 +19,7 @@ public class CreateHotelCommandValidatorTests
     var command = CreateCreateHotelCommand(
         string.Empty,
         string.Empty,
+        string.Empty,
         CreateLogoUrl(),
         string.Empty,
         string.Empty,
@@ -58,6 +59,7 @@ public class CreateHotelCommandValidatorTests
     var command = CreateCreateHotelCommand(
         new string('L', 251),
         new string('C', 251),
+        $"12345678910{new string('0', 12)}",
         $"https://example.com/{new string('L', 2041)}",
         $"{new string('a', 246)}@test.com",
         new string('1', 26),
@@ -191,6 +193,7 @@ public class CreateHotelCommandValidatorTests
     return CreateCreateHotelCommand(
         CreateLegalName(),
         CreateCommercialName(),
+        CreateRnc(),
         CreateLogoUrl(),
         CreateBusinessEmail(),
         CreateBusinessPhoneNumber(),
@@ -209,6 +212,7 @@ public class CreateHotelCommandValidatorTests
   private static CreateHotelCommand CreateCreateHotelCommand(
       string legalName,
       string commercialName,
+      string rnc,
       string? logoUrl,
       string businessEmail,
       string businessPhoneNumber,
@@ -227,6 +231,7 @@ public class CreateHotelCommandValidatorTests
     {
       LegalName = legalName,
       CommercialName = commercialName,
+      Rnc = rnc,
       LogoUrl = logoUrl,
       BusinessEmail = businessEmail,
       BusinessPhoneNumber = businessPhoneNumber,
@@ -245,6 +250,7 @@ public class CreateHotelCommandValidatorTests
 
   private static string CreateLegalName() => "Brisa S.R.L";
   private static string CreateCommercialName() => "Brisa Hotel";
+  private static string CreateRnc() => "12345678901";
   private static string CreateLogoUrl() => "https://testlogourl.jpg";
   private static string CreateBusinessEmail() => "brisaHotel@test.com";
   private static string CreateBusinessPhoneNumber() => "1234567891";

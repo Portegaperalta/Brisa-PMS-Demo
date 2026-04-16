@@ -29,6 +29,7 @@ public class CreateHotelUseCaseTests
         {
             LegalName = "Brisa Hotel S.R.L",
             CommercialName = "Brisa Hotel",
+            Rnc = "12345678901",
             LogoUrl = "https://testlogourl.jpg",
             BusinessEmail = "brisaHotel@test.com",
             BusinessPhoneNumber = "1234567891",
@@ -78,6 +79,7 @@ public class CreateHotelUseCaseTests
         {
             LegalName = CreateLegalName(),
             CommercialName = CreateCommercialName(),
+            Rnc =  CreateRnc(),
             LogoUrl = CreateLogoUrl(),
             BusinessEmail = CreateBusinessEmail(),
             BusinessPhoneNumber = CreateBusinessPhoneNumber(),
@@ -96,6 +98,7 @@ public class CreateHotelUseCaseTests
 
     private static string CreateLegalName() => "Brisa S.R.L";
     private static string CreateCommercialName() => "Brisa Hotel";
+    private static string CreateRnc() => "12345678901";
     private static string CreateLogoUrl() => "https://testlogourl.jpg";
     private static string CreateBusinessEmail() => "brisaHotel@test.com";
     private static string CreateBusinessPhoneNumber() => "1234567891";
