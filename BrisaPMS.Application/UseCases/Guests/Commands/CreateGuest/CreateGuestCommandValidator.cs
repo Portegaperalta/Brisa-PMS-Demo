@@ -53,6 +53,9 @@ public class CreateGuestCommandValidator : AbstractValidator<CreateGuestCommand>
             .MaximumLength(3).WithMessage("The field Preferred Currency can't exceed 3 characters.")
             .Must(x => Enum.IsDefined(typeof(CurrencyCode), x))
             .WithMessage("Currency not supported.");
+        
+        RuleFor(x => x.PreferredLanguage)
+            .MaximumLength(50).WithMessage("The field Preferred Language can't exceed 50 characters.");
 
         RuleFor(x => x.IsVip)
             .NotEmpty().WithMessage("The field Is Vip is required.");
