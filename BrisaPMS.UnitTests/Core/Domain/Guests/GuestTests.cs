@@ -10,7 +10,7 @@ namespace BrisaPMS.UnitTests.Core.Domain.Guests;
 public class GuestTests
 {
     [Fact]
-    public void Constructor_ShouldCreateGuest_WhenValuesAreValid()
+    public void Builder_ShouldCreateGuest_WhenValuesAreValid()
     {
         // Arrange
         var hotelId = Guid.NewGuid();
@@ -19,20 +19,23 @@ public class GuestTests
         var phoneNumber = CreatePhoneNumber();
 
         // Act
-        var result = new Guest(
-            hotelId,
-            "John",
-            "Doe",
-            GuestDocumentType.Passport,
-            "A1234567",
-            phoneNumber,
-            CurrencyCode.USD,
-            true,
-            "United States",
-            rnc,
-            email,
-            "English",
-            "VIP guest");
+        var result = new Guest.Builder
+            (
+                hotelId,
+                "John",
+                "Doe",
+                GuestDocumentType.Passport,
+                "A1234567",
+                email,
+                phoneNumber,
+                CurrencyCode.USD,
+                true
+            )
+            .WithCountry("United States")
+            .WithRnc(rnc)
+            .WithPreferredLanguage("English")
+            .WithNotes("VIP guest")
+            .Build();
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
@@ -54,27 +57,32 @@ public class GuestTests
     }
 
     [Fact]
-    public void Constructor_ShouldCreateGuest_WhenOptionalValuesAreNotProvided()
+    public void Builder_ShouldCreateGuest_WhenOptionalValuesAreNotProvided()
     {
         // Arrange
         var hotelId = Guid.NewGuid();
+        var email = CreateEmail();
         var phoneNumber = CreatePhoneNumber();
 
         // Act
-        var result = new Guest(
-            hotelId,
-            "John",
-            "Doe",
-            GuestDocumentType.IdCard,
-            "00112345678",
-            phoneNumber,
-            CurrencyCode.DOP,
-            false);
+        var result = new Guest.Builder
+            (
+                hotelId,
+                "John",
+                "Doe",
+                GuestDocumentType.IdCard,
+                "00112345678",
+                email,
+                phoneNumber,
+                CurrencyCode.DOP,
+                false
+            )
+            .Build();
 
         // Assert
         result.Country.Should().BeNull();
         result.Rnc.Should().BeNull();
-        result.Email.Should().BeNull();
+        result.Email.Should().Be(email);
         result.PhoneNumber.Should().Be(phoneNumber);
         result.PreferredLanguage.Should().BeNull();
         result.Notes.Should().BeNull();
@@ -84,13 +92,24 @@ public class GuestTests
     [Theory]
     [InlineData(null)]
     [InlineData("  ")]
-    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenFirstNameIsNullOrWhiteSpace(string? firstName)
+    public void Builder_ShouldThrowEmptyRequiredFieldException_WhenFirstNameIsNullOrWhiteSpace(string? firstName)
     {
         // Arrange
         const string lastName = "Doe";
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), firstName!, lastName, GuestDocumentType.IdCard, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest.Builder
+        (
+            Guid.NewGuid(), 
+            firstName!, 
+            lastName,
+            GuestDocumentType.IdCard, 
+            "00112345678", 
+            CreateEmail(),
+            CreatePhoneNumber(), 
+            CurrencyCode.DOP,
+            false
+        );
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -99,52 +118,96 @@ public class GuestTests
     [Theory]
     [InlineData(null)]
     [InlineData("  ")]
-    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenLastNameIsNullOrWhiteSpace(string? lastName)
+    public void Builder_ShouldThrowEmptyRequiredFieldException_WhenLastNameIsNullOrWhiteSpace(string? lastName)
     {
         // Arrange
         const string firstName = "John";
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), firstName, lastName!, GuestDocumentType.IdCard, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest.Builder
+        (
+          Guid.NewGuid(),
+          firstName,
+          lastName!,
+          GuestDocumentType.IdCard,
+          "00112345678",
+          CreateEmail(),
+          CreatePhoneNumber(),
+          CurrencyCode.DOP,
+          false
+        );
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
     }
 
     [Fact]
-    public void Constructor_ShouldThrowBusinessRuleException_WhenDocumentTypeIsInvalid()
+    public void Builder_ShouldThrowBusinessRuleException_WhenDocumentTypeIsInvalid()
     {
         // Arrange
         var invalidDocumentType = (GuestDocumentType)999;
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", invalidDocumentType, "00112345678", CreatePhoneNumber(), CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest.Builder
+        (
+            Guid.NewGuid(), 
+            "John", 
+            "Doe", 
+            invalidDocumentType, 
+            "00112345678", 
+            CreateEmail(), 
+            CreatePhoneNumber(), 
+            CurrencyCode.DOP, 
+            false
+        );
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
     }
 
     [Fact]
-    public void Constructor_ShouldThrowBusinessRuleException_WhenDocumentNumberIsEmpty()
+    public void Builder_ShouldThrowEmptyRequiredFieldException_WhenDocumentNumberIsEmpty()
     {
         // Arrange
         const string documentNumber = " ";
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", GuestDocumentType.IdCard, documentNumber, CreatePhoneNumber(), CurrencyCode.DOP, false);
+        Action act = () => _ = new Guest.Builder
+        (
+            Guid.NewGuid(), 
+            "John", 
+            "Doe",
+            GuestDocumentType.IdCard, 
+            documentNumber, 
+            CreateEmail(), 
+            CreatePhoneNumber(),
+            CurrencyCode.DOP,
+            false
+        );
 
         // Assert
-        act.Should().Throw<BusinessRuleException>();
+        act.Should().Throw<EmptyRequiredFieldException>();
     }
 
     [Fact]
-    public void Constructor_ShouldThrowBusinessRuleException_WhenPreferredCurrencyIsInvalid()
+    public void Builder_ShouldThrowBusinessRuleException_WhenPreferredCurrencyIsInvalid()
     {
         // Arrange
         var invalidCurrency = (CurrencyCode)999;
 
         // Act
-        Action act = () => _ = new Guest(Guid.NewGuid(), "John", "Doe", GuestDocumentType.IdCard, "00112345678", CreatePhoneNumber(), invalidCurrency, false);
+        Action act = () => _ = new Guest.Builder
+        (
+            Guid.NewGuid(),
+            "John", 
+            "Doe",
+            GuestDocumentType.IdCard,
+            "00112345678",
+            CreateEmail(),
+            CreatePhoneNumber(),
+            invalidCurrency,
+            false
+        );
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -468,20 +531,23 @@ public class GuestTests
 
     private static Guest CreateGuest()
     {
-        return new Guest(
-            Guid.NewGuid(),
-            "John",
-            "Doe",
-            GuestDocumentType.IdCard,
-            "00112345678",
-            CreatePhoneNumber(),
-            CurrencyCode.DOP,
-            true,
-            "United States",
-            CreateRnc(),
-            CreateEmail(),
-            "English",
-            "Frequent guest");
+        return new Guest.Builder
+            (
+                Guid.NewGuid(),
+                "John",
+                "Doe",
+                GuestDocumentType.IdCard,
+                "00112345678",
+                CreateEmail(),
+                CreatePhoneNumber(),
+                CurrencyCode.DOP,
+                true
+            )
+            .WithCountry("United States")
+            .WithRnc(CreateRnc())
+            .WithPreferredLanguage("English")
+            .WithNotes("Frequent guest")
+            .Build();
     }
 
     private static Rnc CreateRnc()
