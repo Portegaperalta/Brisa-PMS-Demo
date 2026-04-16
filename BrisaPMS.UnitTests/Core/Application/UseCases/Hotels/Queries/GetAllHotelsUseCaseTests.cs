@@ -80,7 +80,7 @@ public class GetAllHotelsUseCaseTests
                 h.Id,
                 h.LegalName,
                 h.CommercialName,
-                h.Rnc.Value,
+                Rnc = h.Rnc.Value,
                 LogoUrl = h.LogoUrl!.Value,
                 BusinessEmail = h.BusinessEmail.Value,
                 BusinessPhoneNumber = h.BusinessPhoneNumber.Value,
