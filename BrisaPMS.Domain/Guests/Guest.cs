@@ -15,60 +15,96 @@ namespace BrisaPMS.Domain.Guests
         public string DocumentNumber { get; private set; }
         public string? Country { get; private set; }
         public Rnc? Rnc { get; private set; }
-        public Email? Email { get; private set; }
+        public Email Email { get; private set; }
         public PhoneNumber PhoneNumber { get; private set; }
         public CurrencyCode PreferredCurrency { get; private set; }
         public string? PreferredLanguage { get; private set; }
         public bool IsVip { get; private set; }
-        public bool IsBlackListed { get; private set; }
+        public bool IsBlackListed { get; private set; } = false;
         public string? BlackListedReason { get; private set; }
         public string? Notes { get; private set; }
 
-        public Guest(Guid hotelId,
-            string firstName,
-            string lastName,
-            GuestDocumentType documentType,
-            string documentNumber,
-            PhoneNumber phoneNumber,
-            CurrencyCode preferredCurrency,
-            bool isVip,
-            string? country = null,
-            Rnc? rnc = null,
-            Email? email = null,
-            string? preferredLanguage = null,
-            string? notes = null)
+        private Guest() {}
+        
+        // Nested Builder
+        public class Builder
         {
-            if (string.IsNullOrWhiteSpace(firstName))
-                throw new EmptyRequiredFieldException("First Name");
+            private readonly Guid _hotelId;
+            private readonly string _firstName;
+            private readonly string _lastName;
+            private readonly GuestDocumentType _documentType;
+            private readonly string _documentNumber;
+            private readonly Email _email;
+            private readonly PhoneNumber _phoneNumber;
+            private readonly CurrencyCode _preferredCurrency;
+            private readonly bool _isVip;
+            
+            private string? _country = null;
+            private Rnc? _rnc = null;
+            private string? _preferredLanguage = null;
+            private string? _notes = null;
 
-            if (string.IsNullOrWhiteSpace(lastName))
-                throw new EmptyRequiredFieldException("Last Name");
+            public Builder
+            (
+                Guid hotelId,
+                string firstName,
+                string lastName,
+                GuestDocumentType documentType,
+                string documentNumber,
+                Email email,
+                PhoneNumber phoneNumber,
+                CurrencyCode preferredCurrency,
+                bool isVip
+            )
+            {
+                if (hotelId == Guid.Empty)
+                    throw new EmptyRequiredFieldException("Hotel Id");
+                
+                if (string.IsNullOrWhiteSpace(firstName))
+                    throw new EmptyRequiredFieldException("First Name");
+                
+                if (string.IsNullOrWhiteSpace(lastName))
+                    throw new EmptyRequiredFieldException("Last Name");
+                
+                if (string.IsNullOrWhiteSpace(documentNumber))
+                    throw new EmptyRequiredFieldException("Document Number");
+                
+                _hotelId = hotelId;
+                _firstName = firstName;
+                _lastName = lastName;
+                _documentType = documentType;
+                _documentNumber = documentNumber;
+                _email = email;
+                _phoneNumber = phoneNumber;
+                _preferredCurrency = preferredCurrency;
+                _isVip = isVip;
+            }
 
-            if (Enum.IsDefined<GuestDocumentType>(documentType) is false)
-                throw new BusinessRuleException("Document type not supported");
+            public Builder WithCountry(string country) { _country = country; return this; }
+            public Builder WithRnc(Rnc rnc) { _rnc = rnc; return this; }
+            public Builder WithPreferredLanguage(string language) { _preferredLanguage = language; return this; }
+            public Builder WithNotes(string notes) { _notes = notes; return this; }
 
-            if (string.IsNullOrWhiteSpace(documentNumber))
-                throw new BusinessRuleException("Document number cannot be empty");
-
-            if (Enum.IsDefined<CurrencyCode>(preferredCurrency) is false)
-                throw new BusinessRuleException("Currency not supported");
-
-            Id = Guid.CreateVersion7();
-            HotelId = hotelId;
-            FirstName = firstName;
-            LastName = lastName;
-            DocumentType = documentType;
-            DocumentNumber = documentNumber;
-            Country = country;
-            Rnc = rnc;
-            Email = email;
-            PhoneNumber = phoneNumber;
-            PreferredCurrency = preferredCurrency;
-            PreferredLanguage = preferredLanguage;
-            IsVip = isVip;
-            IsBlackListed = false;
-            BlackListedReason = null;
-            Notes = notes;
+            public Guest Build()
+            {
+                return new Guest()
+                {
+                    Id = Guid.CreateVersion7(),
+                    HotelId = _hotelId,
+                    FirstName = _firstName,
+                    LastName = _lastName,
+                    DocumentType = _documentType,
+                    DocumentNumber = _documentNumber,
+                    Country = _country,
+                    Rnc = _rnc,
+                    Email = _email,
+                    PhoneNumber = _phoneNumber,
+                    PreferredCurrency = _preferredCurrency,
+                    PreferredLanguage = _preferredLanguage,
+                    IsVip = _isVip,
+                    Notes = _notes
+                };
+            }
         }
         
         public void ChangeFirstName(string newFirstName)
