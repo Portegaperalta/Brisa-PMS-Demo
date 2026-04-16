@@ -24,8 +24,8 @@ namespace BrisaPMS.Domain.Guests
         public string? BlackListedReason { get; private set; }
         public string? Notes { get; private set; }
 
-        private Guest() {}
-        
+        private Guest() { }
+
         // Nested Builder
         public class Builder
         {
@@ -38,7 +38,7 @@ namespace BrisaPMS.Domain.Guests
             private readonly PhoneNumber _phoneNumber;
             private readonly CurrencyCode _preferredCurrency;
             private readonly bool _isVip;
-            
+
             private string? _country = null;
             private Rnc? _rnc = null;
             private string? _preferredLanguage = null;
@@ -59,16 +59,22 @@ namespace BrisaPMS.Domain.Guests
             {
                 if (hotelId == Guid.Empty)
                     throw new EmptyRequiredFieldException("Hotel Id");
-                
+
                 if (string.IsNullOrWhiteSpace(firstName))
                     throw new EmptyRequiredFieldException("First Name");
-                
+
                 if (string.IsNullOrWhiteSpace(lastName))
                     throw new EmptyRequiredFieldException("Last Name");
-                
+
                 if (string.IsNullOrWhiteSpace(documentNumber))
                     throw new EmptyRequiredFieldException("Document Number");
-                
+
+                if (Enum.IsDefined<GuestDocumentType>(documentType) is not true)
+                    throw new BusinessRuleException("Document type not supported");
+
+                if (Enum.IsDefined<CurrencyCode>(preferredCurrency) is not true)
+                    throw new BusinessRuleException("Currency not supported");
+
                 _hotelId = hotelId;
                 _firstName = firstName;
                 _lastName = lastName;
@@ -106,12 +112,12 @@ namespace BrisaPMS.Domain.Guests
                 };
             }
         }
-        
+
         public void ChangeFirstName(string newFirstName)
         {
             if (string.IsNullOrWhiteSpace(newFirstName))
                 throw new EmptyRequiredFieldException("First Name");
-            
+
             FirstName = newFirstName;
         }
 
@@ -119,7 +125,7 @@ namespace BrisaPMS.Domain.Guests
         {
             if (string.IsNullOrWhiteSpace(newLastName))
                 throw new EmptyRequiredFieldException("Last Name");
-            
+
             LastName = newLastName;
         }
 
@@ -127,7 +133,7 @@ namespace BrisaPMS.Domain.Guests
         {
             if (Enum.IsDefined<GuestDocumentType>(newDocumentType) is not true)
                 throw new BusinessRuleException("Document type not supported");
-            
+
             DocumentType = newDocumentType;
         }
 
@@ -135,7 +141,7 @@ namespace BrisaPMS.Domain.Guests
         {
             if (string.IsNullOrWhiteSpace(newDocumentNumber))
                 throw new EmptyRequiredFieldException("Document Number");
-            
+
             DocumentNumber = newDocumentNumber;
         }
 
@@ -143,13 +149,13 @@ namespace BrisaPMS.Domain.Guests
         {
             if (string.IsNullOrWhiteSpace(newCountry))
                 throw new EmptyRequiredFieldException("Country");
-            
+
             Country = newCountry;
         }
-        
-        public void ChangeRnc(Rnc newRnc) =>  Rnc = newRnc;
-        
-        public void ChangeEmail(Email newEmail) =>  Email = newEmail;
+
+        public void ChangeRnc(Rnc newRnc) => Rnc = newRnc;
+
+        public void ChangeEmail(Email newEmail) => Email = newEmail;
 
         public void ChangePhoneNumber(PhoneNumber newPhoneNumber) => PhoneNumber = newPhoneNumber;
 
@@ -157,7 +163,7 @@ namespace BrisaPMS.Domain.Guests
         {
             if (Enum.IsDefined<CurrencyCode>(newPreferredCurrency) is not true)
                 throw new BusinessRuleException("Currency not supported");
-            
+
             PreferredCurrency = newPreferredCurrency;
         }
 
@@ -165,27 +171,27 @@ namespace BrisaPMS.Domain.Guests
         {
             if (string.IsNullOrWhiteSpace(newPreferredLanguage))
                 throw new EmptyRequiredFieldException("Preferred Language");
-            
+
             PreferredLanguage = newPreferredLanguage;
         }
-        
-        public void EnableVip () => IsVip = true;
-        
+
+        public void EnableVip() => IsVip = true;
+
         public void DisableVip() => IsVip = false;
 
         public void BlackList(string blackListedReason)
         {
             if (string.IsNullOrWhiteSpace(blackListedReason))
                 throw new BusinessRuleException("Must have a reason to blacklist guest");
-            
+
             BlackListedReason = blackListedReason;
             IsBlackListed = true;
         }
-        
-        public void DisableBlackList () => IsBlackListed = false;
+
+        public void DisableBlackList() => IsBlackListed = false;
 
         public void ChangeBlackListedReason(string newBlackListedReason) => BlackListedReason = newBlackListedReason;
 
-        public void EditNotes(string newNotes)  => Notes = newNotes;
+        public void EditNotes(string newNotes) => Notes = newNotes;
     }
 }
