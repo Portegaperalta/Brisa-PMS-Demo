@@ -78,6 +78,7 @@ public class GetHotelByIdUseCaseTests
         return new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
+            new Rnc("12345678901"),
             new Email("contact@hotelbrisa.com"),
             new PhoneNumber("+18095551234"),
             new Address("123 Main Street", "Suite 4B", "Santo Domingo", "Distrito Nacional", "10101"),

@@ -10,6 +10,7 @@ namespace BrisaPMS.Domain.Hotels
         public Guid Id { get; init; }
         public string LegalName { get; private set; }
         public string CommercialName { get; private set; }
+        public Rnc Rnc { get; private set; }
         public Url? LogoUrl { get; private set; }
         public Email BusinessEmail { get; private set; }
         public PhoneNumber BusinessPhoneNumber { get; private set; }
@@ -25,6 +26,7 @@ namespace BrisaPMS.Domain.Hotels
         (
             string legalName,
             string commercialName,
+            Rnc rnc,
             Email businessEmail,
             PhoneNumber businessPhoneNumber,
             Address address,
@@ -48,6 +50,7 @@ namespace BrisaPMS.Domain.Hotels
             Id = Guid.CreateVersion7();
             LegalName = legalName;
             CommercialName = commercialName;
+            Rnc = rnc;
             LogoUrl = logoUrl;
             BusinessEmail = businessEmail;
             BusinessPhoneNumber = businessPhoneNumber;
@@ -75,6 +78,8 @@ namespace BrisaPMS.Domain.Hotels
             
             CommercialName = newCommercialName;
         }
+        
+        public void UpdateRnc(Rnc newRnc) => Rnc = newRnc;
         
         public void UpdateLogoUrl(Url newLogoUrl) => LogoUrl = newLogoUrl;
         

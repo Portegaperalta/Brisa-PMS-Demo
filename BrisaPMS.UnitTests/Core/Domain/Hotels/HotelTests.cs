@@ -13,6 +13,7 @@ public class HotelTests
     public void Constructor_ShouldCreateHotel_WhenValuesAreValid()
     {
         // Arrange
+        var rnc = CreateRnc();
         var businessEmail = CreateEmail();
         var businessPhoneNumber = CreatePhoneNumber();
         var address = CreateAddress();
@@ -25,6 +26,7 @@ public class HotelTests
         var result = new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
+            rnc,
             businessEmail,
             businessPhoneNumber,
             address,
@@ -38,6 +40,7 @@ public class HotelTests
         result.Id.Should().NotBe(Guid.Empty);
         result.LegalName.Should().Be("Brisa Hospitality SRL");
         result.CommercialName.Should().Be("Hotel Brisa");
+        result.Rnc.Should().Be(rnc);
         result.LogoUrl.Should().Be(logoUrl);
         result.BusinessEmail.Should().Be(businessEmail);
         result.BusinessPhoneNumber.Should().Be(businessPhoneNumber);
@@ -56,6 +59,7 @@ public class HotelTests
         var result = new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -81,6 +85,7 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             legalName,
             "Hotel Brisa",
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -103,6 +108,7 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             legalName,
             "Hotel Brisa",
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -125,6 +131,7 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             "Brisa Hospitality SRL",
             commercialName,
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -147,6 +154,7 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             "Brisa Hospitality SRL",
             commercialName,
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -169,6 +177,7 @@ public class HotelTests
         Action act = () => _ = new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -232,6 +241,20 @@ public class HotelTests
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
+    }
+
+    [Fact]
+    public void UpdateRnc_ShouldUpdateRnc_WhenValueIsValid()
+    {
+        // Arrange
+        var hotel = CreateHotel();
+        var newRnc = new Rnc("987654321");
+
+        // Act
+        hotel.UpdateRnc(newRnc);
+
+        // Assert
+        hotel.Rnc.Should().Be(newRnc);
     }
 
     [Fact]
@@ -392,6 +415,7 @@ public class HotelTests
         return new Hotel(
             "Brisa Hospitality SRL",
             "Hotel Brisa",
+            CreateRnc(),
             CreateEmail(),
             CreatePhoneNumber(),
             CreateAddress(),
@@ -401,6 +425,8 @@ public class HotelTests
             isActive,
             CreateUrl());
     }
+
+    private static Rnc CreateRnc() => new Rnc("123456789");
 
     private static Url CreateUrl()
     {

@@ -5,6 +5,7 @@ public class HotelDto
     public Guid Id { get; init; }
     public required string LegalName { get; init; }
     public required string CommercialName { get; init; }
+    public required string Rnc { get; init; }
     public string? LogoUrl { get; init; }
     public required string BusinessEmail { get; init; }
     public required string BusinessPhoneNumber { get; init; }

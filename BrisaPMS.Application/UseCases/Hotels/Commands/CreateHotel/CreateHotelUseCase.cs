@@ -23,6 +23,7 @@ public class CreateHotelUseCase : IRequestHandler<CreateHotelCommand, Guid>
     {
         var businessEmail = new Email(command.BusinessEmail);
         var businessPhoneNumber = new PhoneNumber(command.BusinessPhoneNumber);
+        var rnc = new Rnc(command.Rnc);
         var logoUrl = new Url(command.LogoUrl!);
         var address = new Address(command.Address1, command.Address2, command.City, command.Province, command.ZipCode);
         var checkOutPolicy = new CheckOutPolicy(command.CheckInTime,  command.CheckOutTime);
@@ -34,6 +35,7 @@ public class CreateHotelUseCase : IRequestHandler<CreateHotelCommand, Guid>
         (
             command.LegalName,
             command.CommercialName,
+            rnc,
             businessEmail,
             businessPhoneNumber,
             address,
