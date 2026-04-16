@@ -14,4 +14,8 @@
     <ProjectReference Include="..\BrisaPMS.Domain\BrisaPMS.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\Guests\Commands\UpdateGuestDocumentation\" />
+  </ItemGroup>
+
 </Project>
