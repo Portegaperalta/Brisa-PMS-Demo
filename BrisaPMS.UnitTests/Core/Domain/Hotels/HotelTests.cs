@@ -13,7 +13,7 @@ public class HotelTests
     public void Constructor_ShouldCreateHotel_WhenValuesAreValid()
     {
         // Arrange
-        var rnc =  CreateRnc();
+        var rnc = CreateRnc();
         var businessEmail = CreateEmail();
         var businessPhoneNumber = CreatePhoneNumber();
         var address = CreateAddress();
@@ -40,6 +40,7 @@ public class HotelTests
         result.Id.Should().NotBe(Guid.Empty);
         result.LegalName.Should().Be("Brisa Hospitality SRL");
         result.CommercialName.Should().Be("Hotel Brisa");
+        result.Rnc.Should().Be(rnc);
         result.LogoUrl.Should().Be(logoUrl);
         result.BusinessEmail.Should().Be(businessEmail);
         result.BusinessPhoneNumber.Should().Be(businessPhoneNumber);
@@ -240,6 +241,20 @@ public class HotelTests
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
+    }
+
+    [Fact]
+    public void UpdateRnc_ShouldUpdateRnc_WhenValueIsValid()
+    {
+        // Arrange
+        var hotel = CreateHotel();
+        var newRnc = new Rnc("987654321");
+
+        // Act
+        hotel.UpdateRnc(newRnc);
+
+        // Assert
+        hotel.Rnc.Should().Be(newRnc);
     }
 
     [Fact]
