@@ -11,6 +11,7 @@ public static class MapperExtension
             Id = hotel.Id,
             LegalName =  hotel.LegalName,
             CommercialName = hotel.CommercialName,
+            Rnc = hotel.Rnc.Value,
             LogoUrl = hotel.LogoUrl!.Value,
             BusinessEmail = hotel.BusinessEmail.Value,
             BusinessPhoneNumber = hotel.BusinessPhoneNumber.Value,
