@@ -22,15 +22,18 @@ public class UpdateGuestGeneralInfoUseCase : IRequestHandler<UpdateGuestGeneralI
 
         if (guest is null)
             throw new NotFoundException("Guest", command.GuestId);
-        
+
         guest.ChangeFirstName(command.FirstName);
         guest.ChangeLastName(command.LastName);
-        
+
         if (string.IsNullOrWhiteSpace(command.Country) is not true)
             guest.ChangeCountry(command.Country);
-        
+
         if (string.IsNullOrWhiteSpace(command.PreferredLanguage) is not true)
             guest.ChangePreferredLanguage(command.PreferredLanguage);
+
+        if (string.IsNullOrWhiteSpace(command.Notes) is not true)
+            guest.EditNotes(command.Notes);
 
         try
         {
