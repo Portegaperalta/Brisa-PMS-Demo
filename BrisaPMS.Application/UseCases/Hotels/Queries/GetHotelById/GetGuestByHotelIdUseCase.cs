@@ -5,11 +5,11 @@ using BrisaPMS.Application.Utilities.Mediator;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Queries.GetHotelById;
 
-public class GetHotelByIdUseCase : IRequestHandler<GetHotelByIdQuery, HotelDto>
+public class GetGuestByHotelIdUseCase : IRequestHandler<GetHotelByIdQuery, HotelDto>
 {
     private readonly IHotelsRepository _repository;
 
-    public GetHotelByIdUseCase(IHotelsRepository repository) { _repository = repository; }
+    public GetGuestByHotelIdUseCase(IHotelsRepository repository) { _repository = repository; }
     
     public async Task<HotelDto> Handle(GetHotelByIdQuery request)
     {
