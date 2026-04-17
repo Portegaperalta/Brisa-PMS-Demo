@@ -36,6 +36,7 @@
     <Folder Include="Core\Application\UseCases\Companies\Queries\" />
     <Folder Include="Core\Application\UseCases\Guests\" />
     <Folder Include="Core\Application\UseCases\Guests\Commands\" />
+    <Folder Include="Core\Application\UseCases\Guests\Queries\" />
     <Folder Include="Core\Application\UseCases\Rooms\Commands\ChangeRoomType\" />
     <Folder Include="Core\Application\UseCases\Rooms\Commands\UpdateAvailabilityStatus\" />
     <Folder Include="Core\Application\UseCases\Rooms\Commands\UpdateHygieneStatus\" />
