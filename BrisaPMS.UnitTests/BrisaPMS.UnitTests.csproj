@@ -39,6 +39,9 @@
     <Folder Include="Core\Application\UseCases\Rooms\Commands\UpdateHygieneStatus\" />
     <Folder Include="Core\Application\UseCases\RoomTypes\" />
     <Folder Include="Core\Application\UseCases\RoomTypes\Commands\" />
+    <Folder Include="Core\Application\UseCases\RoomTypes\Queries\" />
+    <Folder Include="Core\Application\UseCases\RoomTypes\Queries\GetAllRoomTypes\" />
+    <Folder Include="Core\Application\UseCases\RoomTypes\Queries\GetRoomTypeById\" />
     <Folder Include="Core\Domain\Discounts\" />
   </ItemGroup>
 
