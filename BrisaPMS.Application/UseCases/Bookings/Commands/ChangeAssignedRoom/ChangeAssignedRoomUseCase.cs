@@ -28,12 +28,13 @@ public class ChangeAssignedRoomUseCase : IRequestHandler<ChangeAssignedRoomComma
         if (booking is null)
             throw new NotFoundException("Booking", command.BookingId);
         
-        var room = await _roomsRepository.GetById(command.RoomId);
+        var currentRoom = await _roomsRepository.GetById(booking.RoomId);
+        var newRoom = await _roomsRepository.GetById(command.RoomId);
 
-        if (room is null)
+        if (newRoom is null)
             throw new NotFoundException("Room", command.RoomId);
 
-        switch (room.AvailabilityStatus)
+        switch (newRoom.AvailabilityStatus)
         {
             case RoomAvailabilityStatus.Reserved:
                 throw new BusinessRuleException("Requested room is already reserved");
@@ -47,14 +48,16 @@ public class ChangeAssignedRoomUseCase : IRequestHandler<ChangeAssignedRoomComma
             case RoomAvailabilityStatus.Available:
             
             default:
-                booking.ChangeAssignedRoom(room.Id);
-                room.UpdateAvailabilityStatus(RoomAvailabilityStatus.Reserved);
+                booking.ChangeAssignedRoom(newRoom.Id);
+                newRoom.UpdateAvailabilityStatus(RoomAvailabilityStatus.Reserved);
+                currentRoom!.UpdateAvailabilityStatus(RoomAvailabilityStatus.Available);
                 break;
         }
 
         try
         {
-            await _roomsRepository.Update(room);
+            await _roomsRepository.Update(currentRoom);
+            await _roomsRepository.Update(newRoom);
             await _bookingsRepository.Update(booking);
             await _unitOfWork.Persist();
             return true;
