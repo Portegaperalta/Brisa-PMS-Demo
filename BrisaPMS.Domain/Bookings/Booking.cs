@@ -116,8 +116,8 @@ public class Booking
             _ => newSpecialRequests
         };
     }
-
-    public void Cancel(string cancellationReason)
+    
+    public void SetAsCancelled(string cancellationReason)
     {
         if (string.IsNullOrWhiteSpace(cancellationReason))
             throw new EmptyRequiredFieldException("Cancellation reason can't be empty");
