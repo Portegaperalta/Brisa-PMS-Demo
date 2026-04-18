@@ -1,8 +1,8 @@
 ﻿using BrisaPMS.Application.Utilities.Mediator;
 
-namespace BrisaPMS.Application.UseCases.Bookings.Commands.UpdateBookingCheckInOutTimes;
+namespace BrisaPMS.Application.UseCases.Bookings.Commands.UpdateCheckInOutTimes;
 
-public class UpdateBookingCheckInOutTimesCommand : IRequest<bool>
+public class UpdateCheckInOutTimesCommand : IRequest<bool>
 {
     public required Guid BookingId { get; set; }
     public required DateTime CheckInTime { get; set; }

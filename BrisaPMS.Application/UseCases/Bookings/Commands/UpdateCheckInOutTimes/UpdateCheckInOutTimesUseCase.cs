@@ -4,20 +4,20 @@ using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
-namespace BrisaPMS.Application.UseCases.Bookings.Commands.UpdateBookingCheckInOutTimes;
+namespace BrisaPMS.Application.UseCases.Bookings.Commands.UpdateCheckInOutTimes;
 
-public class UpdateBookingCheckInOutTimesUseCase : IRequestHandler<UpdateBookingCheckInOutTimesCommand, bool>
+public class UpdateCheckInOutTimesUseCase : IRequestHandler<UpdateCheckInOutTimesCommand, bool>
 {
     private readonly IBookingsRepository _bookingsRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateBookingCheckInOutTimesUseCase(IBookingsRepository bookingsRepository, IUnitOfWork unitOfWork)
+    public UpdateCheckInOutTimesUseCase(IBookingsRepository bookingsRepository, IUnitOfWork unitOfWork)
     {
         _bookingsRepository = bookingsRepository;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> Handle(UpdateBookingCheckInOutTimesCommand command)
+    public async Task<bool> Handle(UpdateCheckInOutTimesCommand command)
     {
         var booking = await _bookingsRepository.GetById(command.BookingId);
 
