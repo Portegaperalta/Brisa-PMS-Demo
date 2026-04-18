@@ -10,7 +10,7 @@ public class Booking
     public Guid HotelId { get; init; }
     public Guid RoomId { get; init; }
     public Guid GuestId { get; init; }
-    public string Source { get; private set; }
+    public BookingSource Source { get; private set; }
     public GuestCount GuestCount { get; private set; }
     public CheckInOutTimes CheckInOutTimes { get; private set; }
     public string? SpecialRequests { get; private set; }
@@ -24,7 +24,7 @@ public class Booking
         Guid hotelId,
         Guid roomId,
         Guid guestId,
-        string source,
+        BookingSource source,
         GuestCount guestCount,
         CheckInOutTimes checkInOutTimes,
         Money totalPrice,
@@ -40,9 +40,9 @@ public class Booking
         
         if (guestId ==  Guid.Empty)
             throw new EmptyRequiredFieldException("GuestId can't be empty");
-        
-        if (string.IsNullOrWhiteSpace(source))
-            throw new EmptyRequiredFieldException("Booking source can't be empty");
+
+        if (Enum.IsDefined<BookingSource>(source) is not true)
+            throw new BusinessRuleException("Booking source not supported");
 
         Id = Guid.CreateVersion7();
         HotelId = hotelId;
@@ -58,10 +58,10 @@ public class Booking
         DiscountId = discountId;
     }
 
-    public void UpdateSource(string newSource)
+    public void UpdateSource(BookingSource newSource)
     {
-        if (string.IsNullOrWhiteSpace(newSource))
-            throw new EmptyRequiredFieldException("Booking Source");
+        if (Enum.IsDefined<BookingSource>(newSource) is not true)
+            throw new BusinessRuleException("Booking source not supported");
         
         Source = newSource;
     }
