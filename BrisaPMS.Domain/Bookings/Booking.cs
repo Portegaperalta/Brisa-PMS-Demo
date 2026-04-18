@@ -8,7 +8,7 @@ public class Booking
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init; }
-    public Guid RoomId { get; init; }
+    public Guid RoomId { get; private set; }
     public Guid GuestId { get; init; }
     public BookingSource Source { get; private set; }
     public GuestCount GuestCount { get; private set; }
@@ -58,6 +58,14 @@ public class Booking
         DiscountId = discountId;
     }
 
+    public void ChangeAssignedRoom(Guid newRoomId)
+    {
+        if (newRoomId == Guid.Empty)
+            throw new EmptyRequiredFieldException("RoomId");
+        
+        RoomId = newRoomId;
+    }
+    
     public void UpdateSource(BookingSource newSource)
     {
         if (Enum.IsDefined<BookingSource>(newSource) is not true)
