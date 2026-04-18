@@ -2,7 +2,6 @@
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.Utilities.Mediator;
-using BrisaPMS.Domain.Booking;
 using BrisaPMS.Domain.Rooms;
 
 namespace BrisaPMS.Application.UseCases.Bookings.Commands.CancelBooking;
