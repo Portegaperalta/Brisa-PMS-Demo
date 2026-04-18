@@ -136,9 +136,9 @@ public class Booking
     {
         if (string.IsNullOrWhiteSpace(newCancellationReason))
             throw new EmptyRequiredFieldException("Cancellation reason can't be empty");
-
-        if (Status == BookingStatus.Complete)
-            throw new BusinessRuleException("Booking is already completed, unable to modify cancellation reason");
+        
+        if (Status is not BookingStatus.Cancelled)
+            throw new BusinessRuleException("Booking must be cancelled to be able to modify cancellation reason");
         
         CancellationReason = newCancellationReason;
     }
