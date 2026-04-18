@@ -22,14 +22,14 @@ public class BookingTests
     var guestCount = CreateGuestCount();
 
     // Act
-    var result = new Booking(hotelId, roomId, guestId, "Direct", guestCount, checkInOutTimes, totalPrice, "Late arrival", discountId);
+    var result = new Booking(hotelId, roomId, guestId, BookingSource.InPerson, guestCount, checkInOutTimes, totalPrice, "Late arrival", discountId);
 
     // Assert
     result.Id.Should().NotBe(Guid.Empty);
     result.HotelId.Should().Be(hotelId);
     result.RoomId.Should().Be(roomId);
     result.GuestId.Should().Be(guestId);
-    result.Source.Should().Be("Direct");
+    result.Source.Should().Be(BookingSource.InPerson);
     result.GuestCount.NumberOfAdults.Should().Be(guestCount.NumberOfAdults);
     result.GuestCount.NumberOfChildren.Should().Be(guestCount.NumberOfChildren);
     result.CheckInOutTimes.Should().Be(checkInOutTimes);
@@ -53,7 +53,7 @@ public class BookingTests
         hotelId,
         roomId,
         guestId,
-        "Online Travel Agency",
+        BookingSource.ThirdParty,
         new GuestCount(2, 0),
         CreateCheckInOutTimes(),
         new Money(180m, CurrencyCode.DOP));
@@ -71,7 +71,16 @@ public class BookingTests
     var hotelId = Guid.Empty;
 
     // Act
-    Action act = () => _ = new Booking(hotelId, Guid.NewGuid(), Guid.NewGuid(), "Direct", CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
+    Action act = () => _ = new Booking
+                          (
+                            hotelId,
+                            Guid.NewGuid(),
+                            Guid.NewGuid(),
+                            BookingSource.InPerson,
+                            CreateGuestCount(),
+                            CreateCheckInOutTimes(),
+                            CreateTotalPrice()
+                          );
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
@@ -84,7 +93,16 @@ public class BookingTests
     var roomId = Guid.Empty;
 
     // Act
-    Action act = () => _ = new Booking(Guid.NewGuid(), roomId, Guid.NewGuid(), "Direct", CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
+    Action act = () => _ = new Booking
+                          (
+                            Guid.NewGuid(),
+                            roomId,
+                            Guid.NewGuid(),
+                            BookingSource.InPerson,
+                            CreateGuestCount(),
+                            CreateCheckInOutTimes(),
+                            CreateTotalPrice()
+                          );
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
@@ -97,22 +115,22 @@ public class BookingTests
     var guestId = Guid.Empty;
 
     // Act
-    Action act = () => _ = new Booking(Guid.NewGuid(), Guid.NewGuid(), guestId, "Direct", CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
+    Action act = () => _ = new Booking(Guid.NewGuid(), Guid.NewGuid(), guestId, BookingSource.InPerson, CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
   }
 
   [Theory]
-  [InlineData(null)]
-  [InlineData("  ")]
-  public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenSourceIsNullOrWhiteSpace(string? bookingSource)
+  [InlineData((BookingSource)0)]
+  [InlineData((BookingSource)99)]
+  public void Constructor_ShouldThrowBusinessRuleException_WhenSourceIsInvalid(BookingSource bookingSource)
   {
     // Act
-    Action act = () => _ = new Booking(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), bookingSource!, CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
+    Action act = () => _ = new Booking(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), bookingSource, CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
 
     // Assert
-    act.Should().Throw<EmptyRequiredFieldException>();
+    act.Should().Throw<BusinessRuleException>();
   }
 
   [Fact]
@@ -148,25 +166,25 @@ public class BookingTests
     var booking = CreateBooking();
 
     // Act
-    booking.UpdateSource("Walk-in");
+    booking.UpdateSource(BookingSource.Phone);
 
     // Assert
-    booking.Source.Should().Be("Walk-in");
+    booking.Source.Should().Be(BookingSource.Phone);
   }
 
   [Theory]
-  [InlineData(null)]
-  [InlineData("  ")]
-  public void UpdateSource_ShouldThrowEmptyRequiredFieldException_WhenValueIsNullOrWhiteSpace(string? newBookingSource)
+  [InlineData((BookingSource)0)]
+  [InlineData((BookingSource)99)]
+  public void UpdateSource_ShouldThrowBusinessRuleException_WhenValueIsInvalid(BookingSource newBookingSource)
   {
     // Arrange
     var booking = CreateBooking();
 
     // Act
-    Action act = () => booking.UpdateSource(newBookingSource!);
+    Action act = () => booking.UpdateSource(newBookingSource);
 
     // Assert
-    act.Should().Throw<EmptyRequiredFieldException>();
+    act.Should().Throw<BusinessRuleException>();
   }
 
   [Fact]
@@ -292,7 +310,7 @@ public class BookingTests
         Guid.NewGuid(),
         Guid.NewGuid(),
         Guid.NewGuid(),
-        "Direct",
+        BookingSource.InPerson,
         CreateGuestCount(),
         CreateCheckInOutTimes(),
         CreateTotalPrice(),
