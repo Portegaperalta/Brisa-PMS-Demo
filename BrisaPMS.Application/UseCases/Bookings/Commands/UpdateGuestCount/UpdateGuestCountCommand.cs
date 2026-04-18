@@ -1,8 +1,8 @@
 ﻿using BrisaPMS.Application.Utilities.Mediator;
 
-namespace BrisaPMS.Application.UseCases.Bookings.Commands.UpdateBookingGuestCount;
+namespace BrisaPMS.Application.UseCases.Bookings.Commands.UpdateGuestCount;
 
-public class UpdateBookingGuestCountCommand : IRequest<bool>
+public class UpdateGuestCountCommand : IRequest<bool>
 {
     public required Guid BookingId { get; set; }
     public required int NumberOfAdults { get; set; }

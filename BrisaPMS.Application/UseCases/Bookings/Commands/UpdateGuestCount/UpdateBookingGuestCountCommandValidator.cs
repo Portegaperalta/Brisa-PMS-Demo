@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace BrisaPMS.Application.UseCases.Bookings.Commands.UpdateBookingGuestCount;
+namespace BrisaPMS.Application.UseCases.Bookings.Commands.UpdateGuestCount;
 
-public class UpdateBookingGuestCountCommandValidator : AbstractValidator<UpdateBookingGuestCountCommand>
+public class UpdateGuestCountCommandValidator : AbstractValidator<UpdateGuestCountCommand>
 {
-    public UpdateBookingGuestCountCommandValidator()
+    public UpdateGuestCountCommandValidator()
     {
         RuleFor(x => x.BookingId)
             .NotEmpty().WithMessage("The field BookingId is required.");

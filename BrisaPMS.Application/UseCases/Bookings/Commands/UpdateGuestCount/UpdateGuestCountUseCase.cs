@@ -3,22 +3,21 @@ using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Bookings;
-using FluentValidation;
 
-namespace BrisaPMS.Application.UseCases.Bookings.Commands.UpdateBookingGuestCount;
+namespace BrisaPMS.Application.UseCases.Bookings.Commands.UpdateGuestCount;
 
-public class UpdateBookingGuestCountUseCase : IRequestHandler<UpdateBookingGuestCountCommand, bool>
+public class UpdateGuestCountUseCase : IRequestHandler<UpdateGuestCountCommand, bool>
 {
     private readonly IBookingsRepository _bookingsRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public UpdateBookingGuestCountUseCase(IBookingsRepository bookingsRepository, IUnitOfWork unitOfWork)
+    public UpdateGuestCountUseCase(IBookingsRepository bookingsRepository, IUnitOfWork unitOfWork)
     {
         _bookingsRepository = bookingsRepository;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> Handle(UpdateBookingGuestCountCommand command)
+    public async Task<bool> Handle(UpdateGuestCountCommand command)
     {
         var booking = await _bookingsRepository.GetById(command.BookingId);
 
