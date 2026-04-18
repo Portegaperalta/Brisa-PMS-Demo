@@ -61,6 +61,7 @@ public class CreateBookingUseCase : IRequestHandler<CreateBookingCommand, Guid>
                 throw new BusinessRuleException("Availability status not supported");
         }
 
+        var bookingSource = Enum.Parse<BookingSource>(command.Source);
         var guestCount = new GuestCount(command.NumberOfAdults,  command.NumberOfChildren);
         var checkInOutTimes = new CheckInOutTimes(command.CheckInTime, command.CheckOutTime);
         var totalPrice = new Money(command.TotalPrice);
@@ -70,7 +71,7 @@ public class CreateBookingUseCase : IRequestHandler<CreateBookingCommand, Guid>
             command.HotelId,
             command.RoomId,
             command.GuestId,
-            command.Source,
+            bookingSource,
             guestCount,
             checkInOutTimes,
             totalPrice,
