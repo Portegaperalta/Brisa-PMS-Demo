@@ -16,3 +16,7 @@ Brisa-PMS-Demo/
 │  
 └── BrisaPMS.UnitTests/  # Unit test suites for Domain and Application layers.
 ```
+
+# Pre-Requisites
+
+- .NET 10 or Latest
