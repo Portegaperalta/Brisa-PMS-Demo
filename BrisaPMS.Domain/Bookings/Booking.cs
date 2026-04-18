@@ -74,24 +74,85 @@ public class Booking
             _ => newSource
         };
     }
-    
-    public void UpdateGuestCount(GuestCount newGuestCount)
-        => GuestCount = newGuestCount;
 
-    public void UpdateCheckInOutTimes(CheckInOutTimes newCheckInOutTimes) 
-        => CheckInOutTimes = newCheckInOutTimes;
-    
-    public void UpdateSpecialRequests(string newSpecialRequests) => SpecialRequests = newSpecialRequests;
+    public void UpdateGuestCount(GuestCount newGuestCount)
+    {
+        GuestCount = Status switch
+        {
+            BookingStatus.Complete => throw new BusinessRuleException(
+                "Booking is already completed, unable to modify guest count"),
+            
+            BookingStatus.Cancelled => throw new BusinessRuleException(
+                "Booking is already cancelled, unable to modify guest count"),
+            
+            _ => newGuestCount
+        };
+    }
+
+    public void UpdateCheckInOutTimes(CheckInOutTimes newCheckInOutTimes)
+    {
+        CheckInOutTimes = Status switch
+        {
+            BookingStatus.Complete => throw new BusinessRuleException(
+                "Booking is already completed, unable to modify CheckIn-Out Times"),
+            
+            BookingStatus.Cancelled => throw new BusinessRuleException(
+                "Booking is already cancelled, unable to modify CheckIn-Out Times"),
+            
+            _ => newCheckInOutTimes
+        };
+    }
+
+    public void UpdateSpecialRequests(string newSpecialRequests)
+    {
+        SpecialRequests = Status switch
+        {
+            BookingStatus.Complete => throw new BusinessRuleException(
+                "Booking is already completed, unable to modify special requests"),
+            
+            BookingStatus.Cancelled => throw new BusinessRuleException(
+                "Booking is already cancelled, unable to modify special requests"),
+            
+            _ => newSpecialRequests
+        };
+    }
     
     public void UpdateCancellationReason(string newCancellationReason)
     {
         if (string.IsNullOrWhiteSpace(newCancellationReason))
             throw new EmptyRequiredFieldException("Cancellation reason can't be empty");
+
+        if (Status == BookingStatus.Complete)
+            throw new BusinessRuleException("Booking is already completed, unable to modify cancellation reason");
         
         CancellationReason = newCancellationReason;
     }
 
-    public void UpdateTotalPrice(Money newTotalPrice) => TotalPrice = newTotalPrice;
+    public void UpdateTotalPrice(Money newTotalPrice)
+    {
+        TotalPrice = Status switch
+        {
+            BookingStatus.Complete => throw new BusinessRuleException(
+                "Booking is already completed, unable to modify total price"),
 
-    public void UpdateDiscountId(Guid newDiscountId) => DiscountId = newDiscountId;
+            BookingStatus.Cancelled => throw new BusinessRuleException(
+                "Booking is already cancelled, unable to modify total price"),
+
+            _ => newTotalPrice
+        };
+    }
+
+    public void UpdateDiscountId(Guid newDiscountId)
+    {
+        DiscountId = Status switch
+        {
+            BookingStatus.Complete => throw new BusinessRuleException(
+                "Booking is already completed, unable to change discount"),
+            
+            BookingStatus.Cancelled => throw new BusinessRuleException(
+                "Booking is already cancelled, unable to change discount"),
+            
+            _ => newDiscountId
+        };
+    }
 }
