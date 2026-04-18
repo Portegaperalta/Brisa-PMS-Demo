@@ -23,7 +23,7 @@ public class ConfirmBookingUseCase : IRequestHandler<ConfirmBookingCommand, bool
         if (booking is null)
             throw new NotFoundException("Booking", command.BookingId);
         
-        booking.SetAsCompleted();
+        booking.SetAsConfirmed();
 
         try
         {
