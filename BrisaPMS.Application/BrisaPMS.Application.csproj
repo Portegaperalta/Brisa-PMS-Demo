@@ -14,4 +14,8 @@
     <ProjectReference Include="..\BrisaPMS.Domain\BrisaPMS.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\Amenities\Commands\DeactivateAmenity\" />
+  </ItemGroup>
+
 </Project>

@@ -10,12 +10,12 @@ using NSubstitute.ReturnsExtensions;
 
 namespace BrisaPMS.UnitTests.Core.Application.UseCases.Hotels.Queries;
 
-public class GetHotelByIdUseCaseTests
+public class GetGuestByHotelIdUseCaseTests
 {
     private readonly IHotelsRepository _repositoryMock;
     private readonly GetHotelByIdUseCase _useCase;
 
-    public GetHotelByIdUseCaseTests()
+    public GetGuestByHotelIdUseCaseTests()
     {
         _repositoryMock = Substitute.For<IHotelsRepository>();
         _useCase = new GetHotelByIdUseCase(_repositoryMock);

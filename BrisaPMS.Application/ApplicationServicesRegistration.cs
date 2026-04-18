@@ -46,7 +46,7 @@ public static class ApplicationServicesRegistration
         this IServiceCollection services)
     {
         services.AddTransient<IMediator, SimpleMediator>();
-        
+
         // Companies services
         services.AddScoped<IRequestHandler<UpdateCompanyAddressInfoCommand, bool>,
                                     UpdateCompanyAddressInfoUseCase>();
@@ -60,52 +60,52 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<UpdateCompanyRncCommand, bool>,
                                     UpdateCompanyRncUseCase>();
 
-        services.AddScoped<IRequestHandler<GetCompanyInfoQuery, CompanyDto>, 
+        services.AddScoped<IRequestHandler<GetCompanyInfoQuery, CompanyDto>,
                                     GetCompanyInfoUseCase>();
-        
+
         // Hotels services
         services.AddScoped<IRequestHandler<ActivateHotelCommand, bool>,
                                     ActivateHotelUseCase>();
-        
+
         services.AddScoped<IRequestHandler<CreateHotelCommand, Guid>,
                                     CreateHotelUseCase>();
-        
+
         services.AddScoped<IRequestHandler<DeactivateHotelCommand, bool>,
                                     DeactivateHotelUseCase>();
-        
+
         services.AddScoped<IRequestHandler<UpdateHotelAddressInfoCommand, bool>,
                                     UpdateHotelAddressInfoUseCase>();
-        
-        services.AddScoped<IRequestHandler<UpdateHotelBrandInfoCommand, bool>, 
+
+        services.AddScoped<IRequestHandler<UpdateHotelBrandInfoCommand, bool>,
                                     UpdateHotelBrandInfoUseCase>();
-        
+
         services.AddScoped<IRequestHandler<UpdateHotelCheckOutPolicyCommand, bool>,
                                     UpdateHotelCheckOutPolicyUseCase>();
 
-        services.AddScoped<IRequestHandler<UpdateHotelContactInfoCommand, bool>, 
+        services.AddScoped<IRequestHandler<UpdateHotelContactInfoCommand, bool>,
                                     UpdateHotelContactInfoUseCase>();
 
-        services.AddScoped<IRequestHandler<UpdateHotelDefaultCurrencyCommand, bool>, 
+        services.AddScoped<IRequestHandler<UpdateHotelDefaultCurrencyCommand, bool>,
                                     UpdateHotelDefaultCurrencyUseCase>();
 
         services.AddScoped<IRequestHandler<UpdateHotelRatesCommand, bool>,
                                      UpdateHotelRatesUseCase>();
-        
+
         services.AddScoped<IRequestHandler<GetHotelByIdQuery, HotelDto>, GetHotelByIdUseCase>();
-        
+
         services.AddScoped<IRequestHandler<GetAllHotelsQuery, List<HotelDto>>,
                                     GetAllHotelsUseCase>();
-        
+
         // Room types services
         services.AddScoped<IRequestHandler<CreateRoomTypeCommand, Guid>,
                                     CreateRoomTypeUseCase>();
 
         services.AddScoped<IRequestHandler<UpdateRoomTypeBaseRateCommand, bool>,
                                     UpdateRoomTypeBaseRateUseCase>();
-        
-        services.AddScoped<IRequestHandler<UpdateRoomTypeBedsInfoCommand, bool>, 
+
+        services.AddScoped<IRequestHandler<UpdateRoomTypeBedsInfoCommand, bool>,
                                     UpdateRoomTypeBedsInfoUseCase>();
-        
+
         services.AddScoped<IRequestHandler<UpdateRoomTypeGeneralInfoCommand, bool>,
                                     UpdateRoomTypeGeneralInfoUseCase>();
 
@@ -117,22 +117,22 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<GetRoomTypeByIdQuery, RoomTypeDto>,
                                     GetRoomTypeByIdUseCase>();
-        
+
         // Rooms services
-        services.AddScoped<IRequestHandler<ChangeRoomTypeCommand, bool>, 
+        services.AddScoped<IRequestHandler<ChangeRoomTypeCommand, bool>,
                                     ChangeRoomTypeUseCase>();
-        
+
         services.AddScoped<IRequestHandler<CreateRoomCommand, Guid>, CreateRoomUseCase>();
-        
-        services.AddScoped<IRequestHandler<SetAsPendingRestockCommand, bool>, 
+
+        services.AddScoped<IRequestHandler<SetAsPendingRestockCommand, bool>,
                                     SetAsPendingRestockUseCase>();
-        
+
         services.AddScoped<IRequestHandler<SetAsRestockedCommand, bool>,
                                     SetAsRestockedUseCase>();
-        
+
         services.AddScoped<IRequestHandler<UpdateAvailabilityStatusCommand, bool>,
                                     UpdateAvailabilityStatusUseCase>();
-        
+
         services.AddScoped<IRequestHandler<UpdateHygieneStatusCommand, bool>,
                                     UpdateHygieneStatusUseCase>();
 
@@ -141,13 +141,13 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<GetAllRoomsQuery, List<RoomDto>>,
                                     GetAllRoomsUseCase>();
-        
+
         services.AddScoped<IRequestHandler<GetAllRoomsByHotelIdQuery, List<RoomDto>>,
                                     GetAllRoomsByHotelIdUseCase>();
-        
+
         services.AddScoped<IRequestHandler<GetRoomByIdQuery, RoomDto>,
                                      GetRoomByIdUseCase>();
-        
+
         return services;
     }
 }

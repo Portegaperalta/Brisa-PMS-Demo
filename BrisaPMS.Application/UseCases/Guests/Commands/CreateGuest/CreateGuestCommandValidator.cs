@@ -1,4 +1,5 @@
 using BrisaPMS.Domain.Guest;
+using BrisaPMS.Domain.Shared.Enums;
 using FluentValidation;
 
 namespace BrisaPMS.Application.UseCases.Guests.Commands.CreateGuest;
@@ -46,6 +47,15 @@ public class CreateGuestCommandValidator : AbstractValidator<CreateGuestCommand>
             .NotEmpty().WithMessage("The field Phone Number is required.")
             .MaximumLength(25).WithMessage("The field Phone Number can't exceed 25 characters.")
             .Matches(@"^\+?[1-9]\d{1,14}$").WithMessage("Must be a valid phone number");
+        
+        RuleFor(x => x.PreferredCurrency)
+            .NotEmpty().WithMessage("The field Preferred Currency is required.")
+            .MaximumLength(3).WithMessage("The field Preferred Currency can't exceed 3 characters.")
+            .Must(x => Enum.IsDefined(typeof(CurrencyCode), x))
+            .WithMessage("Currency not supported.");
+        
+        RuleFor(x => x.PreferredLanguage)
+            .MaximumLength(50).WithMessage("The field Preferred Language can't exceed 50 characters.");
 
         RuleFor(x => x.IsVip)
             .NotEmpty().WithMessage("The field Is Vip is required.");

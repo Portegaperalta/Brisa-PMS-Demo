@@ -10,7 +10,7 @@ public class GetHotelByIdUseCase : IRequestHandler<GetHotelByIdQuery, HotelDto>
     private readonly IHotelsRepository _repository;
 
     public GetHotelByIdUseCase(IHotelsRepository repository) { _repository = repository; }
-    
+
     public async Task<HotelDto> Handle(GetHotelByIdQuery request)
     {
         var hotel = await _repository.GetById(request.HotelId);
