@@ -116,6 +116,21 @@ public class Booking
             _ => newSpecialRequests
         };
     }
+
+    public void Cancel(string cancellationReason)
+    {
+        if (string.IsNullOrWhiteSpace(cancellationReason))
+            throw new EmptyRequiredFieldException("Cancellation reason can't be empty");
+
+        Status = Status switch
+        {
+            BookingStatus.Complete => throw new BusinessRuleException("Completed booking can't be cancelled"),
+            BookingStatus.Cancelled => throw new BusinessRuleException("Booking is already cancelled"),
+            _ => Status = BookingStatus.Cancelled
+        };
+        
+        CancellationReason = cancellationReason;
+    }
     
     public void UpdateCancellationReason(string newCancellationReason)
     {
