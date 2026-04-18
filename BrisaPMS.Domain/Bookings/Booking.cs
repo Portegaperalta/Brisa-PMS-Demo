@@ -62,8 +62,17 @@ public class Booking
     {
         if (Enum.IsDefined<BookingSource>(newSource) is not true)
             throw new BusinessRuleException("Booking source not supported");
-        
-        Source = newSource;
+
+        Source = Status switch
+        {
+            BookingStatus.Complete => throw new BusinessRuleException(
+                "Booking is already completed, unable to modify source"),
+            
+            BookingStatus.Cancelled => throw new BusinessRuleException(
+                "Booking is already cancelled, unable to modify source"),
+            
+            _ => newSource
+        };
     }
     
     public void UpdateGuestCount(GuestCount newGuestCount)
