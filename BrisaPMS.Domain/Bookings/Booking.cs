@@ -117,6 +117,17 @@ public class Booking
         };
     }
 
+    public void SetAsConfirmed()
+    {
+        Status = Status switch
+        {
+            BookingStatus.Cancelled => throw new BusinessRuleException("Cancelled booking can't be set as confirmed"),
+            BookingStatus.Complete => throw new BusinessRuleException("Completed booking can't be set as confirmed"),
+            BookingStatus.Confirmed => throw new BusinessRuleException("Booking is already confirmed"),
+            _ => Status = BookingStatus.Confirmed
+        };
+    }
+    
     public void SetAsCompleted()
     {
         Status = Status switch
