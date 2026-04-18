@@ -116,6 +116,16 @@ public class Booking
             _ => newSpecialRequests
         };
     }
+
+    public void SetAsCompleted()
+    {
+        Status = Status switch
+        {
+            BookingStatus.Cancelled => throw new BusinessRuleException("Cancelled booking can't be set as completed"),
+            BookingStatus.Complete => throw new BusinessRuleException("Booking is already completed"),
+            _ => Status = BookingStatus.Complete
+        };
+    }
     
     public void SetAsCancelled(string cancellationReason)
     {
