@@ -1,9 +1,29 @@
-﻿using BrisaPMS.Application.UseCases.Companies;
+﻿using BrisaPMS.Application.UseCases.Amenities.Commands.ActivateAmenity;
+using BrisaPMS.Application.UseCases.Amenities.Commands.CreateAmenity;
+using BrisaPMS.Application.UseCases.Amenities.Commands.DeactivateAmenity;
+using BrisaPMS.Application.UseCases.Amenities.Commands.UpdateAmenityDetails;
+using BrisaPMS.Application.UseCases.Amenities.Queries.GetAllAmenities;
+using BrisaPMS.Application.UseCases.Amenities.Queries.GetAmenityById;
+using BrisaPMS.Application.UseCases.Amenities.Shared;
+using BrisaPMS.Application.UseCases.Companies;
 using BrisaPMS.Application.UseCases.Companies.Commands.UpdateCompanyAddressInfo;
 using BrisaPMS.Application.UseCases.Companies.Commands.UpdateCompanyBrandInfo;
 using BrisaPMS.Application.UseCases.Companies.Commands.UpdateCompanyContactInfo;
 using BrisaPMS.Application.UseCases.Companies.Commands.UpdateCompanyRnc;
 using BrisaPMS.Application.UseCases.Companies.Queries.GetCompanyInfo;
+using BrisaPMS.Application.UseCases.Guests.Commands.BlacklistGuest;
+using BrisaPMS.Application.UseCases.Guests.Commands.CreateGuest;
+using BrisaPMS.Application.UseCases.Guests.Commands.MakeGuestVip;
+using BrisaPMS.Application.UseCases.Guests.Commands.RevokeGuestVip;
+using BrisaPMS.Application.UseCases.Guests.Commands.UpdateGuestContactInfo;
+using BrisaPMS.Application.UseCases.Guests.Commands.UpdateGuestDocumentation;
+using BrisaPMS.Application.UseCases.Guests.Commands.UpdateGuestGeneralInfo;
+using BrisaPMS.Application.UseCases.Guests.Commands.UpdateGuestRnc;
+using BrisaPMS.Application.UseCases.Guests.Commands.WhitelistGuest;
+using BrisaPMS.Application.UseCases.Guests.Queries.GetAllGuestsByHotelId;
+using BrisaPMS.Application.UseCases.Guests.Queries.GetGuestByHotelId;
+using BrisaPMS.Application.UseCases.Guests.Queries.GetGuestById;
+using BrisaPMS.Application.UseCases.Guests.Shared;
 using BrisaPMS.Application.UseCases.Hotels.Commands.ActivateHotel;
 using BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel;
 using BrisaPMS.Application.UseCases.Hotels.Commands.DeactivateHotel;
@@ -46,6 +66,25 @@ public static class ApplicationServicesRegistration
         this IServiceCollection services)
     {
         services.AddTransient<IMediator, SimpleMediator>();
+        
+        // Amenities services
+        services.AddScoped<IRequestHandler<ActivateAmenityCommand, bool>,
+                                    ActivateAmenityUseCase>();
+
+        services.AddScoped<IRequestHandler<CreateAmenityCommand, Guid>,
+                                    CreateAmenityUseCase>();
+
+        services.AddScoped<IRequestHandler<DeactivateAmenityCommand, bool>,
+                                    DeactivateAmenityUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateAmenityDetailsCommand, bool>,
+                                    UpdateAmenityDetailsUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllAmenitiesQuery, List<AmenityDto>>,
+                                    GetAllAmenitiesUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAmenityByIdQuery, AmenityDto>,
+                                     GetAmenityByIdUseCase>();
 
         // Companies services
         services.AddScoped<IRequestHandler<UpdateCompanyAddressInfoCommand, bool>,
@@ -62,6 +101,43 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<GetCompanyInfoQuery, CompanyDto>,
                                     GetCompanyInfoUseCase>();
+        
+        // Guests services
+        services.AddScoped<IRequestHandler<BlacklistGuestCommand, bool>,
+                                    BlacklistGuestUseCase>();
+
+        services.AddScoped<IRequestHandler<CreateGuestCommand, Guid>,
+                                    CreateGuestUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateGuestGeneralInfoCommand, bool>,
+                                    UpdateGuestGeneralInfoUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateGuestContactInfoCommand, bool>,
+                                    UpdateGuestContactInfoUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateGuestDocumentationCommand, bool>,
+                                    UpdateGuestDocumentationUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateGuestRncCommand, bool>,
+                                    UpdateGuestRncUseCase>();
+
+        services.AddScoped<IRequestHandler<MakeGuestVipCommand, bool>,
+                                    MakeGuestVipUseCase>();
+
+        services.AddScoped<IRequestHandler<RevokeGuestVipCommand, bool>,
+                                    RevokeGuestVipUseCase>();
+
+        services.AddScoped<IRequestHandler<WhitelistGuestCommand, bool>,
+                                    WhitelistGuestUseCase>();
+
+        services.AddScoped<IRequestHandler<GetGuestByIdQuery, GuestDto>,
+                                    GetGuestByIdUseCase>();
+
+        services.AddScoped<IRequestHandler<GetGuestByHotelIdQuery, GuestDto?>,
+                                    GetGuestByHotelIdUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllGuestsByHotelIdQuery, List<GuestDto>>,
+                                    GetAllGuestsByHotelIdUseCase>();
 
         // Hotels services
         services.AddScoped<IRequestHandler<ActivateHotelCommand, bool>,
@@ -96,28 +172,6 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<GetAllHotelsQuery, List<HotelDto>>,
                                     GetAllHotelsUseCase>();
 
-        // Room types services
-        services.AddScoped<IRequestHandler<CreateRoomTypeCommand, Guid>,
-                                    CreateRoomTypeUseCase>();
-
-        services.AddScoped<IRequestHandler<UpdateRoomTypeBaseRateCommand, bool>,
-                                    UpdateRoomTypeBaseRateUseCase>();
-
-        services.AddScoped<IRequestHandler<UpdateRoomTypeBedsInfoCommand, bool>,
-                                    UpdateRoomTypeBedsInfoUseCase>();
-
-        services.AddScoped<IRequestHandler<UpdateRoomTypeGeneralInfoCommand, bool>,
-                                    UpdateRoomTypeGeneralInfoUseCase>();
-
-        services.AddScoped<IRequestHandler<UpdateRoomTypeOccupancyPolicyCommand, bool>,
-                                    UpdateRoomTypeOccupancyPolicyUseCase>();
-
-        services.AddScoped<IRequestHandler<GetAllRoomTypesQuery, List<RoomTypeDto>>,
-                                     GetAllRoomTypesUseCase>();
-
-        services.AddScoped<IRequestHandler<GetRoomTypeByIdQuery, RoomTypeDto>,
-                                    GetRoomTypeByIdUseCase>();
-
         // Rooms services
         services.AddScoped<IRequestHandler<ChangeRoomTypeCommand, bool>,
                                     ChangeRoomTypeUseCase>();
@@ -147,6 +201,28 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<GetRoomByIdQuery, RoomDto>,
                                      GetRoomByIdUseCase>();
+        
+        // Room types services
+        services.AddScoped<IRequestHandler<CreateRoomTypeCommand, Guid>,
+            CreateRoomTypeUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateRoomTypeBaseRateCommand, bool>,
+            UpdateRoomTypeBaseRateUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateRoomTypeBedsInfoCommand, bool>,
+            UpdateRoomTypeBedsInfoUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateRoomTypeGeneralInfoCommand, bool>,
+            UpdateRoomTypeGeneralInfoUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateRoomTypeOccupancyPolicyCommand, bool>,
+            UpdateRoomTypeOccupancyPolicyUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllRoomTypesQuery, List<RoomTypeDto>>,
+            GetAllRoomTypesUseCase>();
+
+        services.AddScoped<IRequestHandler<GetRoomTypeByIdQuery, RoomTypeDto>,
+            GetRoomTypeByIdUseCase>();
 
         return services;
     }
