@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using BrisaPMS.Domain.Bookings;
+using FluentValidation;
 
 namespace BrisaPMS.Application.UseCases.Bookings.Commands.CreateBooking;
 
@@ -17,7 +18,8 @@ public class CreateBookingCommandValidator : AbstractValidator<CreateBookingComm
         
         RuleFor(x => x.Source)
             .NotEmpty().WithMessage("The field Booking Source is required.")
-            .MaximumLength(200).WithMessage("The field Booking Source can't exceed 200 characters.");
+            .MaximumLength(200).WithMessage("The field Booking Source can't exceed 200 characters.")
+            .Must(x => Enum.IsDefined(typeof(BookingSource), x)).WithMessage("Booking Source not supported");
         
         RuleFor(x => x.NumberOfAdults)
             .NotEmpty().WithMessage("The field Number Of Adults is required.")
