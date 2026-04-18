@@ -24,7 +24,7 @@ public class CancelBookingUseCase : IRequestHandler<CancelBookingCommand, bool>
         if (booking is null)
             throw new NotFoundException("Booking", command.BookingId);
 
-        booking.Cancel(command.CancellationReason);
+        booking.SetAsCancelled(command.CancellationReason);
 
         try
         {
