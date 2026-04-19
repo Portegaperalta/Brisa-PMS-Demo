@@ -9,310 +9,720 @@ namespace BrisaPMS.UnitTests.Core.Domain.Bookings;
 
 public class BookingTests
 {
-  [Fact]
-  public void Constructor_ShouldCreateBooking_WhenValuesAreValid()
-  {
-    // Arrange
-    var hotelId = Guid.NewGuid();
-    var roomId = Guid.NewGuid();
-    var guestId = Guid.NewGuid();
-    var checkInOutTimes = CreateCheckInOutTimes();
-    var discountId = Guid.NewGuid();
-    var totalPrice = CreateTotalPrice();
-    var guestCount = CreateGuestCount();
+    [Fact]
+    public void Constructor_ShouldCreateBooking_WhenValuesAreValid()
+    {
+        // Arrange
+        var hotelId = Guid.NewGuid();
+        var roomId = Guid.NewGuid();
+        var guestId = Guid.NewGuid();
+        var checkInOutTimes = CreateCheckInOutTimes();
+        var discountId = Guid.NewGuid();
+        var totalPrice = CreateTotalPrice();
+        var guestCount = CreateGuestCount();
 
-    // Act
-    var result = new Booking(hotelId, roomId, guestId, "Direct", guestCount, checkInOutTimes, totalPrice, "Late arrival", discountId);
+        // Act
+        var result = new Booking(
+            hotelId,
+            roomId,
+            guestId,
+            BookingSource.InPerson,
+            guestCount,
+            checkInOutTimes,
+            totalPrice,
+            "Late arrival",
+            discountId);
 
-    // Assert
-    result.Id.Should().NotBe(Guid.Empty);
-    result.HotelId.Should().Be(hotelId);
-    result.RoomId.Should().Be(roomId);
-    result.GuestId.Should().Be(guestId);
-    result.Source.Should().Be("Direct");
-    result.GuestCount.NumberOfAdults.Should().Be(guestCount.NumberOfAdults);
-    result.GuestCount.NumberOfChildren.Should().Be(guestCount.NumberOfChildren);
-    result.CheckInOutTimes.Should().Be(checkInOutTimes);
-    result.SpecialRequests.Should().Be("Late arrival");
-    result.Status.Should().Be(BookingStatus.Pending);
-    result.CancellationReason.Should().BeNull();
-    result.TotalPrice.Should().Be(totalPrice);
-    result.DiscountId.Should().Be(discountId);
-  }
+        // Assert
+        result.Id.Should().NotBe(Guid.Empty);
+        result.HotelId.Should().Be(hotelId);
+        result.RoomId.Should().Be(roomId);
+        result.GuestId.Should().Be(guestId);
+        result.Source.Should().Be(BookingSource.InPerson);
+        result.GuestCount.Should().Be(guestCount);
+        result.CheckInOutTimes.Should().Be(checkInOutTimes);
+        result.SpecialRequests.Should().Be("Late arrival");
+        result.Status.Should().Be(BookingStatus.Pending);
+        result.CancellationReason.Should().BeNull();
+        result.TotalPrice.Should().Be(totalPrice);
+        result.DiscountId.Should().Be(discountId);
+    }
 
-  [Fact]
-  public void Constructor_ShouldCreateBooking_WhenOptionalValuesAreNotProvided()
-  {
-    // Arrange
-    var hotelId = Guid.NewGuid();
-    var roomId = Guid.NewGuid();
-    var guestId = Guid.NewGuid();
+    [Fact]
+    public void Constructor_ShouldCreateBooking_WhenOptionalValuesAreNotProvided()
+    {
+        // Arrange
+        var hotelId = Guid.NewGuid();
+        var roomId = Guid.NewGuid();
+        var guestId = Guid.NewGuid();
 
-    // Act
-    var result = new Booking(
-        hotelId,
-        roomId,
-        guestId,
-        "Online Travel Agency",
-        new GuestCount(2, 0),
-        CreateCheckInOutTimes(),
-        new Money(180m, CurrencyCode.DOP));
+        // Act
+        var result = new Booking(
+            hotelId,
+            roomId,
+            guestId,
+            BookingSource.ThirdParty,
+            new GuestCount(2, 0),
+            CreateCheckInOutTimes(),
+            new Money(180m, CurrencyCode.DOP));
 
-    // Assert
-    result.SpecialRequests.Should().BeNull();
-    result.DiscountId.Should().BeNull();
-    result.Status.Should().Be(BookingStatus.Pending);
-  }
+        // Assert
+        result.SpecialRequests.Should().BeNull();
+        result.DiscountId.Should().BeNull();
+        result.Status.Should().Be(BookingStatus.Pending);
+    }
 
-  [Fact]
-  public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenHotelIdIsEmpty()
-  {
-    // Arrange
-    var hotelId = Guid.Empty;
+    [Fact]
+    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenHotelIdIsEmpty()
+    {
+        // Act
+        Action act = () => _ = new Booking(
+            Guid.Empty,
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            BookingSource.InPerson,
+            CreateGuestCount(),
+            CreateCheckInOutTimes(),
+            CreateTotalPrice());
 
-    // Act
-    Action act = () => _ = new Booking(hotelId, Guid.NewGuid(), Guid.NewGuid(), "Direct", CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
+    }
 
-    // Assert
-    act.Should().Throw<EmptyRequiredFieldException>();
-  }
+    [Fact]
+    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenRoomIdIsEmpty()
+    {
+        // Act
+        Action act = () => _ = new Booking(
+            Guid.NewGuid(),
+            Guid.Empty,
+            Guid.NewGuid(),
+            BookingSource.InPerson,
+            CreateGuestCount(),
+            CreateCheckInOutTimes(),
+            CreateTotalPrice());
 
-  [Fact]
-  public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenRoomIdIsEmpty()
-  {
-    // Arrange
-    var roomId = Guid.Empty;
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
+    }
 
-    // Act
-    Action act = () => _ = new Booking(Guid.NewGuid(), roomId, Guid.NewGuid(), "Direct", CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
+    [Fact]
+    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenGuestIdIsEmpty()
+    {
+        // Act
+        Action act = () => _ = new Booking(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.Empty,
+            BookingSource.InPerson,
+            CreateGuestCount(),
+            CreateCheckInOutTimes(),
+            CreateTotalPrice());
 
-    // Assert
-    act.Should().Throw<EmptyRequiredFieldException>();
-  }
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
+    }
 
-  [Fact]
-  public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenGuestIdIsEmpty()
-  {
-    // Arrange
-    var guestId = Guid.Empty;
+    [Theory]
+    [InlineData((BookingSource)0)]
+    [InlineData((BookingSource)99)]
+    public void Constructor_ShouldThrowBusinessRuleException_WhenSourceIsInvalid(BookingSource bookingSource)
+    {
+        // Act
+        Action act = () => _ = new Booking(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            bookingSource,
+            CreateGuestCount(),
+            CreateCheckInOutTimes(),
+            CreateTotalPrice());
 
-    // Act
-    Action act = () => _ = new Booking(Guid.NewGuid(), Guid.NewGuid(), guestId, "Direct", CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
 
-    // Assert
-    act.Should().Throw<EmptyRequiredFieldException>();
-  }
+    [Fact]
+    public void ChangeAssignedRoom_ShouldUpdateRoomId_WhenValueIsValid()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        var newRoomId = Guid.NewGuid();
 
-  [Theory]
-  [InlineData(null)]
-  [InlineData("  ")]
-  public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenSourceIsNullOrWhiteSpace(string? bookingSource)
-  {
-    // Act
-    Action act = () => _ = new Booking(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), bookingSource!, CreateGuestCount(), CreateCheckInOutTimes(), CreateTotalPrice());
+        // Act
+        booking.ChangeAssignedRoom(newRoomId);
 
-    // Assert
-    act.Should().Throw<EmptyRequiredFieldException>();
-  }
+        // Assert
+        booking.RoomId.Should().Be(newRoomId);
+    }
 
-  [Fact]
-  public void Constructor_ShouldThrowBusinessRuleException_WhenNumberOfAdultsIsZeroOrLess()
-  {
-    // Arrange
-    const int numberOfAdults = 0;
+    [Fact]
+    public void ChangeAssignedRoom_ShouldThrowEmptyRequiredFieldException_WhenRoomIdIsEmpty()
+    {
+        // Arrange
+        var booking = CreateBooking();
 
-    // Act
-    Action act = () => _ = new GuestCount(numberOfAdults, 0);
+        // Act
+        Action act = () => booking.ChangeAssignedRoom(Guid.Empty);
 
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
+    }
 
-  [Fact]
-  public void Constructor_ShouldThrowBusinessRuleException_WhenNumberOfChildrenIsNegative()
-  {
-    // Arrange
-    const int numberOfChildren = -1;
+    [Fact]
+    public void UpdateSource_ShouldUpdateSource_WhenValueIsValid()
+    {
+        // Arrange
+        var booking = CreateBooking();
 
-    // Act
-    Action act = () => _ = new GuestCount(2, numberOfChildren);
+        // Act
+        booking.UpdateSource(BookingSource.Phone);
 
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
+        // Assert
+        booking.Source.Should().Be(BookingSource.Phone);
+    }
 
-  [Fact]
-  public void UpdateSource_ShouldUpdateSource_WhenValueIsValid()
-  {
-    // Arrange
-    var booking = CreateBooking();
+    [Theory]
+    [InlineData((BookingSource)0)]
+    [InlineData((BookingSource)99)]
+    public void UpdateSource_ShouldThrowBusinessRuleException_WhenValueIsInvalid(BookingSource newBookingSource)
+    {
+        // Arrange
+        var booking = CreateBooking();
 
-    // Act
-    booking.UpdateSource("Walk-in");
+        // Act
+        Action act = () => booking.UpdateSource(newBookingSource);
 
-    // Assert
-    booking.Source.Should().Be("Walk-in");
-  }
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
 
-  [Theory]
-  [InlineData(null)]
-  [InlineData("  ")]
-  public void UpdateSource_ShouldThrowEmptyRequiredFieldException_WhenValueIsNullOrWhiteSpace(string? newBookingSource)
-  {
-    // Arrange
-    var booking = CreateBooking();
+    [Fact]
+    public void UpdateSource_ShouldThrowBusinessRuleException_WhenBookingIsCompleted()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCompleted();
 
-    // Act
-    Action act = () => booking.UpdateSource(newBookingSource!);
+        // Act
+        Action act = () => booking.UpdateSource(BookingSource.Phone);
 
-    // Assert
-    act.Should().Throw<EmptyRequiredFieldException>();
-  }
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
 
-  [Fact]
-  public void UpdateGuestCount_ShouldUpdateGuestCount_WhenValueIsValid()
-  {
-    // Arrange
-    var booking = CreateBooking();
-    var newGuestCount = new GuestCount(3, 2);
+    [Fact]
+    public void UpdateSource_ShouldThrowBusinessRuleException_WhenBookingIsCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
 
-    // Act
-    booking.UpdateGuestCount(newGuestCount);
+        // Act
+        Action act = () => booking.UpdateSource(BookingSource.Phone);
 
-    // Assert
-    booking.GuestCount.Should().Be(newGuestCount);
-  }
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
 
-  [Fact]
-  public void UpdateGuestCount_ShouldThrowBusinessRuleException_WhenNumberOfAdultsIsZeroOrLess()
-  {
-    // Act
-    Action act = () => _ = new GuestCount(0, 1);
+    [Fact]
+    public void UpdateGuestCount_ShouldUpdateGuestCount_WhenValueIsValid()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        var newGuestCount = new GuestCount(3, 2);
 
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
+        // Act
+        booking.UpdateGuestCount(newGuestCount);
 
-  [Fact]
-  public void UpdateGuestCount_ShouldThrowBusinessRuleException_WhenNumberOfChildrenIsNegative()
-  {
-    // Act
-    Action act = () => _ = new GuestCount(2, -1);
+        // Assert
+        booking.GuestCount.Should().Be(newGuestCount);
+    }
 
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
+    [Fact]
+    public void UpdateGuestCount_ShouldThrowBusinessRuleException_WhenBookingIsCompleted()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCompleted();
 
-  [Fact]
-  public void UpdateCheckInOutTimes_ShouldUpdateCheckInOutTimes_WhenValueIsValid()
-  {
-    // Arrange
-    var booking = CreateBooking();
-    var newCheckInOutTimes = new CheckInOutTimes(new DateTime(2026, 4, 3, 15, 0, 0), new DateTime(2026, 4, 5, 12, 0, 0));
+        // Act
+        Action act = () => booking.UpdateGuestCount(new GuestCount(3, 2));
 
-    // Act
-    booking.UpdateCheckInOutTimes(newCheckInOutTimes);
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
 
-    // Assert
-    booking.CheckInOutTimes.Should().Be(newCheckInOutTimes);
-  }
+    [Fact]
+    public void UpdateGuestCount_ShouldThrowBusinessRuleException_WhenBookingIsCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
 
-  [Fact]
-  public void UpdateSpecialRequests_ShouldUpdateSpecialRequests()
-  {
-    // Arrange
-    var booking = CreateBooking();
+        // Act
+        Action act = () => booking.UpdateGuestCount(new GuestCount(3, 2));
 
-    // Act
-    booking.UpdateSpecialRequests("High floor room");
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
 
-    // Assert
-    booking.SpecialRequests.Should().Be("High floor room");
-  }
+    [Fact]
+    public void UpdateCheckInOutTimes_ShouldUpdateCheckInOutTimes_WhenValueIsValid()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        var newCheckInOutTimes = new CheckInOutTimes(
+            new DateTime(2026, 4, 3, 15, 0, 0),
+            new DateTime(2026, 4, 5, 12, 0, 0));
 
-  [Fact]
-  public void UpdateCancellationReason_ShouldUpdateCancellationReason_WhenValueIsValid()
-  {
-    // Arrange
-    var booking = CreateBooking();
+        // Act
+        booking.UpdateCheckInOutTimes(newCheckInOutTimes);
 
-    // Act
-    booking.UpdateCancellationReason("Guest requested cancellation");
+        // Assert
+        booking.CheckInOutTimes.Should().Be(newCheckInOutTimes);
+    }
 
-    // Assert
-    booking.CancellationReason.Should().Be("Guest requested cancellation");
-  }
+    [Fact]
+    public void UpdateCheckInOutTimes_ShouldThrowBusinessRuleException_WhenBookingIsCompleted()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCompleted();
+        var newCheckInOutTimes = new CheckInOutTimes(
+            new DateTime(2026, 4, 3, 15, 0, 0),
+            new DateTime(2026, 4, 5, 12, 0, 0));
 
-  [Theory]
-  [InlineData(null)]
-  [InlineData("  ")]
-  public void UpdateCancellationReason_ShouldThrowEmptyRequiredFieldException_WhenValueIsNullOrWhiteSpace(string? newCancellationReason)
-  {
-    // Arrange
-    var booking = CreateBooking();
+        // Act
+        Action act = () => booking.UpdateCheckInOutTimes(newCheckInOutTimes);
 
-    // Act
-    Action act = () => booking.UpdateCancellationReason(newCancellationReason!);
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
 
-    // Assert
-    act.Should().Throw<EmptyRequiredFieldException>();
-  }
+    [Fact]
+    public void UpdateCheckInOutTimes_ShouldThrowBusinessRuleException_WhenBookingIsCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
+        var newCheckInOutTimes = new CheckInOutTimes(
+            new DateTime(2026, 4, 3, 15, 0, 0),
+            new DateTime(2026, 4, 5, 12, 0, 0));
 
-  [Fact]
-  public void UpdateTotalPrice_ShouldUpdateTotalPrice_WhenValueIsValid()
-  {
-    // Arrange
-    var booking = CreateBooking();
-    var newTotalPrice = new Money(320m, CurrencyCode.USD);
+        // Act
+        Action act = () => booking.UpdateCheckInOutTimes(newCheckInOutTimes);
 
-    // Act
-    booking.UpdateTotalPrice(newTotalPrice);
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
 
-    // Assert
-    booking.TotalPrice.Should().Be(newTotalPrice);
-  }
+    [Fact]
+    public void UpdateSpecialRequests_ShouldUpdateSpecialRequests_WhenValueIsValid()
+    {
+        // Arrange
+        var booking = CreateBooking();
 
-  [Fact]
-  public void UpdateDiscountId_ShouldUpdateDiscountId_WhenValueIsValid()
-  {
-    // Arrange
-    var booking = CreateBooking();
-    var discountId = Guid.NewGuid();
+        // Act
+        booking.UpdateSpecialRequests("High floor room");
 
-    // Act
-    booking.UpdateDiscountId(discountId);
+        // Assert
+        booking.SpecialRequests.Should().Be("High floor room");
+    }
 
-    // Assert
-    booking.DiscountId.Should().Be(discountId);
-  }
+    [Fact]
+    public void UpdateSpecialRequests_ShouldThrowBusinessRuleException_WhenBookingIsCompleted()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCompleted();
 
-  private static Booking CreateBooking()
-  {
-    return new Booking(
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        Guid.NewGuid(),
-        "Direct",
-        CreateGuestCount(),
-        CreateCheckInOutTimes(),
-        CreateTotalPrice(),
-        "Late arrival");
-  }
+        // Act
+        Action act = () => booking.UpdateSpecialRequests("High floor room");
 
-  private static CheckInOutTimes CreateCheckInOutTimes()
-  {
-    return new CheckInOutTimes(
-        new DateTime(2026, 4, 1, 14, 0, 0),
-        new DateTime(2026, 4, 3, 12, 0, 0));
-  }
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
 
-  private static Money CreateTotalPrice()
-  {
-    return new Money(250m, CurrencyCode.DOP);
-  }
+    [Fact]
+    public void UpdateSpecialRequests_ShouldThrowBusinessRuleException_WhenBookingIsCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
 
-  private static GuestCount CreateGuestCount()
-  {
-    return new GuestCount(2, 1);
-  }
+        // Act
+        Action act = () => booking.UpdateSpecialRequests("High floor room");
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void SetAsConfirmed_ShouldSetStatusToConfirmed_WhenBookingIsPending()
+    {
+        // Arrange
+        var booking = CreateBooking();
+
+        // Act
+        booking.SetAsConfirmed();
+
+        // Assert
+        booking.Status.Should().Be(BookingStatus.Confirmed);
+    }
+
+    [Fact]
+    public void SetAsConfirmed_ShouldThrowBusinessRuleException_WhenBookingIsAlreadyConfirmed()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsConfirmed();
+
+        // Act
+        Action act = () => booking.SetAsConfirmed();
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void SetAsConfirmed_ShouldThrowBusinessRuleException_WhenBookingIsCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
+
+        // Act
+        Action act = () => booking.SetAsConfirmed();
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void SetAsConfirmed_ShouldThrowBusinessRuleException_WhenBookingIsCompleted()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCompleted();
+
+        // Act
+        Action act = () => booking.SetAsConfirmed();
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void SetAsCompleted_ShouldSetStatusToComplete_WhenBookingIsPending()
+    {
+        // Arrange
+        var booking = CreateBooking();
+
+        // Act
+        booking.SetAsCompleted();
+
+        // Assert
+        booking.Status.Should().Be(BookingStatus.Complete);
+    }
+
+    [Fact]
+    public void SetAsCompleted_ShouldThrowBusinessRuleException_WhenBookingIsAlreadyCompleted()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCompleted();
+
+        // Act
+        Action act = () => booking.SetAsCompleted();
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void SetAsCompleted_ShouldThrowBusinessRuleException_WhenBookingIsCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
+
+        // Act
+        Action act = () => booking.SetAsCompleted();
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void SetAsNoShow_ShouldSetStatusToNoShow_WhenBookingIsPending()
+    {
+        // Arrange
+        var booking = CreateBooking();
+
+        // Act
+        booking.SetAsNoShow();
+
+        // Assert
+        booking.Status.Should().Be(BookingStatus.NoShow);
+    }
+
+    [Fact]
+    public void SetAsNoShow_ShouldThrowBusinessRuleException_WhenBookingIsAlreadyNoShow()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsNoShow();
+
+        // Act
+        Action act = () => booking.SetAsNoShow();
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void SetAsNoShow_ShouldThrowBusinessRuleException_WhenBookingIsCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
+
+        // Act
+        Action act = () => booking.SetAsNoShow();
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void SetAsNoShow_ShouldThrowBusinessRuleException_WhenBookingIsCompleted()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCompleted();
+
+        // Act
+        Action act = () => booking.SetAsNoShow();
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void SetAsCancelled_ShouldSetStatusAndCancellationReason_WhenValueIsValid()
+    {
+        // Arrange
+        var booking = CreateBooking();
+
+        // Act
+        booking.SetAsCancelled("Guest requested cancellation");
+
+        // Assert
+        booking.Status.Should().Be(BookingStatus.Cancelled);
+        booking.CancellationReason.Should().Be("Guest requested cancellation");
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void SetAsCancelled_ShouldThrowEmptyRequiredFieldException_WhenReasonIsNullOrWhiteSpace(string? cancellationReason)
+    {
+        // Arrange
+        var booking = CreateBooking();
+
+        // Act
+        Action act = () => booking.SetAsCancelled(cancellationReason!);
+
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
+    }
+
+    [Fact]
+    public void SetAsCancelled_ShouldThrowBusinessRuleException_WhenBookingIsAlreadyCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
+
+        // Act
+        Action act = () => booking.SetAsCancelled("Another reason");
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void SetAsCancelled_ShouldThrowBusinessRuleException_WhenBookingIsCompleted()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCompleted();
+
+        // Act
+        Action act = () => booking.SetAsCancelled("Guest requested cancellation");
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void UpdateCancellationReason_ShouldUpdateCancellationReason_WhenBookingIsCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
+
+        // Act
+        booking.UpdateCancellationReason("Updated cancellation reason");
+
+        // Assert
+        booking.CancellationReason.Should().Be("Updated cancellation reason");
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("  ")]
+    public void UpdateCancellationReason_ShouldThrowEmptyRequiredFieldException_WhenValueIsNullOrWhiteSpace(string? newCancellationReason)
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
+
+        // Act
+        Action act = () => booking.UpdateCancellationReason(newCancellationReason!);
+
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
+    }
+
+    [Fact]
+    public void UpdateCancellationReason_ShouldThrowBusinessRuleException_WhenBookingIsNotCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+
+        // Act
+        Action act = () => booking.UpdateCancellationReason("Updated cancellation reason");
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void UpdateTotalPrice_ShouldUpdateTotalPrice_WhenValueIsValid()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        var newTotalPrice = new Money(320m, CurrencyCode.USD);
+
+        // Act
+        booking.UpdateTotalPrice(newTotalPrice);
+
+        // Assert
+        booking.TotalPrice.Should().Be(newTotalPrice);
+    }
+
+    [Fact]
+    public void UpdateTotalPrice_ShouldThrowBusinessRuleException_WhenBookingIsCompleted()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCompleted();
+        var newTotalPrice = new Money(320m, CurrencyCode.USD);
+
+        // Act
+        Action act = () => booking.UpdateTotalPrice(newTotalPrice);
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void UpdateTotalPrice_ShouldThrowBusinessRuleException_WhenBookingIsCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
+        var newTotalPrice = new Money(320m, CurrencyCode.USD);
+
+        // Act
+        Action act = () => booking.UpdateTotalPrice(newTotalPrice);
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void UpdateDiscountId_ShouldUpdateDiscountId_WhenValueIsValid()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        var discountId = Guid.NewGuid();
+
+        // Act
+        booking.UpdateDiscountId(discountId);
+
+        // Assert
+        booking.DiscountId.Should().Be(discountId);
+    }
+
+    [Fact]
+    public void UpdateDiscountId_ShouldThrowBusinessRuleException_WhenBookingIsCompleted()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCompleted();
+
+        // Act
+        Action act = () => booking.UpdateDiscountId(Guid.NewGuid());
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    [Fact]
+    public void UpdateDiscountId_ShouldThrowBusinessRuleException_WhenBookingIsCancelled()
+    {
+        // Arrange
+        var booking = CreateBooking();
+        booking.SetAsCancelled("Guest requested cancellation");
+
+        // Act
+        Action act = () => booking.UpdateDiscountId(Guid.NewGuid());
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+    }
+
+    private static Booking CreateBooking()
+    {
+        return new Booking(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            BookingSource.InPerson,
+            CreateGuestCount(),
+            CreateCheckInOutTimes(),
+            CreateTotalPrice(),
+            "Late arrival");
+    }
+
+    private static CheckInOutTimes CreateCheckInOutTimes()
+    {
+        return new CheckInOutTimes(
+            new DateTime(2026, 4, 1, 14, 0, 0),
+            new DateTime(2026, 4, 3, 12, 0, 0));
+    }
+
+    private static Money CreateTotalPrice()
+    {
+        return new Money(250m, CurrencyCode.DOP);
+    }
+
+    private static GuestCount CreateGuestCount()
+    {
+        return new GuestCount(2, 1);
+    }
 }
