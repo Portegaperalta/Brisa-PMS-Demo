@@ -61,11 +61,10 @@ public class CreateBookingUseCase : IRequestHandler<CreateBookingCommand, Guid>
                 throw new BusinessRuleException("Room is out of service, unable to create booking");
             
             case RoomAvailabilityStatus.Available:
-                room.UpdateAvailabilityStatus(RoomAvailabilityStatus.Reserved);
-                break;
             
             default:
-                throw new BusinessRuleException("Availability status not supported");
+                room.UpdateAvailabilityStatus(RoomAvailabilityStatus.Reserved);
+                break;
         }
 
         var bookingSource = Enum.Parse<BookingSource>(command.Source);
