@@ -43,6 +43,11 @@ public class CreateBookingUseCase : IRequestHandler<CreateBookingCommand, Guid>
         
         if (room is null)
             throw new NotFoundException("Room", command.RoomId);
+
+        if (room.HotelId != command.HotelId)
+            throw new BusinessRuleException(
+                $"Room with ID: {command.RoomId} does not belong to hotel with ID: {command.HotelId}"
+            );
         
         switch (room.AvailabilityStatus)
         {
