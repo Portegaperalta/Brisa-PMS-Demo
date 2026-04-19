@@ -145,6 +145,17 @@ public class Booking
             _ => Status = BookingStatus.Complete
         };
     }
+
+    public void SetAsNoShow()
+    {
+        Status = Status switch
+        {
+            BookingStatus.Cancelled => throw new BusinessRuleException("Cancelled booking can't be set as No Show"),
+            BookingStatus.Complete => throw new BusinessRuleException("Completed booking can't be set as No Show"),
+            BookingStatus.NoShow => throw new BusinessRuleException("Booking is already set as No Show"),
+            _ => BookingStatus.NoShow
+        };
+    }
     
     public void SetAsCancelled(string cancellationReason)
     {
