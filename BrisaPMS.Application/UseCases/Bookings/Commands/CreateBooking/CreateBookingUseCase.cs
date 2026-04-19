@@ -30,18 +30,20 @@ public class CreateBookingUseCase : IRequestHandler<CreateBookingCommand, Guid>
     public async Task<Guid> Handle(CreateBookingCommand command)
     {
         var hotelExists = await _hotelsRepository.Exists(command.HotelId);
-        var guestExists = await _guestsRepository.Exists(command.GuestId);
-        var room = await _roomsRepository.GetById(command.RoomId);
 
         if (hotelExists is not true)
             throw new NotFoundException("Hotel", command.HotelId);
         
+        var guestExists = await _guestsRepository.Exists(command.GuestId);
+        
         if (guestExists is not true)
             throw new NotFoundException("Guest", command.GuestId);
         
+        var room = await _roomsRepository.GetById(command.RoomId);
+        
         if (room is null)
             throw new NotFoundException("Room", command.RoomId);
-
+        
         switch (room.AvailabilityStatus)
         {
             case RoomAvailabilityStatus.Reserved:
