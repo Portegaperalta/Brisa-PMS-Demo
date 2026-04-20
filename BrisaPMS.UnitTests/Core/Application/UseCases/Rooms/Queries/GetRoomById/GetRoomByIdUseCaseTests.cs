@@ -9,7 +9,7 @@ using NSubstitute;
 using NSubstitute.ReturnsExtensions;
 using BrisaPMS.Application.UseCases.Rooms.Shared;
 
-namespace BrisaPMS.UnitTests.Core.Application.UseCases.Rooms.Queries;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Rooms.Queries.GetRoomById;
 
 public class GetRoomByIdUseCaseTests
 {

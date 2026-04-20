@@ -6,7 +6,7 @@ using BrisaPMS.Domain.Rooms;
 using FluentAssertions;
 using NSubstitute;
 
-namespace BrisaPMS.UnitTests.Core.Application.UseCases.Rooms.Queries;
+namespace BrisaPMS.UnitTests.Core.Application.UseCases.Rooms.Queries.GetAllRooms;
 
 public class GetAllRoomsUseCaseTests
 {
@@ -56,13 +56,13 @@ public class GetAllRoomsUseCaseTests
             CreateRoomType());
     }
 
-  private static RoomType CreateRoomType(string name = "Deluxe Suite")
-  {
-      return new RoomType(
-          name,
-          new RoomBaseRate(0.25m),
-          new RoomBed(BedType.Double, 1),
-          new OccupancyPolicy(2, 1),
-          "Spacious suite with ocean view");
-  }
+    private static RoomType CreateRoomType(string name = "Deluxe Suite")
+    {
+        return new RoomType(
+            name,
+            new RoomBaseRate(0.25m),
+            new RoomBed(BedType.Double, 1),
+            new OccupancyPolicy(2, 1),
+            "Spacious suite with ocean view");
+    }
 }
