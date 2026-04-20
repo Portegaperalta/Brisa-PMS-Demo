@@ -15,7 +15,6 @@ public class UpdateGuestCountCommandValidator : AbstractValidator<UpdateGuestCou
             .LessThanOrEqualTo(10).WithMessage("Booking can't exceed 10 Adults.");
 
         RuleFor(x => x.NumberOfChildren)
-            .NotEmpty().WithMessage("The field Number Of Children is required.")
             .GreaterThanOrEqualTo(0).WithMessage("Number of children can't be negative.")
             .LessThanOrEqualTo(10).WithMessage("Booking can't exceed 10 Children.");
     }
