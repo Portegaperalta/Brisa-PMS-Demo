@@ -316,7 +316,7 @@ public class ChangeAssignedRoomUseCaseTests
     _bookingsRepositoryMock.Update(Arg.Any<Booking>()).Throws<InvalidOperationException>();
 
     // Act
-    await _useCase.Handle(command);
+    await Assert.ThrowsAsync<InvalidOperationException>(() => _useCase.Handle(command));
 
     // Assert
     await _unitOfWorkMock.Received(1).Revert();
