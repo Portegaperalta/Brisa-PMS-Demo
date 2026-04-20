@@ -39,6 +39,8 @@
     <Folder Include="Core\Application\UseCases\Bookings\Commands\CancelBooking\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\ChangeAssignedRoom\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\ChangeBookingSource\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Commands\CompleteBooking\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Commands\ConfirmBooking\" />
     <Folder Include="Core\Application\UseCases\Companies\Commands\UpdateCompanyContactInfo\" />
     <Folder Include="Core\Application\UseCases\Companies\Commands\UpdateCompanyRnc\" />
     <Folder Include="Core\Application\UseCases\Companies\Queries\" />
