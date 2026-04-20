@@ -47,6 +47,10 @@
     <Folder Include="Core\Application\UseCases\Bookings\Commands\UpdateGuestCount\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\UpdateSpecialRequests\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\UpdateTotalPrice\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Queries\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Queries\GetAllBookings\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Queries\GetBookingById\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Queries\GetBookingsByHotelId\" />
     <Folder Include="Core\Application\UseCases\Companies\Commands\UpdateCompanyContactInfo\" />
     <Folder Include="Core\Application\UseCases\Companies\Commands\UpdateCompanyRnc\" />
     <Folder Include="Core\Application\UseCases\Companies\Queries\" />
