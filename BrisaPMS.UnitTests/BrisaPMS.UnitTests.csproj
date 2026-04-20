@@ -42,6 +42,11 @@
     <Folder Include="Core\Application\UseCases\Bookings\Commands\CompleteBooking\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\ConfirmBooking\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\MarkAsNoShow\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Commands\UpdateCancellationReason\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Commands\UpdateCheckInOutTimes\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Commands\UpdateGuestCount\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Commands\UpdateSpecialRequests\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Commands\UpdateTotalPrice\" />
     <Folder Include="Core\Application\UseCases\Companies\Commands\UpdateCompanyContactInfo\" />
     <Folder Include="Core\Application\UseCases\Companies\Commands\UpdateCompanyRnc\" />
     <Folder Include="Core\Application\UseCases\Companies\Queries\" />
