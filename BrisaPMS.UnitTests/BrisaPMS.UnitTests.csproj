@@ -36,6 +36,7 @@
     <Folder Include="Core\Application\UseCases\Amenities\Commands\CreateAmenity\" />
     <Folder Include="Core\Application\UseCases\Bookings\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Commands\CancelBooking\" />
     <Folder Include="Core\Application\UseCases\Companies\Commands\UpdateCompanyContactInfo\" />
     <Folder Include="Core\Application\UseCases\Companies\Commands\UpdateCompanyRnc\" />
     <Folder Include="Core\Application\UseCases\Companies\Queries\" />
