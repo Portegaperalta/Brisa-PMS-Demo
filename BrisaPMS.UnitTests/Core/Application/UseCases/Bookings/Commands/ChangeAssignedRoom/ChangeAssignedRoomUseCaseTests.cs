@@ -83,6 +83,7 @@ public class ChangeAssignedRoomUseCaseTests
   [Fact]
   public async Task Handle_UpdatesNewRoomAvailabilityToReserved()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var bookingId = Guid.NewGuid();
     var currentRoomId = Guid.NewGuid();
@@ -96,14 +97,17 @@ public class ChangeAssignedRoomUseCaseTests
     _roomsRepositoryMock.GetById(currentRoomId).Returns(currentRoom);
     _roomsRepositoryMock.GetById(newRoomId).Returns(newRoom);
 
+    // Act
     await _useCase.Handle(command);
 
+    // Assert
     newRoom.AvailabilityStatus.Should().Be(RoomAvailabilityStatus.Reserved);
   }
 
   [Fact]
   public async Task Handle_CallsBookingsRepository()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var bookingId = Guid.NewGuid();
     var currentRoomId = Guid.NewGuid();
@@ -117,8 +121,10 @@ public class ChangeAssignedRoomUseCaseTests
     _roomsRepositoryMock.GetById(currentRoomId).Returns(currentRoom);
     _roomsRepositoryMock.GetById(newRoomId).Returns(newRoom);
 
+    // Act
     await _useCase.Handle(command);
 
+    // Assert
     await _bookingsRepositoryMock.Received(1).GetById(bookingId);
     await _bookingsRepositoryMock.Received(1).Update(Arg.Any<Booking>());
   }
@@ -126,6 +132,7 @@ public class ChangeAssignedRoomUseCaseTests
   [Fact]
   public async Task Handle_CallsRoomsRepository()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var bookingId = Guid.NewGuid();
     var currentRoomId = Guid.NewGuid();
@@ -139,8 +146,10 @@ public class ChangeAssignedRoomUseCaseTests
     _roomsRepositoryMock.GetById(currentRoomId).Returns(currentRoom);
     _roomsRepositoryMock.GetById(newRoomId).Returns(newRoom);
 
+    // Act
     await _useCase.Handle(command);
 
+    // Assert
     await _roomsRepositoryMock.Received(1).GetById(currentRoomId);
     await _roomsRepositoryMock.Received(1).GetById(newRoomId);
     await _roomsRepositoryMock.Received(2).Update(Arg.Any<Room>());
@@ -149,6 +158,7 @@ public class ChangeAssignedRoomUseCaseTests
   [Fact]
   public async Task Handle_CallsUnitOfWorkPersist()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var bookingId = Guid.NewGuid();
     var currentRoomId = Guid.NewGuid();
@@ -162,22 +172,27 @@ public class ChangeAssignedRoomUseCaseTests
     _roomsRepositoryMock.GetById(currentRoomId).Returns(currentRoom);
     _roomsRepositoryMock.GetById(newRoomId).Returns(newRoom);
 
+    // Act
     await _useCase.Handle(command);
 
+    // Assert
     await _unitOfWorkMock.Received(1).Persist();
   }
 
   [Fact]
   public async Task Handle_ThrowsNotFoundException_WhenBookingDoesNotExist()
   {
+    // Arrange
     var bookingId = Guid.NewGuid();
     var newRoomId = Guid.NewGuid();
     var command = CreateValidCommand(bookingId, newRoomId);
 
     _bookingsRepositoryMock.GetById(bookingId).Returns((Booking?)null);
 
+    // Act
     var act = async () => await _useCase.Handle(command);
 
+    // Assert
     await act.Should().ThrowAsync<NotFoundException>();
 
     await _unitOfWorkMock.DidNotReceive().Persist();
@@ -187,6 +202,7 @@ public class ChangeAssignedRoomUseCaseTests
   [Fact]
   public async Task Handle_ThrowsNotFoundException_WhenNewRoomDoesNotExist()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var bookingId = Guid.NewGuid();
     var currentRoomId = Guid.NewGuid();
@@ -199,14 +215,17 @@ public class ChangeAssignedRoomUseCaseTests
     _roomsRepositoryMock.GetById(currentRoomId).Returns(currentRoom);
     _roomsRepositoryMock.GetById(newRoomId).Returns((Room?)null);
 
+    // Act
     var act = async () => await _useCase.Handle(command);
 
+    // Assert
     await act.Should().ThrowAsync<NotFoundException>();
   }
 
   [Fact]
   public async Task Handle_ThrowsBusinessRuleException_WhenNewRoomIsReserved()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var bookingId = Guid.NewGuid();
     var currentRoomId = Guid.NewGuid();
@@ -220,8 +239,10 @@ public class ChangeAssignedRoomUseCaseTests
     _roomsRepositoryMock.GetById(currentRoomId).Returns(currentRoom);
     _roomsRepositoryMock.GetById(newRoomId).Returns(newRoom);
 
+    // Act
     var act = async () => await _useCase.Handle(command);
 
+    // Assert
     await act.Should().ThrowAsync<BusinessRuleException>()
         .WithMessage("Requested room is already reserved");
   }
@@ -229,6 +250,7 @@ public class ChangeAssignedRoomUseCaseTests
   [Fact]
   public async Task Handle_ThrowsBusinessRuleException_WhenNewRoomIsOccupied()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var bookingId = Guid.NewGuid();
     var currentRoomId = Guid.NewGuid();
@@ -242,8 +264,10 @@ public class ChangeAssignedRoomUseCaseTests
     _roomsRepositoryMock.GetById(currentRoomId).Returns(currentRoom);
     _roomsRepositoryMock.GetById(newRoomId).Returns(newRoom);
 
+    // Act
     var act = async () => await _useCase.Handle(command);
 
+    // Assert
     await act.Should().ThrowAsync<BusinessRuleException>()
         .WithMessage("Requested room is currently occupied");
   }
@@ -251,6 +275,7 @@ public class ChangeAssignedRoomUseCaseTests
   [Fact]
   public async Task Handle_ThrowsBusinessRuleException_WhenNewRoomIsOutOfService()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var bookingId = Guid.NewGuid();
     var currentRoomId = Guid.NewGuid();
@@ -264,8 +289,10 @@ public class ChangeAssignedRoomUseCaseTests
     _roomsRepositoryMock.GetById(currentRoomId).Returns(currentRoom);
     _roomsRepositoryMock.GetById(newRoomId).Returns(newRoom);
 
+    // Act
     var act = async () => await _useCase.Handle(command);
 
+    // Assert
     await act.Should().ThrowAsync<BusinessRuleException>()
         .WithMessage("Requested room is currently out of service");
   }
@@ -273,6 +300,7 @@ public class ChangeAssignedRoomUseCaseTests
   [Fact]
   public async Task Handle_RevertsUnitOfWork_WhenUpdateFails()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var bookingId = Guid.NewGuid();
     var currentRoomId = Guid.NewGuid();
@@ -287,8 +315,10 @@ public class ChangeAssignedRoomUseCaseTests
     _roomsRepositoryMock.GetById(newRoomId).Returns(newRoom);
     _bookingsRepositoryMock.Update(Arg.Any<Booking>()).Throws<InvalidOperationException>();
 
+    // Act
     await _useCase.Handle(command);
 
+    // Assert
     await _unitOfWorkMock.Received(1).Revert();
     await _unitOfWorkMock.DidNotReceive().Persist();
   }
