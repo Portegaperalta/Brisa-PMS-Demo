@@ -1,6 +1,7 @@
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Amenities.Queries.GetAmenityById;
+using BrisaPMS.Application.UseCases.Amenities.Shared;
 using BrisaPMS.Domain.Amenities;
 using FluentAssertions;
 using NSubstitute;
@@ -34,6 +35,7 @@ public class GetAmenityByIdUseCaseTests
 
         // Assert
         result.Should().NotBeNull();
+        result.Should().BeOfType<AmenityDto>();
         result.Id.Should().Be(amenity.Id);
         result.Name.Should().Be(amenity.Name);
         result.Description.Should().Be(amenity.Description);

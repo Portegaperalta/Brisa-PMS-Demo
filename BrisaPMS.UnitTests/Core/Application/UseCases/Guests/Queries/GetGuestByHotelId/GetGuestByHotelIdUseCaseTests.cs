@@ -1,6 +1,7 @@
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Guests.Queries.GetGuestByHotelId;
+using BrisaPMS.Application.UseCases.Guests.Shared;
 using BrisaPMS.Domain.Guest;
 using BrisaPMS.Domain.Guests;
 using BrisaPMS.Domain.Shared.Enums;
@@ -40,6 +41,7 @@ public class GetGuestByHotelIdUseCaseTests
 
         // Assert
         result.Should().NotBeNull();
+        result.Should().BeOfType<GuestDto>();
         result!.Id.Should().Be(guest.Id);
         result.HotelId.Should().Be(guest.HotelId);
         result.FirstName.Should().Be(guest.FirstName);

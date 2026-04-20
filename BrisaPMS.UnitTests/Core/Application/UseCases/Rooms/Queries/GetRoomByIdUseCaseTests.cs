@@ -7,6 +7,7 @@ using BrisaPMS.Domain.Rooms;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using BrisaPMS.Application.UseCases.Rooms.Shared;
 
 namespace BrisaPMS.UnitTests.Core.Application.UseCases.Rooms.Queries;
 
@@ -36,6 +37,7 @@ public class GetRoomByIdUseCaseTests
 
     // Assert
     result.Should().NotBeNull();
+    result.Should().BeOfType<RoomDto>();
     result.Id.Should().Be(room.Id);
     result.HotelId.Should().Be(room.HotelId);
     result.Number.Should().Be(room.Number);
@@ -91,13 +93,13 @@ public class GetRoomByIdUseCaseTests
 
   private static RoomType CreateRoomType(string name = "Deluxe Suite")
   {
-      return new RoomType
-        (
-          name,
-          new RoomBaseRate(0.25m),
-          new RoomBed(BedType.Double, 1), 
-          new OccupancyPolicy(2, 1),
-          "Spacious suite with ocean view"
-        );
+    return new RoomType
+      (
+        name,
+        new RoomBaseRate(0.25m),
+        new RoomBed(BedType.Double, 1),
+        new OccupancyPolicy(2, 1),
+        "Spacious suite with ocean view"
+      );
   }
 }
