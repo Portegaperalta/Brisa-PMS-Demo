@@ -1,6 +1,7 @@
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.RoomTypes.Queries.GetRoomTypeById;
+using BrisaPMS.Application.UseCases.RoomTypes.Shared;
 using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.RoomTypes;
 using FluentAssertions;
@@ -35,6 +36,7 @@ public class GetRoomTypeByIdUseCaseTests
 
         // Assert
         result.Should().NotBeNull();
+        result.Should().BeOfType<RoomTypeDto>();
         result.Id.Should().Be(roomType.Id);
         result.Name.Should().Be(roomType.Name);
         result.Description.Should().Be(roomType.Description);

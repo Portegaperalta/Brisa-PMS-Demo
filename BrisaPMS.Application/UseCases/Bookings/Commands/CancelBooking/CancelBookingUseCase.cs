@@ -29,8 +29,11 @@ public class CancelBookingUseCase : IRequestHandler<CancelBookingCommand, bool>
         
         var room = await _roomsRepository.GetById(booking.RoomId);
 
+        if (room is null)
+            throw new NotFoundException("Room", booking.RoomId);
+
         booking.SetAsCancelled(command.CancellationReason);
-        room!.UpdateAvailabilityStatus(RoomAvailabilityStatus.Available);
+        room.UpdateAvailabilityStatus(RoomAvailabilityStatus.Available);
 
         try
         {
