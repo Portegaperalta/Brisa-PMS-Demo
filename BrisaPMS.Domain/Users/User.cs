@@ -34,7 +34,7 @@ public class User
         string lastName,
         Email email,
         Password password,
-        UserPreferredLanguage preferredLanguage,
+        UserPreferredLanguage preferredLanguage = UserPreferredLanguage.En,
         PhoneNumber? phoneNumber = null,
         bool isActive = true)
     {
