@@ -23,47 +23,67 @@ public class User
     public DateTimeOffset? LockOutEnd { get; private set; }
     public DateTime? LastLoginAt { get; private set; }
     public DateTime? PasswordChangedAt { get; private set; }
-
-    //Constructor
-
-    public User
-    (
-        UserRole role,
-        Guid? hotelId,
-        string firstName,
-        string lastName,
-        Email email,
-        Password password,
-        UserPreferredLanguage preferredLanguage = UserPreferredLanguage.En,
-        PhoneNumber? phoneNumber = null,
-        bool isActive = true)
+    
+    private User() {}
+    
+    // Nested Builder
+    public class Builder
     {
-        if (string.IsNullOrWhiteSpace(firstName))
-            throw new EmptyRequiredFieldException("First Name");
+        private readonly UserRole _role;
+        private readonly string _firstName;
+        private readonly string _lastName;
+        private readonly Email _email;
+        private readonly Password _passwordHash;
+        private readonly UserPreferredLanguage _preferredLanguage;
+        
+        private Guid? _hotelId;
+        private PhoneNumber? _phoneNumber;
 
-        if (string.IsNullOrWhiteSpace(lastName))
-            throw new EmptyRequiredFieldException("Last Name");
+        public Builder
+        (
+            UserRole role,
+            string firstName,
+            string lastName,
+            Email email,
+            Password passwordHash,
+            UserPreferredLanguage preferredLanguage
+        )
+        {
+            if (string.IsNullOrWhiteSpace(firstName))  
+                throw new EmptyRequiredFieldException("First Name");  
+  
+            if (string.IsNullOrWhiteSpace(lastName))  
+                throw new EmptyRequiredFieldException("Last Name");  
+  
+            if (!Enum.IsDefined<UserPreferredLanguage>(preferredLanguage))  
+                throw new LanguageNotSupportedException(); 
+            
+            _role = role;
+            _firstName = firstName;
+            _lastName = lastName;
+            _email = email;
+            _passwordHash = passwordHash;
+            _preferredLanguage = preferredLanguage;
+        }
+        
+        public Builder WithHotelId(Guid hotelId) { _hotelId = hotelId; return this; }
+        public Builder WithPhoneNumber(PhoneNumber phoneNumber) { _phoneNumber = phoneNumber; return this; }
 
-        if (!Enum.IsDefined<UserPreferredLanguage>(preferredLanguage))
-            throw new LanguageNotSupportedException();
-
-        Id = Guid.CreateVersion7();
-        Role = role;
-        HotelId = hotelId;
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        PasswordHash = password;
-        PhoneNumber = phoneNumber;
-        PreferredLanguage = preferredLanguage;
-        IsOnline = false;
-        IsActive = isActive;
-        IsEmailConfirmed = false;
-        FailedLoginAttempts = 0;
-        LockOutDuration = null;
-        LockOutEnd = null;
-        LastLoginAt = null;
-        PasswordChangedAt = null;
+        public User Build()
+        {
+            return new User()
+            {
+                Id = Guid.CreateVersion7(),
+                Role = _role,
+                HotelId = _hotelId,
+                FirstName = _firstName,
+                LastName = _lastName,
+                Email = _email,
+                PasswordHash = _passwordHash,
+                PhoneNumber = _phoneNumber,
+                PreferredLanguage = _preferredLanguage
+            };
+        }
     }
 
     // Behavioral Methods
