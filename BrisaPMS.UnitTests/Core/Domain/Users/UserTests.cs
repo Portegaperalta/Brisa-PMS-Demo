@@ -41,7 +41,6 @@ public class UserTests
         result.PasswordHash.Should().Be(password);
         result.PhoneNumber.Should().Be(phoneNumber);
         result.PreferredLanguage.Should().Be(UserPreferredLanguage.En);
-        result.IsOnline.Should().BeFalse();
         result.IsActive.Should().BeFalse();
         result.IsEmailConfirmed.Should().BeFalse();
         result.FailedLoginAttempts.Should().Be(0);
@@ -303,33 +302,6 @@ public class UserTests
 
         // Assert
         act.Should().Throw<LanguageNotSupportedException>();
-    }
-
-    [Fact]
-    public void EnableOnlineStatus_ShouldSetIsOnlineToTrue()
-    {
-        // Arrange
-        var user = CreateUser();
-
-        // Act
-        user.EnableOnlineStatus();
-
-        // Assert
-        user.IsOnline.Should().BeTrue();
-    }
-
-    [Fact]
-    public void DisableOnlineStatus_ShouldSetIsOnlineToFalse()
-    {
-        // Arrange
-        var user = CreateUser();
-        user.EnableOnlineStatus();
-
-        // Act
-        user.DisableOnlineStatus();
-
-        // Assert
-        user.IsOnline.Should().BeFalse();
     }
 
     [Fact]
