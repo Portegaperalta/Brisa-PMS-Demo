@@ -69,6 +69,7 @@
     <Folder Include="Core\Application\UseCases\RoomTypes\Queries\GetRoomTypeById\" />
     <Folder Include="Core\Application\UseCases\Users\" />
     <Folder Include="Core\Application\UseCases\Users\Commands\" />
+    <Folder Include="Core\Application\UseCases\Users\Commands\ChangeRole\" />
     <Folder Include="Core\Application\UseCases\Users\Commands\CreateUser\" />
     <Folder Include="Core\Domain\Discounts\" />
   </ItemGroup>
