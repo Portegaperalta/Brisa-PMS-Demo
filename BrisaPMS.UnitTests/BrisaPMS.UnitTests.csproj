@@ -76,6 +76,7 @@
     <Folder Include="Core\Application\UseCases\Users\Commands\CreateUser\" />
     <Folder Include="Core\Application\UseCases\Users\Commands\UpdateUserName\" />
     <Folder Include="Core\Application\UseCases\Users\Queries\" />
+    <Folder Include="Core\Application\UseCases\Users\Queries\GetAllUsersByHotelId\" />
     <Folder Include="Core\Application\UseCases\Users\Queries\GetUserById\" />
     <Folder Include="Core\Domain\Discounts\" />
   </ItemGroup>
