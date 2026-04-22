@@ -4,7 +4,7 @@ using FluentAssertions;
 
 namespace BrisaPMS.UnitTests.Core.Domain.HouseKeeping;
 
-public class TaskExpectedTimeIntervalTests
+public class TaskDeadlineTests
 {
     [Fact]
     public void Constructor_ShouldCreateTaskExpectedTimeInterval_WhenExpectedStartAtIsBeforeExpectedEndAt()
@@ -14,7 +14,7 @@ public class TaskExpectedTimeIntervalTests
         var expectedEndAt = new DateTime(2026, 4, 1, 10, 0, 0);
 
         // Act
-        var result = new TaskExpectedTimeInterval(expectedStartAt, expectedEndAt);
+        var result = new TaskDeadline(expectedStartAt, expectedEndAt);
 
         // Assert
         result.ExpectedStartAt.Should().Be(expectedStartAt);
@@ -29,7 +29,7 @@ public class TaskExpectedTimeIntervalTests
         var expectedEndAt = new DateTime(2026, 4, 1, 10, 0, 0);
 
         // Act
-        Action act = () => _ = new TaskExpectedTimeInterval(expectedStartAt, expectedEndAt);
+        Action act = () => _ = new TaskDeadline(expectedStartAt, expectedEndAt);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -43,7 +43,7 @@ public class TaskExpectedTimeIntervalTests
         var expectedEndAt = expectedStartAt;
 
         // Act
-        Action act = () => _ = new TaskExpectedTimeInterval(expectedStartAt, expectedEndAt);
+        Action act = () => _ = new TaskDeadline(expectedStartAt, expectedEndAt);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
