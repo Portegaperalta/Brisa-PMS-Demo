@@ -35,7 +35,7 @@ public class HouseKeepingTaskTests
         result.Priority.Should().Be(TaskPriority.High);
         result.Status.Should().Be(HouseKeepingTaskStatus.Pending);
         result.Notes.Should().Be(notes);
-        result.ExpectedTimeInterval.Should().Be(expectedTimeInterval);
+        result.Deadline.Should().Be(expectedTimeInterval);
         result.ActualTimeInterval.Should().BeNull();
         result.IncidentReported.Should().BeFalse();
         result.IncidentDescription.Should().BeNull();
@@ -358,7 +358,7 @@ public class HouseKeepingTaskTests
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
-        var newExpectedTimeInterval = new TaskExpectedTimeInterval(
+        var newExpectedTimeInterval = new TaskDeadline(
             new DateTime(2026, 4, 2, 14, 0, 0, DateTimeKind.Utc),
             new DateTime(2026, 4, 2, 15, 0, 0, DateTimeKind.Utc));
 
@@ -366,7 +366,7 @@ public class HouseKeepingTaskTests
         houseKeepingTask.ChangeExpectedTimeInterval(newExpectedTimeInterval);
 
         // Assert
-        houseKeepingTask.ExpectedTimeInterval.Should().Be(newExpectedTimeInterval);
+        houseKeepingTask.Deadline.Should().Be(newExpectedTimeInterval);
     }
 
     [Theory]
@@ -377,7 +377,7 @@ public class HouseKeepingTaskTests
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
         houseKeepingTask.UpdatedStatus(status);
-        var newExpectedTimeInterval = new TaskExpectedTimeInterval(
+        var newExpectedTimeInterval = new TaskDeadline(
             new DateTime(2026, 4, 2, 14, 0, 0, DateTimeKind.Utc),
             new DateTime(2026, 4, 2, 15, 0, 0, DateTimeKind.Utc));
 
@@ -542,9 +542,9 @@ public class HouseKeepingTaskTests
             "Clean room before next guest arrival");
     }
 
-    private static TaskExpectedTimeInterval CreateExpectedTimeInterval()
+    private static TaskDeadline CreateExpectedTimeInterval()
     {
-        return new TaskExpectedTimeInterval(
+        return new TaskDeadline(
             new DateTime(2026, 4, 1, 10, 0, 0, DateTimeKind.Utc),
             new DateTime(2026, 4, 1, 11, 0, 0, DateTimeKind.Utc));
     }
