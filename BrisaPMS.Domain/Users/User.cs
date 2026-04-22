@@ -15,7 +15,6 @@ public class User
     public Password PasswordHash { get; private set; }
     public PhoneNumber? PhoneNumber { get; private set; }
     public UserPreferredLanguage PreferredLanguage { get; private set; }
-    public bool IsOnline { get; private set; }
     public bool IsActive { get; private set; }
     public bool IsEmailConfirmed { get; private set; }
     public int FailedLoginAttempts { get; private set; }
@@ -123,20 +122,6 @@ public class User
             throw new LanguageNotSupportedException();
 
         PreferredLanguage = newPreferredLanguage;
-    }
-
-    public void EnableOnlineStatus()
-    {
-        if (IsOnline is not true)
-            IsOnline = true;
-    }
-
-    public void DisableOnlineStatus()
-    {
-        if (IsOnline)
-        {
-            IsOnline = false;
-        }
     }
 
     public void SetEmailAsConfirmed() => IsEmailConfirmed = true;
