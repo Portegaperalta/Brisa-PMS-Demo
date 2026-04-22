@@ -3,7 +3,6 @@ using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.HouseKeeping;
-using BrisaPMS.Domain.Rooms;
 
 namespace BrisaPMS.Application.UseCases.HouseKeeping.Commands.CreateHouseKeepingTask;
 
@@ -30,9 +29,9 @@ public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingT
         if (assignedUserExists is not true)
             throw new NotFoundException("User", command.AssignedTo);
         
-        var room = await _roomsRepository.GetById(command.RoomId);
+        var roomExists = await _roomsRepository.Exists(command.RoomId);
 
-        if (room is null)
+        if (roomExists is not true)
             throw new NotFoundException("Room", command.RoomId);
 
         var houseKeepingTaskType = Enum.Parse<HouseKeepingTaskType>(command.HouseKeepingTaskType);
@@ -49,13 +48,10 @@ public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingT
             taskExpectedTimeInterval,
             command.Notes
         );
-        
-        room.UpdateAvailabilityStatus(RoomAvailabilityStatus.OutOfService);
 
         try
         {
             await _houseKeepingTasksRepository.Create(houseKeepingTask);
-            await _roomsRepository.Update(room);
             await _unitOfWork.Persist();
             return houseKeepingTask.Id;
         }
