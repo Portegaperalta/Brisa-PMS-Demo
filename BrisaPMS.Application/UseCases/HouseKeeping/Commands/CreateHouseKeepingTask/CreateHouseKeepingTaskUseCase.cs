@@ -36,7 +36,7 @@ public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingT
 
         var houseKeepingTaskType = Enum.Parse<HouseKeepingTaskType>(command.HouseKeepingTaskType);
         var taskPriority = Enum.Parse<TaskPriority>(command.TaskPriority);
-        var taskExpectedTimeInterval = new TaskExpectedTimeInterval(command.ExpectedStartTime, command.ExpectedEndTime);
+        var taskExpectedTimeInterval = new TaskDeadline(command.ExpectedStartTime, command.ExpectedEndTime);
 
         var houseKeepingTask = new HouseKeepingTask
         (
