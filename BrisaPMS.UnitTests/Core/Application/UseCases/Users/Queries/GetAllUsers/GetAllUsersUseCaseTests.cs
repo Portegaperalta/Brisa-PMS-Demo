@@ -74,7 +74,7 @@ public class GetAllUsersUseCaseTests
                 firstName,
                 lastName,
                 new Email($"{firstName.ToLower()}.{lastName.ToLower()}@example.com"),
-                new Password("hashedpassword"),
+                new Password("Hashed#password1"),
                 UserPreferredLanguage.En)
             .WithHotelId(Guid.NewGuid())
             .WithPhoneNumber(new PhoneNumber("+18095551234"))
