@@ -87,7 +87,13 @@ public class User
     }
 
     // Behavioral Methods
-    public void ChangeRole(UserRole newRole) => Role = newRole;
+    public void ChangeRole(UserRole newRole)
+    {
+        if (Role is UserRole.Admin)
+            throw new BusinessRuleException("The role of a user with the 'Admin' role cannot be changed.");
+        
+        Role = newRole;
+    }
 
     public void UpdateFirstName(string newFirstName)
     {
