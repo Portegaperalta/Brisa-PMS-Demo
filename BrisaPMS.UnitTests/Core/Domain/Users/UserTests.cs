@@ -8,7 +8,7 @@ namespace BrisaPMS.UnitTests.Core.Domain.Users;
 public class UserTests
 {
     [Fact]
-    public void Constructor_ShouldCreateUser_WhenValuesAreValid()
+    public void Builder_ShouldCreateUser_WhenValuesAreValid()
     {
         // Arrange
         var role = UserRole.Admin;
@@ -18,7 +18,18 @@ public class UserTests
         var phoneNumber = CreatePhoneNumber();
 
         // Act
-        var result = new User(role, hotelId, "John", "Doe", email, password, UserPreferredLanguage.En, phoneNumber);
+        var result = new User.Builder
+        (
+            role,
+            "John",
+            "Doe",
+            email,
+            password,
+            UserPreferredLanguage.En
+        )
+        .WithHotelId(hotelId)
+        .WithPhoneNumber(phoneNumber)
+        .Build();
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
@@ -31,7 +42,7 @@ public class UserTests
         result.PhoneNumber.Should().Be(phoneNumber);
         result.PreferredLanguage.Should().Be(UserPreferredLanguage.En);
         result.IsOnline.Should().BeFalse();
-        result.IsActive.Should().BeTrue();
+        result.IsActive.Should().BeFalse();
         result.IsEmailConfirmed.Should().BeFalse();
         result.FailedLoginAttempts.Should().Be(0);
         result.LockOutDuration.Should().BeNull();
@@ -41,14 +52,24 @@ public class UserTests
     }
 
     [Fact]
-    public void Constructor_ShouldCreateUser_WhenPhoneNumberIsNotProvided()
+    public void Builder_ShouldCreateUser_WhenPhoneNumberIsNotProvided()
     {
         // Arrange
         var role = UserRole.Manager;
         var hotelId = Guid.NewGuid();
 
         // Act
-        var result = new User(role, hotelId, "John", "Doe", CreateEmail(), CreatePassword(), UserPreferredLanguage.En);
+        var result = new User.Builder
+        (
+            role,
+            "John",
+            "Doe",
+            CreateEmail(),
+            CreatePassword(),
+            UserPreferredLanguage.En
+        )
+        .WithHotelId(hotelId)
+        .Build();
 
         // Assert
         result.Role.Should().Be(role);
@@ -57,44 +78,80 @@ public class UserTests
     }
 
     [Fact]
-    public void Constructor_ShouldCreateUser_WhenHotelIdIsNull()
+    public void Builder_ShouldCreateUser_WhenHotelIdIsNotProvided()
     {
         // Arrange + Act
-        var result = new User(UserRole.Admin, null, "John", "Doe", CreateEmail(), CreatePassword(), UserPreferredLanguage.En);
+        var result = new User.Builder
+        (
+            UserRole.Admin,
+            "John",
+            "Doe",
+            CreateEmail(),
+            CreatePassword(),
+            UserPreferredLanguage.En
+        )
+        .Build();
 
         // Assert
         result.HotelId.Should().BeNull();
     }
 
     [Theory]
-    [InlineData("First Name")]
-    [InlineData("Last Name")]
-    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenRequiredNameIsNullOrWhiteSpace(string fieldName)
+    [InlineData(null)]
+    [InlineData(" ")]
+    public void Builder_ShouldThrowEmptyRequiredFieldException_WhenFirstNameIsNullOrWhiteSpace(string? firstName)
     {
-        // Arrange
-        var firstName = "John";
-        var lastName = "Doe";
-
-        if (fieldName == "First Name")
-            firstName = " ";
-        else
-            lastName = " ";
-
         // Act
-        Action act = () => _ = new User(UserRole.Admin, Guid.NewGuid(), firstName, lastName, CreateEmail(), CreatePassword(), UserPreferredLanguage.En);
+        Action act = () => _ = new User.Builder
+        (
+            UserRole.Admin,
+            firstName!,
+            "Doe",
+            CreateEmail(),
+            CreatePassword(),
+            UserPreferredLanguage.En
+        );
+
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData(" ")]
+    public void Builder_ShouldThrowEmptyRequiredFieldException_WhenLastNameIsNullOrWhiteSpace(string? lastName)
+    {
+        // Act
+        Action act = () => _ = new User.Builder
+        (
+            UserRole.Admin,
+            "John",
+            lastName!,
+            CreateEmail(),
+            CreatePassword(),
+            UserPreferredLanguage.En
+        );
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
     }
 
     [Fact]
-    public void Constructor_ShouldThrowLanguageNotSupportedException_WhenPreferredLanguageIsInvalid()
+    public void Builder_ShouldThrowLanguageNotSupportedException_WhenPreferredLanguageIsInvalid()
     {
         // Arrange
         var invalidLanguage = (UserPreferredLanguage)999;
 
         // Act
-        Action act = () => _ = new User(UserRole.Admin, Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), invalidLanguage);
+        Action act = () => _ = new User.Builder
+        (
+            UserRole.Admin,
+            "John",
+            "Doe",
+            CreateEmail(),
+            CreatePassword(),
+            invalidLanguage
+        );
 
         // Assert
         act.Should().Throw<LanguageNotSupportedException>();
@@ -347,7 +404,18 @@ public class UserTests
 
     private static User CreateUser()
     {
-        return new User(UserRole.Receptionist, Guid.NewGuid(), "John", "Doe", CreateEmail(), CreatePassword(), UserPreferredLanguage.En, CreatePhoneNumber());
+        return new User.Builder
+        (
+            UserRole.Receptionist,
+            "John",
+            "Doe",
+            CreateEmail(),
+            CreatePassword(),
+            UserPreferredLanguage.En
+        )
+        .WithHotelId(Guid.NewGuid())
+        .WithPhoneNumber(CreatePhoneNumber())
+        .Build();
     }
 
     private static Email CreateEmail()
