@@ -14,7 +14,7 @@ public static class MapperExtension
             FirstName = user.FirstName,
             LastName = user.LastName,
             Email = user.Email.Value,
-            PhoneNumber = user.PhoneNumber.Value,
+            PhoneNumber = user.PhoneNumber?.Value,
             PreferredLanguage = user.PreferredLanguage.ToString()
         };
     }
