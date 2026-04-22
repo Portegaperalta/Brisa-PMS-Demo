@@ -24,6 +24,7 @@ public class GetAllUsersByHotelIdUseCaseTests
   [Fact]
   public async Task Handle_ReturnsListOfUserDtos()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var users = new List<User>
         {
@@ -35,8 +36,10 @@ public class GetAllUsersByHotelIdUseCaseTests
     _hotelsRepositoryMock.Exists(hotelId).Returns(true);
     _usersRepositoryMock.GetAllByHotelIdAsync(hotelId).Returns(users);
 
+    // Act
     var result = await _useCase.Handle(query);
 
+    // Assert
     result.Should().HaveCount(2);
     result.Should().BeEquivalentTo(
         users.Select(user => new
@@ -57,14 +60,17 @@ public class GetAllUsersByHotelIdUseCaseTests
   [Fact]
   public async Task Handle_ReturnsEmptyList_WhenHotelHasNoUsers()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var query = new GetAllUsersByHotelIdQuery { HotelId = hotelId };
 
     _hotelsRepositoryMock.Exists(hotelId).Returns(true);
     _usersRepositoryMock.GetAllByHotelIdAsync(hotelId).Returns([]);
 
+    // Act
     var result = await _useCase.Handle(query);
 
+    // Assert
     result.Should().NotBeNull();
     result.Should().BeEmpty();
     await _hotelsRepositoryMock.Received(1).Exists(hotelId);
@@ -74,13 +80,16 @@ public class GetAllUsersByHotelIdUseCaseTests
   [Fact]
   public async Task Handle_ThrowsNotFoundException_WhenHotelDoesNotExist()
   {
+    // Arrange
     var hotelId = Guid.NewGuid();
     var query = new GetAllUsersByHotelIdQuery { HotelId = hotelId };
 
     _hotelsRepositoryMock.Exists(hotelId).Returns(false);
 
+    // Act
     var act = async () => await _useCase.Handle(query);
 
+    // Assert
     await act.Should().ThrowAsync<NotFoundException>();
     await _usersRepositoryMock.DidNotReceive().GetAllByHotelIdAsync(Arg.Any<Guid>());
   }
