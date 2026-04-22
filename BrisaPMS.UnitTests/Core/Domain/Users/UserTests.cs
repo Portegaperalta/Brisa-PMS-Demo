@@ -171,6 +171,20 @@ public class UserTests
     }
 
     [Fact]
+    public void ChangeRole_ShouldThrowBusinessRuleException_WhenUserRoleIsAdmin()
+    {
+        // Arrange
+        var user = CreateUser(UserRole.Admin);
+
+        // Act
+        Action act = () => user.ChangeRole(UserRole.Manager);
+
+        // Assert
+        act.Should().Throw<BusinessRuleException>();
+        user.Role.Should().Be(UserRole.Admin);
+    }
+
+    [Fact]
     public void UpdateFirstName_ShouldUpdateFirstName_WhenNewFirstNameIsValid()
     {
         // Arrange
@@ -402,11 +416,11 @@ public class UserTests
         user.PasswordChangedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
     }
 
-    private static User CreateUser()
+    private static User CreateUser(UserRole role = UserRole.Receptionist)
     {
         return new User.Builder
         (
-            UserRole.Receptionist,
+            role,
             "John",
             "Doe",
             CreateEmail(),
