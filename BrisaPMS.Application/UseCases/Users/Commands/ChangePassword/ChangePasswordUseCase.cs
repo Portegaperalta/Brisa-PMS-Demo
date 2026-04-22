@@ -27,6 +27,7 @@ public class ChangePasswordUseCase : IRequestHandler<ChangePasswordCommand, bool
         var newPasswordHash = new Password(command.Password);
         
         user.ChangePassword(newPasswordHash);
+        user.UpdatedLastPasswordChangeTime();
         
         try
         {
