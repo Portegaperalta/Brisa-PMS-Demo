@@ -2,17 +2,21 @@
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.Utilities.Mediator;
+using BrisaPMS.Domain.Rooms;
 
 namespace BrisaPMS.Application.UseCases.Bookings.Commands.CompleteBooking;
 
 public class CompleteBookingUseCase : IRequestHandler<CompleteBookingCommand, bool>
 {
     private readonly IBookingsRepository _bookingsRepository;
+    private readonly IRoomsRepository _roomsRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CompleteBookingUseCase(IBookingsRepository bookingsRepository, IUnitOfWork unitOfWork)
+    public CompleteBookingUseCase(IBookingsRepository bookingsRepository, IRoomsRepository roomsRepository,
+        IUnitOfWork unitOfWork)
     {
         _bookingsRepository = bookingsRepository;
+        _roomsRepository = roomsRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -23,7 +27,10 @@ public class CompleteBookingUseCase : IRequestHandler<CompleteBookingCommand, bo
         if (booking is null)
             throw new NotFoundException("Booking", command.BookingId);
         
+        var room = await _roomsRepository.GetById(booking.RoomId);
+        
         booking.SetAsCompleted();
+        room!.UpdateHygieneStatus(RoomHygieneStatus.Dirty);
         
         try
         {
