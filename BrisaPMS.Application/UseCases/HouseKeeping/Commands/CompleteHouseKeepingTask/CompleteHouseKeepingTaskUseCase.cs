@@ -34,12 +34,14 @@ public class CompleteHouseKeepingTaskUseCase : IRequestHandler<CompleteHouseKeep
         
         houseKeepingTask.UpdatedStatus(HouseKeepingTaskStatus.Completed);
         houseKeepingTask.EndActualTimeInterval(actualTimeInterval);
-        room!.UpdateHygieneStatus(RoomHygieneStatus.Clean);
+        
+        if (houseKeepingTask.Type is not HouseKeepingTaskType.Restocking and not HouseKeepingTaskType.Inspection) 
+            room!.UpdateHygieneStatus(RoomHygieneStatus.Clean);
         
         try
         {
             await _houseKeepingTasksRepository.Update(houseKeepingTask);
-            await _roomsRepository.Update(room);
+            await _roomsRepository.Update(room!);
             await _unitOfWork.Persist();
             return true;
         }
