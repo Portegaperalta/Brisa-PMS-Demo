@@ -71,6 +71,17 @@ using BrisaPMS.Application.UseCases.RoomTypes.Commands.UpdateRoomTypeOccupancyPo
 using BrisaPMS.Application.UseCases.RoomTypes.Queries.GetAllRoomTypes;
 using BrisaPMS.Application.UseCases.RoomTypes.Queries.GetRoomTypeById;
 using BrisaPMS.Application.UseCases.RoomTypes.Shared;
+using BrisaPMS.Application.UseCases.Users.Commands.ChangeEmail;
+using BrisaPMS.Application.UseCases.Users.Commands.ChangePassword;
+using BrisaPMS.Application.UseCases.Users.Commands.ChangePhoneNumber;
+using BrisaPMS.Application.UseCases.Users.Commands.ChangePreferredLanguage;
+using BrisaPMS.Application.UseCases.Users.Commands.ChangeRole;
+using BrisaPMS.Application.UseCases.Users.Commands.CreateUser;
+using BrisaPMS.Application.UseCases.Users.Commands.UpdateUserName;
+using BrisaPMS.Application.UseCases.Users.Queries.GetAllUsers;
+using BrisaPMS.Application.UseCases.Users.Queries.GetAllUsersByHotelId;
+using BrisaPMS.Application.UseCases.Users.Queries.GetUserById;
+using BrisaPMS.Application.UseCases.Users.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -285,6 +296,38 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<GetRoomTypeByIdQuery, RoomTypeDto>,
             GetRoomTypeByIdUseCase>();
+
+        // Users services
+        services.AddScoped<IRequestHandler<CreateUserCommand, Guid>,
+                                    CreateUserUseCase>();
+
+        services.AddScoped<IRequestHandler<ChangeEmailCommand, bool>,
+                                    ChangeEmailUseCase>();
+
+        services.AddScoped<IRequestHandler<ChangePasswordCommand, bool>,
+                                    ChangePasswordUseCase>();
+
+        services.AddScoped<IRequestHandler<ChangePhoneNumberCommand, bool>,
+                                    ChangePhoneNumberUseCase>();
+
+        services.AddScoped<IRequestHandler<ChangePreferredLanguageCommand, bool>,
+                                    ChangePreferredLanguageUseCase>();
+
+        services.AddScoped<IRequestHandler<ChangeRoleCommand, bool>,
+                                    ChangeRoleUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateUserNameCommand, bool>,
+                                    UpdateUserNameUseCase>();
+
+        services.AddScoped<IRequestHandler<GetUserByIdQuery, UserDto>,
+                                    GetUserByIdUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllUsersQuery, List<UserDto>>,
+                                    GetAllUsersUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllUsersByHotelIdQuery, List<UserDto>>,
+                                    GetAllUsersByHotelIdUseCase>();
+
 
         return services;
     }
