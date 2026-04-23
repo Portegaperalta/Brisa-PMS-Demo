@@ -25,7 +25,7 @@ public class GetAllHouseKeepingTasksByHotelIdUseCase :
         if (hotelExists is not true)
             throw new NotFoundException("Hotel", query.HotelId);
 
-        var houseKeepingTasks = await _houseKeepingTasksRepository.GetByHotelIdAsync(query.HotelId);
+        var houseKeepingTasks = await _houseKeepingTasksRepository.GetAllByHotelIdAsync(query.HotelId);
         var houseKeepingTasksDtos = houseKeepingTasks.Select(t => t.ToDto()).ToList();
         
         return houseKeepingTasksDtos;
