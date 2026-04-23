@@ -16,14 +16,16 @@ namespace BrisaPMS.UnitTests.Core.Application.UseCases.Bookings.Commands.Complet
 public class CompleteBookingUseCaseTests
 {
     private readonly IBookingsRepository _bookingsRepositoryMock;
+    private readonly IRoomsRepository _roomsRepositoryMock;
     private readonly IUnitOfWork _unitOfWorkMock;
     private readonly CompleteBookingUseCase _useCase;
 
     public CompleteBookingUseCaseTests()
     {
         _bookingsRepositoryMock = Substitute.For<IBookingsRepository>();
+        _roomsRepositoryMock = Substitute.For<IRoomsRepository>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _useCase = new CompleteBookingUseCase(_bookingsRepositoryMock, _unitOfWorkMock);
+        _useCase = new CompleteBookingUseCase(_bookingsRepositoryMock, _roomsRepositoryMock, _unitOfWorkMock);
     }
 
     [Fact]
