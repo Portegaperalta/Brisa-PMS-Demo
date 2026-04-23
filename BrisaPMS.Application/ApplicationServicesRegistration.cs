@@ -52,6 +52,22 @@ using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelRates;
 using BrisaPMS.Application.UseCases.Hotels.Queries.GetAllHotels;
 using BrisaPMS.Application.UseCases.Hotels.Queries.GetHotelById;
 using BrisaPMS.Application.UseCases.Hotels.Shared;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.CancelHouseKeepingTask;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.ChangeHouseKeepingTaskType;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.ChangeTaskDeadline;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.CompleteHouseKeepingTask;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.CreateHouseKeepingTask;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.ReportIncident;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.ReassignHouseKeepingTask;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.StartHouseKeepingTask;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.UpdateHouseKeepingTaskNotes;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.UpdateHouseKeepingTaskPriority;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.UpdateIncidentDescription;
+using BrisaPMS.Application.UseCases.HouseKeeping.Queries.GetAllHouseKeepingTasks;
+using BrisaPMS.Application.UseCases.HouseKeeping.Queries.GetAllHouseKeepingTasksByHotelId;
+using BrisaPMS.Application.UseCases.HouseKeeping.Queries.GetAllHouseKeepingTasksByRoomId;
+using BrisaPMS.Application.UseCases.HouseKeeping.Queries.GetHouseKeepingTaskById;
+using BrisaPMS.Application.UseCases.HouseKeeping.Shared;
 using BrisaPMS.Application.UseCases.Rooms.Commands.ChangeRoomType;
 using BrisaPMS.Application.UseCases.Rooms.Commands.CreateRoom;
 using BrisaPMS.Application.UseCases.Rooms.Commands.SetAsPendingRestock;
@@ -244,6 +260,53 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<GetAllHotelsQuery, List<HotelDto>>,
                                     GetAllHotelsUseCase>();
+
+        // HouseKeeping services
+        services.AddScoped<IRequestHandler<CancelHouseKeepingTaskCommand, bool>,
+                                    CancelHouseKeepingTaskUseCase>();
+
+        services.AddScoped<IRequestHandler<ChangeHouseKeepingTaskTypeCommand, bool>,
+                                    ChangeHouseKeepingTaskTypeUseCase>();
+
+        services.AddScoped<IRequestHandler<ChangeTaskDeadlineCommand, bool>,
+                                    ChangeTaskDeadlineUseCase>();
+
+        services.AddScoped<IRequestHandler<CompleteHouseKeepingTaskCommand, bool>,
+                                    CompleteHouseKeepingTaskUseCase>();
+
+        services.AddScoped<IRequestHandler<CreateHouseKeepingTaskCommand, Guid>,
+                                    CreateHouseKeepingTaskUseCase>();
+
+        services.AddScoped<IRequestHandler<ReportIncidentCommand, bool>,
+                                    ReportIncidentUseCase>();
+
+        services.AddScoped<IRequestHandler<ReassignHouseKeepingTaskCommand, bool>,
+                                    ReassignHouseKeepingTaskUseCase>();
+
+        services.AddScoped<IRequestHandler<StartHouseKeepingTaskCommand, bool>,
+                                    StartHouseKeepingTaskUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateHouseKeepingTaskNotesCommand, bool>,
+                                    UpdateHouseKeepingTaskNotesUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateHouseKeepingTaskPriorityCommand, bool>,
+                                    UpdateHouseKeepingTaskPriorityUseCase>();
+
+        services.AddScoped<IRequestHandler<UpdateIncidentDescriptionCommand, bool>,
+                                    UpdateIncidentDescriptionUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllHouseKeepingTasksQuery, List<HouseKeepingTaskDto>>,
+                                    GetAllHouseKeepingTasksUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllHouseKeepingTasksByHotelIdQuery, List<HouseKeepingTaskDto>>,
+                                    GetAllHouseKeepingTasksByHotelIdUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllHouseKeepingTasksByRoomIdQuery, List<HouseKeepingTaskDto>>,
+                                    GetAllHouseKeepingTasksByRoomIdUseCase>();
+
+        services.AddScoped<IRequestHandler<GetHouseKeepingTaskByIdQuery, HouseKeepingTaskDto>,
+                                    GetHouseKeepingTaskByIdUseCase>();
+
 
         // Rooms services
         services.AddScoped<IRequestHandler<ChangeRoomTypeCommand, bool>,
