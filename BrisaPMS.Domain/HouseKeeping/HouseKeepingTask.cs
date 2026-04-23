@@ -12,7 +12,7 @@ public class HouseKeepingTask
     public TaskPriority Priority { get; private set; }
     public HouseKeepingTaskStatus Status { get; private set; }
     public string? Notes { get;  private set; }
-    public TaskExpectedTimeInterval ExpectedTimeInterval { get; private set; }
+    public TaskDeadline Deadline { get; private set; }
     public TaskActualTimeInterval? ActualTimeInterval { get; private set; }
     public bool IncidentReported { get; private set; }
     public string? IncidentDescription { get; private set; }
@@ -24,7 +24,7 @@ public class HouseKeepingTask
         Guid assignedBy,
         HouseKeepingTaskType type,
         TaskPriority priority,
-        TaskExpectedTimeInterval  expectedTimeInterval,
+        TaskDeadline  deadline,
         string? notes = null
     )
     {
@@ -51,7 +51,7 @@ public class HouseKeepingTask
         Priority = priority;
         Status = HouseKeepingTaskStatus.Pending;
         Notes = notes;
-        ExpectedTimeInterval = expectedTimeInterval;
+        Deadline = deadline;
         ActualTimeInterval = null;
         IncidentReported = false;
         IncidentDescription = null;
@@ -111,13 +111,13 @@ public class HouseKeepingTask
     
     public void UpdatedNotes(string? notes) =>  Notes = notes;
 
-    public void ChangeExpectedTimeInterval(TaskExpectedTimeInterval newExpectedTimeInterval)
+    public void ChangeTaskDeadline(TaskDeadline newDeadline)
     {
-        ExpectedTimeInterval = Status switch
+        Deadline = Status switch
         {
             HouseKeepingTaskStatus.Completed => throw new BusinessRuleException("Completed task expected time interval can't be modified"),
             HouseKeepingTaskStatus.Cancelled => throw new BusinessRuleException("Cancelled task expected time interval can't be modified"),
-            _ => newExpectedTimeInterval
+            _ => newDeadline
         };
     }
 

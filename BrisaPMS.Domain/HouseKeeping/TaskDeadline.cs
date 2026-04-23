@@ -3,12 +3,12 @@ using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.HouseKeeping;
 
-public record TaskExpectedTimeInterval
+public record TaskDeadline
 {
     public DateTime ExpectedStartAt { get; }
     public DateTime ExpectedEndAt { get; }
 
-    public TaskExpectedTimeInterval(DateTime expectedStartAt, DateTime expectedEndAt)
+    public TaskDeadline(DateTime expectedStartAt, DateTime expectedEndAt)
     {
         if (expectedStartAt > expectedEndAt)
             throw new BusinessRuleException("Expected start time must be earlier than Expected end time.");
