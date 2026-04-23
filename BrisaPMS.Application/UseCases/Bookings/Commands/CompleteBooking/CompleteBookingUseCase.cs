@@ -23,15 +23,18 @@ public class CompleteBookingUseCase : IRequestHandler<CompleteBookingCommand, bo
     public async Task<bool> Handle(CompleteBookingCommand command)
     {
         var booking = await _bookingsRepository.GetById(command.BookingId);
-        
+
         if (booking is null)
             throw new NotFoundException("Booking", command.BookingId);
-        
+
         var room = await _roomsRepository.GetById(booking.RoomId);
-        
+
+        if (room is null)
+            throw new NotFoundException("Room", booking.RoomId);
+
         booking.SetAsCompleted();
         room!.UpdateHygieneStatus(RoomHygieneStatus.Dirty);
-        
+
         try
         {
             await _bookingsRepository.Update(booking);
