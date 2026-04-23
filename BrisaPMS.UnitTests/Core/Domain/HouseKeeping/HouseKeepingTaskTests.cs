@@ -13,7 +13,7 @@ public class HouseKeepingTaskTests
         var roomId = Guid.NewGuid();
         var assignedTo = Guid.NewGuid();
         var assignedBy = Guid.NewGuid();
-        var expectedTimeInterval = CreateExpectedTimeInterval();
+        var deadline = CreateTaskDeadline();
         const string notes = "Clean room before next guest arrival";
 
         // Act
@@ -23,7 +23,7 @@ public class HouseKeepingTaskTests
             assignedBy,
             HouseKeepingTaskType.Cleaning,
             TaskPriority.High,
-            expectedTimeInterval,
+            deadline,
             notes);
 
         // Assert
@@ -35,7 +35,7 @@ public class HouseKeepingTaskTests
         result.Priority.Should().Be(TaskPriority.High);
         result.Status.Should().Be(HouseKeepingTaskStatus.Pending);
         result.Notes.Should().Be(notes);
-        result.Deadline.Should().Be(expectedTimeInterval);
+        result.Deadline.Should().Be(deadline);
         result.ActualTimeInterval.Should().BeNull();
         result.IncidentReported.Should().BeFalse();
         result.IncidentDescription.Should().BeNull();
@@ -45,7 +45,7 @@ public class HouseKeepingTaskTests
     public void Constructor_ShouldAllowNullNotes()
     {
         // Arrange
-        var expectedTimeInterval = CreateExpectedTimeInterval();
+        var deadline = CreateTaskDeadline();
 
         // Act
         var result = new HouseKeepingTask(
@@ -54,7 +54,7 @@ public class HouseKeepingTaskTests
             Guid.NewGuid(),
             HouseKeepingTaskType.Restocking,
             TaskPriority.Medium,
-            expectedTimeInterval);
+            deadline);
 
         // Assert
         result.Notes.Should().BeNull();
@@ -73,7 +73,7 @@ public class HouseKeepingTaskTests
             Guid.NewGuid(),
             HouseKeepingTaskType.Cleaning,
             TaskPriority.High,
-            CreateExpectedTimeInterval());
+            CreateTaskDeadline());
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -92,7 +92,7 @@ public class HouseKeepingTaskTests
             Guid.NewGuid(),
             HouseKeepingTaskType.Cleaning,
             TaskPriority.High,
-            CreateExpectedTimeInterval());
+            CreateTaskDeadline());
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -111,7 +111,7 @@ public class HouseKeepingTaskTests
             assignedBy,
             HouseKeepingTaskType.Cleaning,
             TaskPriority.High,
-            CreateExpectedTimeInterval());
+            CreateTaskDeadline());
 
         // Assert
         act.Should().Throw<EmptyRequiredFieldException>();
@@ -130,7 +130,7 @@ public class HouseKeepingTaskTests
             Guid.NewGuid(),
             invalidType,
             TaskPriority.High,
-            CreateExpectedTimeInterval());
+            CreateTaskDeadline());
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -149,7 +149,7 @@ public class HouseKeepingTaskTests
             Guid.NewGuid(),
             HouseKeepingTaskType.Cleaning,
             invalidPriority,
-            CreateExpectedTimeInterval());
+            CreateTaskDeadline());
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -354,35 +354,35 @@ public class HouseKeepingTaskTests
     }
 
     [Fact]
-    public void ChangeExpectedTimeInterval_ShouldUpdateExpectedTimeInterval_WhenValueIsValid()
+    public void ChangeTaskDeadline_ShouldUpdateDeadline_WhenValueIsValid()
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
-        var newExpectedTimeInterval = new TaskDeadline(
+        var newTaskDeadline = new TaskDeadline(
             new DateTime(2026, 4, 2, 14, 0, 0, DateTimeKind.Utc),
             new DateTime(2026, 4, 2, 15, 0, 0, DateTimeKind.Utc));
 
         // Act
-        houseKeepingTask.ChangeExpectedTimeInterval(newExpectedTimeInterval);
+        houseKeepingTask.ChangeTaskDeadline(newTaskDeadline);
 
         // Assert
-        houseKeepingTask.Deadline.Should().Be(newExpectedTimeInterval);
+        houseKeepingTask.Deadline.Should().Be(newTaskDeadline);
     }
 
     [Theory]
     [InlineData(HouseKeepingTaskStatus.Completed)]
     [InlineData(HouseKeepingTaskStatus.Cancelled)]
-    public void ChangeExpectedTimeInterval_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HouseKeepingTaskStatus status)
+    public void ChangeTaskDeadline_ShouldThrowBusinessRuleException_WhenStatusDoesNotAllowChanges(HouseKeepingTaskStatus status)
     {
         // Arrange
         var houseKeepingTask = CreateHouseKeepingTask();
         houseKeepingTask.UpdatedStatus(status);
-        var newExpectedTimeInterval = new TaskDeadline(
+        var newTaskDeadline = new TaskDeadline(
             new DateTime(2026, 4, 2, 14, 0, 0, DateTimeKind.Utc),
             new DateTime(2026, 4, 2, 15, 0, 0, DateTimeKind.Utc));
 
         // Act
-        Action act = () => houseKeepingTask.ChangeExpectedTimeInterval(newExpectedTimeInterval);
+        Action act = () => houseKeepingTask.ChangeTaskDeadline(newTaskDeadline);
 
         // Assert
         act.Should().Throw<BusinessRuleException>();
@@ -538,11 +538,11 @@ public class HouseKeepingTaskTests
             Guid.NewGuid(),
             HouseKeepingTaskType.Cleaning,
             TaskPriority.High,
-            CreateExpectedTimeInterval(),
+            CreateTaskDeadline(),
             "Clean room before next guest arrival");
     }
 
-    private static TaskDeadline CreateExpectedTimeInterval()
+    private static TaskDeadline CreateTaskDeadline()
     {
         return new TaskDeadline(
             new DateTime(2026, 4, 1, 10, 0, 0, DateTimeKind.Utc),
