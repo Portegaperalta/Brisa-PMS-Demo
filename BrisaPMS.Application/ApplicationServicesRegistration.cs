@@ -8,7 +8,6 @@ using BrisaPMS.Application.UseCases.Amenities.Shared;
 using BrisaPMS.Application.UseCases.Bookings.Commands.CancelBooking;
 using BrisaPMS.Application.UseCases.Bookings.Commands.ChangeAssignedRoom;
 using BrisaPMS.Application.UseCases.Bookings.Commands.ChangeBookingSource;
-using BrisaPMS.Application.UseCases.Bookings.Commands.CompleteBooking;
 using BrisaPMS.Application.UseCases.Bookings.Commands.ConfirmBooking;
 using BrisaPMS.Application.UseCases.Bookings.Commands.CreateBooking;
 using BrisaPMS.Application.UseCases.Bookings.Commands.MarkAsNoShow;
@@ -138,9 +137,6 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<ChangeBookingSourceCommand, bool>,
                                     ChangeBookingSourceUseCase>();
-
-        services.AddScoped<IRequestHandler<CompleteBookingCommand, bool>,
-                                    CompleteBookingUseCase>();
 
         services.AddScoped<IRequestHandler<ConfirmBookingCommand, bool>,
                                     ConfirmBookingUseCase>();
