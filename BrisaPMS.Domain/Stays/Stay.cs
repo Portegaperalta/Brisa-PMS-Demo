@@ -29,32 +29,15 @@ public class Stay
     
     public void IncreaseNightCount()
     {
-        NightCount += Status switch
-        {
-            StayStatus.Complete => throw new BusinessRuleException(
-                "Night count can't be increased once stay it's completed"),
-            
-            StayStatus.Cancelled => throw new BusinessRuleException(
-                "Night count can't be increased once stay it's cancelled"),
-            
-            _ => 1
-        };
+        if (Status == StayStatus.Complete)
+            throw new BusinessRuleException("Night count can't be increased once stay it's completed");
+        
+        NightCount++;
     }
 
     public void SetAsComplete()
     {
-        if (Status == StayStatus.Cancelled)
-            throw new BusinessRuleException("Canceled stay cant be set as completed");
-
         Status = StayStatus.Complete;
         TimeInterval = new StayTimeInterval(TimeInterval.ActualCheckIn, DateTime.UtcNow);
-    }
-
-    public void SetAsCancelled()
-    {
-        if (Status == StayStatus.Complete)
-            throw new BusinessRuleException("Completed stay cant be set as cancelled");
-        
-        Status = StayStatus.Cancelled;
     }
 }
