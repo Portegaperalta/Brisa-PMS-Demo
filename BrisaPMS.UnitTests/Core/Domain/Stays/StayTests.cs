@@ -1,5 +1,4 @@
 using BrisaPMS.Domain.Shared.Exceptions;
-using BrisaPMS.Domain.Stay;
 using BrisaPMS.Domain.Stays;
 using FluentAssertions;
 
@@ -21,8 +20,8 @@ public class StayTests
     result.Id.Should().NotBe(Guid.Empty);
     result.GuestId.Should().Be(guestId);
     result.BookingId.Should().Be(bookingId);
-    result.ActualCheckIn.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
-    result.ActualCheckOut.Should().BeNull();
+    result.TimeInterval.ActualCheckIn.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
+    result.TimeInterval.ActualCheckOut.Should().BeNull();
     result.NightCount.Should().Be(0);
     result.Status.Should().Be(StayStatus.InProgress);
   }
@@ -54,7 +53,7 @@ public class StayTests
   }
 
   [Fact]
-  public void IncreaseNightCount_ShouldIncrementNightCount()
+  public void IncreaseNightCount_ShouldIncrementNightCount_WhenStayIsInProgress()
   {
     // Arrange
     var stay = CreateStay();
@@ -82,72 +81,35 @@ public class StayTests
   }
 
   [Fact]
-  public void IncreaseNightCount_ShouldThrowBusinessRuleException_WhenStayIsCancelled()
+  public void SetAsComplete_ShouldSetStatusToCompleteAndActualCheckOut()
   {
     // Arrange
     var stay = CreateStay();
-    stay.SetAsCancelled();
-
-    // Act
-    Action act = () => stay.IncreaseNightCount();
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
-  public void SetAsComplete_ShouldSetStatusToCompleteAndActualCheckOut_WhenStayIsNotCancelled()
-  {
-    // Arrange
-    var stay = CreateStay();
+    var actualCheckIn = stay.TimeInterval.ActualCheckIn;
 
     // Act
     stay.SetAsComplete();
 
     // Assert
     stay.Status.Should().Be(StayStatus.Complete);
-    stay.ActualCheckOut.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
+    stay.TimeInterval.ActualCheckIn.Should().Be(actualCheckIn);
+    stay.TimeInterval.ActualCheckOut.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
   }
 
   [Fact]
-  public void SetAsComplete_ShouldThrowBusinessRuleException_WhenStayIsCancelled()
-  {
-    // Arrange
-    var stay = CreateStay();
-    stay.SetAsCancelled();
-
-    // Act
-    Action act = () => stay.SetAsComplete();
-
-    // Assert
-    act.Should().Throw<BusinessRuleException>();
-  }
-
-  [Fact]
-  public void SetAsCancelled_ShouldSetStatusToCancelled_WhenStayIsNotComplete()
-  {
-    // Arrange
-    var stay = CreateStay();
-
-    // Act
-    stay.SetAsCancelled();
-
-    // Assert
-    stay.Status.Should().Be(StayStatus.Cancelled);
-  }
-
-  [Fact]
-  public void SetAsCancelled_ShouldThrowBusinessRuleException_WhenStayIsComplete()
+  public void SetAsComplete_ShouldKeepStayComplete_WhenCalledMoreThanOnce()
   {
     // Arrange
     var stay = CreateStay();
     stay.SetAsComplete();
 
     // Act
-    Action act = () => stay.SetAsCancelled();
+    var act = () => stay.SetAsComplete();
 
     // Assert
-    act.Should().Throw<BusinessRuleException>();
+    act.Should().NotThrow();
+    stay.Status.Should().Be(StayStatus.Complete);
+    stay.TimeInterval.ActualCheckOut.Should().NotBeNull();
   }
 
   private static Stay CreateStay()
