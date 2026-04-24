@@ -1,4 +1,4 @@
-namespace BrisaPMS.Domain.Stay;
+namespace BrisaPMS.Domain.Stays;
 
 public enum StayStatus
 {
