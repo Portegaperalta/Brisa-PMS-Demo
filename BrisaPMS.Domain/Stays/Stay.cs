@@ -8,8 +8,7 @@ public class Stay
     public Guid Id { get; init; }
     public Guid GuestId { get; init; }
     public Guid BookingId {get; init;}
-    public DateTime ActualCheckIn { get; private set; }
-    public DateTime? ActualCheckOut { get; private set; }
+    public StayTimeInterval TimeInterval {get; private set;}
     public int NightCount { get; private set; }
     public StayStatus Status { get; private set; }
 
@@ -24,8 +23,7 @@ public class Stay
         Id = Guid.CreateVersion7();
         GuestId = guestId;
         BookingId = bookingId;
-        ActualCheckIn = DateTime.UtcNow;
-        ActualCheckOut = null;
+        TimeInterval = new StayTimeInterval(DateTime.UtcNow);
         NightCount = 0;
         Status = StayStatus.InProgress;
     }
@@ -44,7 +42,7 @@ public class Stay
             throw new BusinessRuleException("Canceled stay cant be set as completed");
 
         Status = StayStatus.Complete;
-        ActualCheckOut = DateTime.UtcNow;
+        TimeInterval = new StayTimeInterval(TimeInterval.ActualCheckIn, DateTime.UtcNow);
     }
 
     public void SetAsCancelled()
