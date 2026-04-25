@@ -5,7 +5,7 @@ using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Billing;
 
-public class Invoice : IAuditableEntity
+public class Invoice : BaseEntity
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init; }

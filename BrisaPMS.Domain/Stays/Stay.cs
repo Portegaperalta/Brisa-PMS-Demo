@@ -3,7 +3,7 @@ using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Stays;
 
-public class Stay : IAuditableEntity
+public class Stay : BaseEntity
 {
     public Guid Id { get; init; }
     public Guid GuestId { get; init; }

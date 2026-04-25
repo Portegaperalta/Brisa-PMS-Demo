@@ -4,7 +4,7 @@ using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Inventory;
 
-public class InventoryItem : IAuditableEntity
+public class InventoryItem : BaseEntity
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init; }

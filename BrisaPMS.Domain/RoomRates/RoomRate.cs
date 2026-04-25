@@ -4,7 +4,7 @@ using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.RoomRates;
 
-public class RoomRate : IAuditableEntity
+public class RoomRate : BaseEntity
 {
     public Guid Id { get; init; }
     public Guid RoomTypeId { get; init; }

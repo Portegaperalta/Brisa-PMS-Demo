@@ -4,7 +4,7 @@ using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Users;
 
-public class User : IAuditableEntity
+public class User : BaseEntity
 {
     // Attributes
     public Guid Id { get; init; }

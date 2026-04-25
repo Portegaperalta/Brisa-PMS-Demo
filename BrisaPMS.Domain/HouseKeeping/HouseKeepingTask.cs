@@ -3,7 +3,7 @@ using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.HouseKeeping;
 
-public class HouseKeepingTask : IAuditableEntity
+public class HouseKeepingTask : BaseEntity
 {
     public Guid Id { get; init; }
     public Guid RoomId { get; init; }

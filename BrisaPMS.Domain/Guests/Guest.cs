@@ -6,7 +6,7 @@ using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Guests
 {
-    public class Guest : IAuditableEntity
+    public class Guest : BaseEntity
     {
         public Guid Id { get; init; }
         public Guid HotelId { get; init; }

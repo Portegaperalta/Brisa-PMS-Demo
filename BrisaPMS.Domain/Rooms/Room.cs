@@ -4,7 +4,7 @@ using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Rooms;
 
-public class Room : IAuditableEntity
+public class Room : BaseEntity
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init ; }

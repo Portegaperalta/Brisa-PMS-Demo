@@ -3,7 +3,7 @@ using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Inventory;
 
-public class InventoryMovement : IAuditableEntity
+public class InventoryMovement : BaseEntity
 {
     public Guid Id { get; init; }
     public Guid InventoryItemId { get; init; }

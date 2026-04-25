@@ -3,7 +3,7 @@ using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Amenities;
 
-public class Amenity : IAuditableEntity
+public class Amenity : BaseEntity
 {
     public Guid Id { get; init; }
     public string Name { get; private set; }
