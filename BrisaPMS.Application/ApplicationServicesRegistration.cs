@@ -86,6 +86,14 @@ using BrisaPMS.Application.UseCases.RoomTypes.Commands.UpdateRoomTypeOccupancyPo
 using BrisaPMS.Application.UseCases.RoomTypes.Queries.GetAllRoomTypes;
 using BrisaPMS.Application.UseCases.RoomTypes.Queries.GetRoomTypeById;
 using BrisaPMS.Application.UseCases.RoomTypes.Shared;
+using BrisaPMS.Application.UseCases.Stays.Commands.CompleteStay;
+using BrisaPMS.Application.UseCases.Stays.Commands.CreateStay;
+using BrisaPMS.Application.UseCases.Stays.Commands.IncreaseNightCount;
+using BrisaPMS.Application.UseCases.Stays.Queries.GetAllStays;
+using BrisaPMS.Application.UseCases.Stays.Queries.GetAllStaysByGuestId;
+using BrisaPMS.Application.UseCases.Stays.Queries.GetAllStaysByHotelId;
+using BrisaPMS.Application.UseCases.Stays.Queries.GetStayById;
+using BrisaPMS.Application.UseCases.Stays.Shared;
 using BrisaPMS.Application.UseCases.Users.Commands.ChangeEmail;
 using BrisaPMS.Application.UseCases.Users.Commands.ChangePassword;
 using BrisaPMS.Application.UseCases.Users.Commands.ChangePhoneNumber;
@@ -355,6 +363,28 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<GetRoomTypeByIdQuery, RoomTypeDto>,
             GetRoomTypeByIdUseCase>();
+
+        // Stays services
+        services.AddScoped<IRequestHandler<CompleteStayCommand, bool>,
+            CompleteStayUseCase>();
+
+        services.AddScoped<IRequestHandler<CreateStayCommand, Guid>,
+            CreateStayUseCase>();
+
+        services.AddScoped<IRequestHandler<IncreaseNightCountCommand, bool>,
+            IncreaseNightCountUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllStaysQuery, List<StayDto>>,
+            GetAllStaysUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllStaysByHotelIdQuery, List<StayDto>>,
+            GetAllStaysByHotelIdUseCase>();
+
+        services.AddScoped<IRequestHandler<GetAllStaysByGuestIdQuery, List<StayDto>>,
+            GetAllStaysByGuestIdUseCase>();
+
+        services.AddScoped<IRequestHandler<GetStayByIdQuery, StayDto>,
+            GetStayByIdUseCase>();
 
         // Users services
         services.AddScoped<IRequestHandler<CreateUserCommand, Guid>,
