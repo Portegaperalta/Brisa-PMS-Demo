@@ -2,10 +2,10 @@
 
 public abstract class BaseEntity
 {
-    public Guid CreatedBy { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public Guid? UpdatedBy { get; private set; }
-    public DateTime? UpdatedAt { get; private set; }
+    public Guid CreatedBy { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public Guid? UpdatedBy { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     internal void SetAuditFields(Guid createdBy, DateTime createdAt)
     {
