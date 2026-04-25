@@ -1,8 +1,9 @@
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.HouseKeeping;
 
-public class HouseKeepingTask
+public class HouseKeepingTask : IAuditableEntity
 {
     public Guid Id { get; init; }
     public Guid RoomId { get; init; }

@@ -1,10 +1,11 @@
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Billing;
 
-public class Invoice
+public class Invoice : IAuditableEntity
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init; }

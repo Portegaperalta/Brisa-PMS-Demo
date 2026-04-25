@@ -1,8 +1,9 @@
-﻿using BrisaPMS.Domain.Shared.Exceptions;
+﻿using BrisaPMS.Domain.Shared.Abstractions;
+using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Inventory;
 
-public class InventoryMovement
+public class InventoryMovement : IAuditableEntity
 {
     public Guid Id { get; init; }
     public Guid InventoryItemId { get; init; }

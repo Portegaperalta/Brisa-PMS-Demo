@@ -1,9 +1,10 @@
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Users;
 
-public class User
+public class User : IAuditableEntity
 {
     // Attributes
     public Guid Id { get; init; }

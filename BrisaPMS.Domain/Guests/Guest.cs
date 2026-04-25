@@ -1,11 +1,12 @@
 ﻿using BrisaPMS.Domain.Guest;
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Guests
 {
-    public class Guest
+    public class Guest : IAuditableEntity
     {
         public Guid Id { get; init; }
         public Guid HotelId { get; init; }

@@ -1,10 +1,11 @@
 ﻿using BrisaPMS.Domain.Booking;
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Bookings;
 
-public class Booking
+public class Booking : IAuditableEntity
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init; }

@@ -1,9 +1,10 @@
 using BrisaPMS.Domain.Billing;
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.RoomTypes;
 
-public class RoomType
+public class RoomType : IAuditableEntity
 {
     public Guid Id { get; init; }
     public string Name { get; private set; }

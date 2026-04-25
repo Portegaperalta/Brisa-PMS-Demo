@@ -1,8 +1,9 @@
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Stays;
 
-public class Stay
+public class Stay : IAuditableEntity
 {
     public Guid Id { get; init; }
     public Guid GuestId { get; init; }
