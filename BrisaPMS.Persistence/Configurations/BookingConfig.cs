@@ -1,0 +1,68 @@
+﻿using BrisaPMS.Domain.Bookings;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace BrisaPMS.Persistence.Configurations;
+
+public class BookingConfig : BaseEntityConfig<Booking>
+{
+    public override void Configure(EntityTypeBuilder<Booking> builder)
+    {
+        base.Configure(builder); // audit fields from base entity config   
+           
+        builder.Property(b => b.Id)
+               .IsRequired();
+        
+        builder.Property(b => b.HotelId)
+              .IsRequired();
+        
+        builder.Property(b => b.RoomId)
+               .IsRequired();
+        
+        builder.Property(b => b.GuestId)
+               .IsRequired();
+
+        builder.Property(b => b.Source)
+               .IsRequired()
+               .HasConversion<string>()
+               .HasMaxLength(200);
+
+        builder.OwnsOne(b => b.GuestCount, guestCount =>
+        {
+               guestCount.Property(g => g.NumberOfAdults)
+                      .IsRequired()
+                      .HasMaxLength(10);
+
+               guestCount.Property(g => g.NumberOfChildren)
+                      .IsRequired()
+                      .HasMaxLength(10)
+                      .HasDefaultValue(0);
+        });
+
+        builder.OwnsOne(p => p.CheckInOutTimes, checkInOutTimes =>
+        {
+               checkInOutTimes.Property(c => c.CheckInTime)
+                      .IsRequired();
+
+               checkInOutTimes.Property(c => c.CheckOutTime)
+                      .IsRequired();
+        });
+
+        builder.Property(b => b.SpecialRequests)
+               .HasMaxLength(500)
+               .HasDefaultValue(null);
+
+        builder.Property(b => b.Status)
+               .IsRequired()
+               .HasConversion<string>();
+
+        builder.Property(b => b.CancellationReason)
+               .HasMaxLength(255);
+        
+        builder.Property(b => b.TotalPrice)
+               .IsRequired()
+               .HasColumnType("decimal(10,2)");
+
+        builder.Property(b => b.DiscountId);
+    }
+}
