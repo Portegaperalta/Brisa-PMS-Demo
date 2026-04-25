@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BrisaPMS.Persistence.Configurations
 {
-    public class AmenityConfig : IEntityTypeConfiguration<Amenity>
+    public class AmenityConfig : BaseEntityConfig<Amenity>
     {
-        public void Configure(EntityTypeBuilder<Amenity> builder)
+        public override void Configure(EntityTypeBuilder<Amenity> builder)
         {
+            base.Configure(builder);  
+            
             builder.Property(p => p.Id)
                 .IsRequired();
 
