@@ -212,12 +212,12 @@ public class CancelBookingUseCaseTests
     private static Room CreateRoom(Guid hotelId, RoomAvailabilityStatus availabilityStatus)
     {
         return new Room(
+            Guid.NewGuid(),
             hotelId,
             "101",
             1,
             availabilityStatus,
-            RoomHygieneStatus.Clean,
-            CreateRoomType());
+            RoomHygieneStatus.Clean);
     }
 
     private static RoomType CreateRoomType()
