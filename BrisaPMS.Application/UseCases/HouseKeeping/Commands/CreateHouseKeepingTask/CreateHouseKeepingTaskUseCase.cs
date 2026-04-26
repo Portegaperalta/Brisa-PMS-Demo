@@ -9,17 +9,14 @@ namespace BrisaPMS.Application.UseCases.HouseKeeping.Commands.CreateHouseKeeping
 public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingTaskCommand, Guid>
 {
     private readonly IHouseKeepingTasksRepository _houseKeepingTasksRepository;
-    private readonly IHotelsRepository _hotelsRepository;
     private readonly IRoomsRepository _roomsRepository;
     private readonly IUsersRepository _usersRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateHouseKeepingTaskUseCase(IHouseKeepingTasksRepository houseKeepingTasksRepository, 
-        IHotelsRepository hotelsRepository,IRoomsRepository roomsRepository, IUsersRepository usersRepository,
-        IUnitOfWork unitOfWork)
+    public CreateHouseKeepingTaskUseCase(IHouseKeepingTasksRepository houseKeepingTasksRepository
+        ,IRoomsRepository roomsRepository, IUsersRepository usersRepository, IUnitOfWork unitOfWork)
     {
         _houseKeepingTasksRepository = houseKeepingTasksRepository;
-        _hotelsRepository = hotelsRepository;
         _roomsRepository = roomsRepository;
         _usersRepository = usersRepository;
         _unitOfWork = unitOfWork;
@@ -27,19 +24,14 @@ public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingT
 
     public async Task<Guid> Handle(CreateHouseKeepingTaskCommand command)
     {
-        var hotelExists = await _hotelsRepository.Exists(command.HotelId);
-        
-        if (hotelExists is not true)
-            throw new NotFoundException("Hotel", command.HotelId);
-        
         var assignedUserExists = await _usersRepository.Exists(command.AssignedTo);
         
         if (assignedUserExists is not true)
             throw new NotFoundException("User", command.AssignedTo);
         
-        var roomExists = await _roomsRepository.Exists(command.RoomId);
+        var room = await _roomsRepository.GetById(command.RoomId);
 
-        if (roomExists is not true)
+        if (room is null)
             throw new NotFoundException("Room", command.RoomId);
 
         var houseKeepingTaskType = Enum.Parse<HouseKeepingTaskType>(command.HouseKeepingTaskType);
@@ -48,7 +40,7 @@ public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingT
 
         var houseKeepingTask = new HouseKeepingTask
         (
-            command.HotelId,
+            room.HotelId,
             command.RoomId,
             command.AssignedTo,
             command.AssignedBy,
