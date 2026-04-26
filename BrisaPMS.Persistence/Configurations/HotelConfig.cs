@@ -51,8 +51,7 @@ public class HotelConfig : BaseEntityConfig<Hotel>
                       .HasMaxLength(200);
 
                address.Property(a => a.Address2)
-                      .HasMaxLength(200)
-                      .HasDefaultValue(null);
+                      .HasMaxLength(200);
 
                address.Property(a => a.City)
                       .IsRequired()
@@ -91,7 +90,6 @@ public class HotelConfig : BaseEntityConfig<Hotel>
                .HasColumnType("decimal(10,2)");
 
         builder.Property(h => h.IsActive)
-               .IsRequired()
-               .HasDefaultValue(true);
+               .IsRequired();
     }
 } 

@@ -50,8 +50,7 @@ public class CompanyConfig : BaseEntityConfig<Company>
                       .HasMaxLength(200);
 
                address.Property(a => a.Address2)
-                      .HasMaxLength(200)
-                      .HasDefaultValue(null);
+                      .HasMaxLength(200);
 
                address.Property(a => a.City)
                       .IsRequired()

@@ -43,13 +43,10 @@ public class RoomConfig : BaseEntityConfig<Room>
                .HasConversion<string>()
                .HasMaxLength(11);
 
-        builder.Property(r => r.LastCleanedAt)
-               .HasDefaultValue(null);
-        
-        builder.Property(r => r.LastCleanedBy)
-               .HasDefaultValue(null);
+        builder.Property(r => r.LastCleanedAt);
 
-        builder.Property(r => r.NeedsRestocking)
-               .HasDefaultValue(false);
+        builder.Property(r => r.LastCleanedBy);
+
+        builder.Property(r => r.NeedsRestocking);
     }
 }

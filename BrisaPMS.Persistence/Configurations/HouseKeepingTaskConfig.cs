@@ -39,12 +39,11 @@ public class HouseKeepingTaskConfig : BaseEntityConfig<HouseKeepingTask>
                .IsRequired()
                .HasConversion<string>()
                .HasMaxLength(20);
-        
+
         builder.Property(t => t.Status)
                .IsRequired()
                .HasConversion<string>()
-               .HasMaxLength(20)
-               .HasDefaultValue(HouseKeepingTaskStatus.Pending);
+               .HasMaxLength(20);
 
         builder.Property(t => t.Notes)
                .HasMaxLength(500);
@@ -60,16 +59,13 @@ public class HouseKeepingTaskConfig : BaseEntityConfig<HouseKeepingTask>
 
         builder.OwnsOne(t => t.ActualTimeInterval, actualTimeInterval =>
         {
-               actualTimeInterval.Property(a => a.ActualStartAt)
-                                 .HasDefaultValue(null);
-               
-               actualTimeInterval.Property(a => a.ActualEndAt)
-                                 .HasDefaultValue(null);
+               actualTimeInterval.Property(a => a.ActualStartAt);
+
+               actualTimeInterval.Property(a => a.ActualEndAt);
         });
-        
+
         builder.Property(t => t.IncidentReported)
-               .IsRequired()
-               .HasDefaultValue(false);
+               .IsRequired();
 
         builder.Property(t => t.IncidentDescription)
                .HasMaxLength(500);

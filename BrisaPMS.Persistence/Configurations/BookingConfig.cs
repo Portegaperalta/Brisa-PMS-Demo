@@ -44,8 +44,7 @@ public class BookingConfig : BaseEntityConfig<Booking>
 
                guestCount.Property(g => g.NumberOfChildren)
                       .IsRequired()
-                      .HasMaxLength(10)
-                      .HasDefaultValue(0);
+                      .HasMaxLength(10);
         });
 
         builder.OwnsOne(p => p.CheckInOutTimes, checkInOutTimes =>
@@ -58,8 +57,7 @@ public class BookingConfig : BaseEntityConfig<Booking>
         });
 
         builder.Property(b => b.SpecialRequests)
-               .HasMaxLength(500)
-               .HasDefaultValue(null);
+               .HasMaxLength(500);
 
         builder.Property(b => b.Status)
                .IsRequired()

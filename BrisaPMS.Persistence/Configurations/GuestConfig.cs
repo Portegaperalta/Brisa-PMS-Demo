@@ -30,7 +30,6 @@ public class GuestConfig : BaseEntityConfig<Guest>
                .HasMaxLength(250);
 
         builder.Property(g => g.Country)
-               .HasDefaultValue(null)
                .HasMaxLength(100);
         
         builder.Property(g => g.Rnc)
@@ -52,23 +51,18 @@ public class GuestConfig : BaseEntityConfig<Guest>
                .HasMaxLength(3);
 
         builder.Property(g => g.PreferredLanguage)
-               .HasDefaultValue(null)
                .HasMaxLength(50);
 
         builder.Property(g => g.IsVip)
-               .IsRequired()
-               .HasDefaultValue(false);
-        
+               .IsRequired();
+
         builder.Property(g => g.IsBlackListed)
-               .IsRequired()
-               .HasDefaultValue(false);
+               .IsRequired();
         
         builder.Property(g => g.BlackListedReason)
-               .HasDefaultValue(null)
                .HasMaxLength(500);
 
         builder.Property(g => g.Notes)
-               .HasDefaultValue(null)
                .HasMaxLength(500);
     }
 }

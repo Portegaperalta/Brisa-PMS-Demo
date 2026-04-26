@@ -19,8 +19,7 @@ public class RoomTypeConfig : BaseEntityConfig<RoomType>
             .HasMaxLength(100);
 
         builder.Property(rt => rt.Description)
-            .HasMaxLength(500)
-            .HasDefaultValue(null);
+            .HasMaxLength(500);
 
         builder.Property(rt => rt.BaseRate)
                .IsRequired()
@@ -46,11 +45,10 @@ public class RoomTypeConfig : BaseEntityConfig<RoomType>
             occupancyPolicy.Property(op => op.MaxOccupancyAdults)
                            .IsRequired()
                            .HasMaxLength(16);
-            
+
             occupancyPolicy.Property(op => op.MaxOccupancyChildren)
                            .IsRequired()
-                           .HasMaxLength(10)
-                           .HasDefaultValue(0);
+                           .HasMaxLength(10);
         });
     }
 }
