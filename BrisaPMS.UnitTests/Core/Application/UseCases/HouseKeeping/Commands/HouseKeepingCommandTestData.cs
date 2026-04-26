@@ -55,12 +55,12 @@ public static class HouseKeepingCommandTestData
         RoomHygieneStatus hygieneStatus = RoomHygieneStatus.Dirty)
     {
         return new Room(
+            Guid.NewGuid(),
             hotelId ?? Guid.NewGuid(),
             "101",
             1,
             availabilityStatus,
-            hygieneStatus,
-            CreateRoomType())
+            hygieneStatus)
         {
             Id = roomId ?? Guid.NewGuid()
         };
