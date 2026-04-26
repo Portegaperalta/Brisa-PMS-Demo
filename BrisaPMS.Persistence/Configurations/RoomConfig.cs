@@ -1,4 +1,6 @@
-﻿using BrisaPMS.Domain.Rooms;
+﻿using BrisaPMS.Domain.Hotels;
+using BrisaPMS.Domain.Rooms;
+using BrisaPMS.Domain.RoomTypes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,9 +14,16 @@ public class RoomConfig : BaseEntityConfig<Room>
 
         builder.Property(r => r.Id)
                .IsRequired();
+
+        builder.HasOne<RoomType>()
+               .WithMany()
+               .HasForeignKey(r => r.RoomTypeId)
+               .OnDelete(DeleteBehavior.Restrict);
         
-        builder.Property(r => r.HotelId)
-               .IsRequired();
+        builder.HasOne<Hotel>()
+               .WithMany()
+               .HasForeignKey(r => r.HotelId)
+               .OnDelete(DeleteBehavior.Restrict);
         
         builder.Property(r => r.Number)
                .IsRequired()
