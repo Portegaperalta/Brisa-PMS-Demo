@@ -1,4 +1,6 @@
 ﻿using BrisaPMS.Domain.HouseKeeping;
+using BrisaPMS.Domain.Rooms;
+using BrisaPMS.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,15 +14,21 @@ public class HouseKeepingTaskConfig : BaseEntityConfig<HouseKeepingTask>
 
         builder.Property(t => t.Id)
                .IsRequired();
+
+        builder.HasOne<Room>()
+               .WithMany()
+               .HasForeignKey(r => r.RoomId)
+               .OnDelete(DeleteBehavior.Restrict);
         
-        builder.Property(t => t.RoomId)
-               .IsRequired();
+        builder.HasOne<User>()
+               .WithMany()
+               .HasForeignKey(t => t.AssignedBy)
+               .OnDelete(DeleteBehavior.Restrict);
         
-        builder.Property(t => t.AssignedBy)
-               .IsRequired();
-        
-        builder.Property(t => t.AssignedTo)
-               .IsRequired();
+        builder.HasOne<User>()
+               .WithMany()
+               .HasForeignKey(t => t.AssignedTo)
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(t => t.Type)
                .IsRequired()
