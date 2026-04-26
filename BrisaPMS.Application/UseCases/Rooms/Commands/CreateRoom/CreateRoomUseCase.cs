@@ -29,9 +29,9 @@ public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
         if (hotelExists is not true)
             throw new NotFoundException("Hotel", command.HotelId);
 
-        var roomType = await _roomTypesRepository.GetById(command.RoomTypeId);
+        var roomTypeExists = await _roomTypesRepository.Exists(command.RoomTypeId);
 
-        if (roomType is null)
+        if (roomTypeExists is not true)
             throw new NotFoundException("Room Type", command.RoomTypeId);
 
         var availabilityStatus = Enum.Parse<RoomAvailabilityStatus>(command.AvailabilityStatus);
@@ -39,12 +39,12 @@ public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
 
         var room = new Room
         (
+            command.RoomTypeId,
             command.HotelId,
             command.Number,
             command.Floor,
             availabilityStatus,
-            hygieneStatus,
-            roomType
+            hygieneStatus
         );
 
         try
