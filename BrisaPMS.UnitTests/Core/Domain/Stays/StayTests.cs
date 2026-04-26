@@ -10,14 +10,18 @@ public class StayTests
   public void Constructor_ShouldCreateStay_WhenValuesAreValid()
   {
     // Arrange
+    var hotelId = Guid.NewGuid();
+    var roomId = Guid.NewGuid();
     var guestId = Guid.NewGuid();
     var bookingId = Guid.NewGuid();
 
     // Act
-    var result = new Stay(guestId, bookingId);
+    var result = new Stay(hotelId, roomId, guestId, bookingId);
 
     // Assert
     result.Id.Should().NotBe(Guid.Empty);
+    result.HotelId.Should().Be(hotelId);
+    result.RoomId.Should().Be(roomId);
     result.GuestId.Should().Be(guestId);
     result.BookingId.Should().Be(bookingId);
     result.TimeInterval.ActualCheckIn.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
@@ -27,13 +31,39 @@ public class StayTests
   }
 
   [Fact]
+  public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenHotelIdIsEmpty()
+  {
+    // Arrange
+    var hotelId = Guid.Empty;
+
+    // Act
+    Action act = () => _ = new Stay(hotelId, Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
+
+    // Assert
+    act.Should().Throw<EmptyRequiredFieldException>();
+  }
+
+  [Fact]
+  public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenRoomIdIsEmpty()
+  {
+    // Arrange
+    var roomId = Guid.Empty;
+
+    // Act
+    Action act = () => _ = new Stay(Guid.NewGuid(), roomId, Guid.NewGuid(), Guid.NewGuid());
+
+    // Assert
+    act.Should().Throw<EmptyRequiredFieldException>();
+  }
+
+  [Fact]
   public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenGuestIdIsEmpty()
   {
     // Arrange
     var guestId = Guid.Empty;
 
     // Act
-    Action act = () => _ = new Stay(guestId, Guid.NewGuid());
+    Action act = () => _ = new Stay(Guid.NewGuid(), Guid.NewGuid(), guestId, Guid.NewGuid());
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
@@ -46,7 +76,7 @@ public class StayTests
     var bookingId = Guid.Empty;
 
     // Act
-    Action act = () => _ = new Stay(Guid.NewGuid(), bookingId);
+    Action act = () => _ = new Stay(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), bookingId);
 
     // Assert
     act.Should().Throw<EmptyRequiredFieldException>();
@@ -114,6 +144,6 @@ public class StayTests
 
   private static Stay CreateStay()
   {
-    return new Stay(Guid.NewGuid(), Guid.NewGuid());
+    return new Stay(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid());
   }
 }
