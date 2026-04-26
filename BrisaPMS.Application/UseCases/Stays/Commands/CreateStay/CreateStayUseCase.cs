@@ -31,9 +31,9 @@ public class CreateStayUseCase : IRequestHandler<CreateStayCommand, Guid>
         if (guestExists is not true)
             throw new NotFoundException("Guest", command.GuestId);
 
-        var bookingExists = await _bookingsRepository.Exists(command.BookingId);
+        var booking = await _bookingsRepository.GetById(command.BookingId);
 
-        if (bookingExists is not true)
+        if (booking is null)
             throw new NotFoundException("Booking", command.BookingId);
         
         var bookingStatus = await _bookingsRepository.GetBookingStatusAsync(command.BookingId);
@@ -41,7 +41,7 @@ public class CreateStayUseCase : IRequestHandler<CreateStayCommand, Guid>
         if (bookingStatus is "Complete" or "Cancelled")
             throw new BusinessRuleException("Can't create stay if booking is already completed or cancelled");
 
-        var stay = new Stay(command.GuestId, command.BookingId);
+        var stay = new Stay(booking.HotelId , booking.RoomId, command.GuestId, command.BookingId);
 
         try
         {
