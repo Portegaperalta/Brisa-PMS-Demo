@@ -17,6 +17,7 @@ public static class HouseKeepingCommandTestData
     }
 
     public static HouseKeepingTask CreateHouseKeepingTask(
+        Guid? hotelId = null,
         Guid? roomId = null,
         Guid? assignedTo = null,
         Guid? assignedBy = null,
@@ -27,6 +28,7 @@ public static class HouseKeepingCommandTestData
         string? incidentDescription = null)
     {
         var houseKeepingTask = new HouseKeepingTask(
+            hotelId ?? Guid.NewGuid(),
             roomId ?? Guid.NewGuid(),
             assignedTo ?? Guid.NewGuid(),
             assignedBy ?? Guid.NewGuid(),
