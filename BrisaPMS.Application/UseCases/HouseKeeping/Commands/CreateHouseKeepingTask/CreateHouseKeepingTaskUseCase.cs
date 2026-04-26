@@ -9,14 +9,17 @@ namespace BrisaPMS.Application.UseCases.HouseKeeping.Commands.CreateHouseKeeping
 public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingTaskCommand, Guid>
 {
     private readonly IHouseKeepingTasksRepository _houseKeepingTasksRepository;
+    private readonly IHotelsRepository _hotelsRepository;
     private readonly IRoomsRepository _roomsRepository;
     private readonly IUsersRepository _usersRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateHouseKeepingTaskUseCase(IHouseKeepingTasksRepository houseKeepingTasksRepository, 
-        IRoomsRepository roomsRepository, IUsersRepository usersRepository, IUnitOfWork unitOfWork)
+        IHotelsRepository hotelsRepository,IRoomsRepository roomsRepository, IUsersRepository usersRepository,
+        IUnitOfWork unitOfWork)
     {
         _houseKeepingTasksRepository = houseKeepingTasksRepository;
+        _hotelsRepository = hotelsRepository;
         _roomsRepository = roomsRepository;
         _usersRepository = usersRepository;
         _unitOfWork = unitOfWork;
@@ -24,6 +27,11 @@ public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingT
 
     public async Task<Guid> Handle(CreateHouseKeepingTaskCommand command)
     {
+        var hotelExists = await _hotelsRepository.Exists(command.HotelId);
+        
+        if (hotelExists is not true)
+            throw new NotFoundException("Hotel", command.HotelId);
+        
         var assignedUserExists = await _usersRepository.Exists(command.AssignedTo);
         
         if (assignedUserExists is not true)
@@ -40,6 +48,7 @@ public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingT
 
         var houseKeepingTask = new HouseKeepingTask
         (
+            command.HotelId,
             command.RoomId,
             command.AssignedTo,
             command.AssignedBy,
