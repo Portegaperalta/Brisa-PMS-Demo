@@ -2,9 +2,7 @@ using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Rooms.Commands.CreateRoom;
-using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Rooms;
-using BrisaPMS.Domain.RoomTypes;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -22,11 +20,8 @@ public class CreateRoomUseCaseTests
   public CreateRoomUseCaseTests()
   {
     _roomsRepositoryMock = Substitute.For<IRoomsRepository>();
-
     _hotelsRepositoryMock = Substitute.For<IHotelsRepository>();
-
     _roomTypesRepositoryMock = Substitute.For<IRoomTypesRepository>();
-
     _unitOfWorkMock = Substitute.For<IUnitOfWork>();
 
     _useCase = new CreateRoomUseCase(
@@ -43,11 +38,9 @@ public class CreateRoomUseCaseTests
     var hotelId = Guid.NewGuid();
     var roomTypeId = Guid.NewGuid();
     var command = CreateCommand(hotelId, roomTypeId);
-    var roomType = CreateRoomType(roomTypeId);
 
     _hotelsRepositoryMock.Exists(hotelId).Returns(true);
-    _roomTypesRepositoryMock.GetById(roomTypeId).Returns(roomType);
-
+    _roomTypesRepositoryMock.Exists(roomTypeId).Returns(true);
     _roomsRepositoryMock.Create(Arg.Any<Room>())
         .Returns(callInfo => callInfo.Arg<Room>());
 
@@ -56,19 +49,15 @@ public class CreateRoomUseCaseTests
 
     // Assert
     await _hotelsRepositoryMock.Received(1).Exists(hotelId);
-
-    await _roomTypesRepositoryMock.Received(1).GetById(roomTypeId);
-
+    await _roomTypesRepositoryMock.Received(1).Exists(roomTypeId);
     await _roomsRepositoryMock.Received(1).Create(Arg.Is<Room>(room =>
+        room.RoomTypeId == roomTypeId &&
         room.HotelId == hotelId &&
         room.Number == command.Number &&
         room.Floor == command.Floor &&
         room.AvailabilityStatus == RoomAvailabilityStatus.Available &&
-        room.HygieneStatus == RoomHygieneStatus.Clean &&
-        room.RoomType == roomType));
-
+        room.HygieneStatus == RoomHygieneStatus.Clean));
     await _unitOfWorkMock.Received(1).Persist();
-
     await _unitOfWorkMock.DidNotReceive().Revert();
 
     result.Should().NotBe(Guid.Empty);
@@ -79,7 +68,6 @@ public class CreateRoomUseCaseTests
   {
     // Arrange
     var command = CreateCommand(Guid.NewGuid(), Guid.NewGuid());
-
     _hotelsRepositoryMock.Exists(command.HotelId).Returns(false);
 
     // Act
@@ -87,7 +75,7 @@ public class CreateRoomUseCaseTests
 
     // Assert
     await act.Should().ThrowAsync<NotFoundException>();
-    await _roomTypesRepositoryMock.DidNotReceive().GetById(Arg.Any<Guid>());
+    await _roomTypesRepositoryMock.DidNotReceive().Exists(Arg.Any<Guid>());
     await _roomsRepositoryMock.DidNotReceive().Create(Arg.Any<Room>());
     await _unitOfWorkMock.DidNotReceive().Persist();
     await _unitOfWorkMock.DidNotReceive().Revert();
@@ -102,7 +90,7 @@ public class CreateRoomUseCaseTests
     var command = CreateCommand(hotelId, roomTypeId);
 
     _hotelsRepositoryMock.Exists(hotelId).Returns(true);
-    _roomTypesRepositoryMock.GetById(roomTypeId).Returns((RoomType?)null);
+    _roomTypesRepositoryMock.Exists(roomTypeId).Returns(false);
 
     // Act
     var act = async () => await _useCase.Handle(command);
@@ -110,7 +98,7 @@ public class CreateRoomUseCaseTests
     // Assert
     await act.Should().ThrowAsync<NotFoundException>();
     await _hotelsRepositoryMock.Received(1).Exists(hotelId);
-    await _roomTypesRepositoryMock.Received(1).GetById(roomTypeId);
+    await _roomTypesRepositoryMock.Received(1).Exists(roomTypeId);
     await _roomsRepositoryMock.DidNotReceive().Create(Arg.Any<Room>());
     await _unitOfWorkMock.DidNotReceive().Persist();
     await _unitOfWorkMock.DidNotReceive().Revert();
@@ -123,10 +111,9 @@ public class CreateRoomUseCaseTests
     var hotelId = Guid.NewGuid();
     var roomTypeId = Guid.NewGuid();
     var command = CreateCommand(hotelId, roomTypeId);
-    var roomType = CreateRoomType(roomTypeId);
 
     _hotelsRepositoryMock.Exists(hotelId).Returns(true);
-    _roomTypesRepositoryMock.GetById(roomTypeId).Returns(roomType);
+    _roomTypesRepositoryMock.Exists(roomTypeId).Returns(true);
     _roomsRepositoryMock.Create(Arg.Any<Room>()).Throws<InvalidOperationException>();
 
     // Act
@@ -150,18 +137,4 @@ public class CreateRoomUseCaseTests
       HygieneStatus = "Clean"
     };
   }
-
-  private static RoomType CreateRoomType(Guid? roomTypeId = null)
-  {
-    return new RoomType(
-        "Deluxe Suite",
-        new RoomBaseRate(0.25m),
-        new RoomBed(BedType.Double, 1),
-        new OccupancyPolicy(2, 1),
-        "Spacious suite with ocean view")
-    {
-      Id = roomTypeId ?? Guid.NewGuid()
-    };
-  }
-
 }
