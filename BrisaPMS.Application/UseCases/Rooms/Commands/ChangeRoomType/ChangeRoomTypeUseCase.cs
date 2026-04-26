@@ -26,12 +26,12 @@ public class ChangeRoomTypeUseCase : IRequestHandler<ChangeRoomTypeCommand, bool
         if (room is null)
             throw new NotFoundException("Room", command.RoomId);
 
-        var roomType = await _roomTypesRepository.GetById(command.RoomTypeId);
+        var roomTypeExists = await _roomTypesRepository.Exists(command.RoomTypeId);
 
-        if (roomType is null)
+        if (roomTypeExists is not true)
             throw new NotFoundException("RoomType", command.RoomTypeId);
         
-        room.ChangeRoomType(roomType);
+        room.ChangeRoomType(command.RoomTypeId);
 
         try
         {

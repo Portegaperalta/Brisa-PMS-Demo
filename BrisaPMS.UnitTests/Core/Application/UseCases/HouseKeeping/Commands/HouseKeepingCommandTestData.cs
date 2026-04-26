@@ -17,6 +17,7 @@ public static class HouseKeepingCommandTestData
     }
 
     public static HouseKeepingTask CreateHouseKeepingTask(
+        Guid? hotelId = null,
         Guid? roomId = null,
         Guid? assignedTo = null,
         Guid? assignedBy = null,
@@ -27,6 +28,7 @@ public static class HouseKeepingCommandTestData
         string? incidentDescription = null)
     {
         var houseKeepingTask = new HouseKeepingTask(
+            hotelId ?? Guid.NewGuid(),
             roomId ?? Guid.NewGuid(),
             assignedTo ?? Guid.NewGuid(),
             assignedBy ?? Guid.NewGuid(),
@@ -55,12 +57,12 @@ public static class HouseKeepingCommandTestData
         RoomHygieneStatus hygieneStatus = RoomHygieneStatus.Dirty)
     {
         return new Room(
+            Guid.NewGuid(),
             hotelId ?? Guid.NewGuid(),
             "101",
             1,
             availabilityStatus,
-            hygieneStatus,
-            CreateRoomType())
+            hygieneStatus)
         {
             Id = roomId ?? Guid.NewGuid()
         };

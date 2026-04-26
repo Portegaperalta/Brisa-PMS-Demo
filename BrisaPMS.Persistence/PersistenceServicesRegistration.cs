@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BrisaPMS.Persistence
@@ -10,6 +12,22 @@ namespace BrisaPMS.Persistence
             services.AddDbContext<BrisaPmsDbContext>(options =>
                 options.UseSqlServer());
 
+            services.AddScoped<IAmenitiesRepository, AmenitiesRepository>();
+            
+            services.AddScoped<IBookingsRepository, BookingsRepository>();
+            
+            services.AddScoped<ICompaniesRepository, CompaniesRepository>();
+            
+            services.AddScoped<IGuestsRepository, GuestsRepository>();
+            
+            services.AddScoped<IHotelsRepository, HotelsRepository>();
+            
+            services.AddScoped<IHouseKeepingTasksRepository, HouseKeepingTasksRepository>();
+            
+            services.AddScoped<IRoomsRepository, RoomsRepository>();
+            
+            services.AddScoped<IStaysRepository, StaysRepository>();
+            
             return services;
         }
     }

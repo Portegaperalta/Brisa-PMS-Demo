@@ -1,10 +1,11 @@
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.AdditionalServices;
 
-public class AdditionalService
+public class AdditionalService : BaseEntity
 {
     public Guid Id { get; init; }
     public string Name { get; private set; }

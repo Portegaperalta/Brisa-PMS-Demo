@@ -1,9 +1,10 @@
-﻿using BrisaPMS.Domain.Shared.Exceptions;
+﻿using BrisaPMS.Domain.Shared.Abstractions;
+using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Inventory;
 
-public class InventoryItem
+public class InventoryItem : BaseEntity
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init; }

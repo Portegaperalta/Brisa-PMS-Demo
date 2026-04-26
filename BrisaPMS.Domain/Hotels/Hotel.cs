@@ -1,11 +1,12 @@
 ﻿using BrisaPMS.Domain.Billing;
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Enums;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Hotels
 {
-    public class Hotel
+    public class Hotel : BaseEntity
     {
         public Guid Id { get; init; }
         public string LegalName { get; private set; }

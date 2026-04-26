@@ -13,8 +13,8 @@ public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingT
     private readonly IUsersRepository _usersRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateHouseKeepingTaskUseCase(IHouseKeepingTasksRepository houseKeepingTasksRepository, 
-        IRoomsRepository roomsRepository, IUsersRepository usersRepository, IUnitOfWork unitOfWork)
+    public CreateHouseKeepingTaskUseCase(IHouseKeepingTasksRepository houseKeepingTasksRepository
+        ,IRoomsRepository roomsRepository, IUsersRepository usersRepository, IUnitOfWork unitOfWork)
     {
         _houseKeepingTasksRepository = houseKeepingTasksRepository;
         _roomsRepository = roomsRepository;
@@ -29,9 +29,9 @@ public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingT
         if (assignedUserExists is not true)
             throw new NotFoundException("User", command.AssignedTo);
         
-        var roomExists = await _roomsRepository.Exists(command.RoomId);
+        var room = await _roomsRepository.GetById(command.RoomId);
 
-        if (roomExists is not true)
+        if (room is null)
             throw new NotFoundException("Room", command.RoomId);
 
         var houseKeepingTaskType = Enum.Parse<HouseKeepingTaskType>(command.HouseKeepingTaskType);
@@ -40,6 +40,7 @@ public class CreateHouseKeepingTaskUseCase : IRequestHandler<CreateHouseKeepingT
 
         var houseKeepingTask = new HouseKeepingTask
         (
+            room.HotelId,
             command.RoomId,
             command.AssignedTo,
             command.AssignedBy,

@@ -2,9 +2,7 @@ using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateAvailabilityStatus;
-using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Rooms;
-using BrisaPMS.Domain.RoomTypes;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -20,9 +18,7 @@ public class UpdateAvailabilityStatusUseCaseTests
   public UpdateAvailabilityStatusUseCaseTests()
   {
     _roomsRepositoryMock = Substitute.For<IRoomsRepository>();
-
     _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-
     _useCase = new UpdateAvailabilityStatusUseCase(_roomsRepositoryMock, _unitOfWorkMock);
   }
 
@@ -56,7 +52,6 @@ public class UpdateAvailabilityStatusUseCaseTests
   {
     // Arrange
     var command = CreateCommand(Guid.NewGuid(), "Occupied");
-
     _roomsRepositoryMock.GetById(command.RoomId).Returns((Room?)null);
 
     // Act
@@ -102,23 +97,13 @@ public class UpdateAvailabilityStatusUseCaseTests
   {
     return new Room(
         Guid.NewGuid(),
+        Guid.NewGuid(),
         "101",
         1,
         RoomAvailabilityStatus.Available,
-        RoomHygieneStatus.Clean,
-        CreateRoomType())
+        RoomHygieneStatus.Clean)
     {
       Id = roomId ?? Guid.NewGuid()
     };
-  }
-
-  private static RoomType CreateRoomType()
-  {
-    return new RoomType(
-        "Deluxe Suite",
-        new RoomBaseRate(0.25m),
-        new RoomBed(BedType.Double, 1),
-        new OccupancyPolicy(2, 1),
-        "Spacious suite with ocean view");
   }
 }

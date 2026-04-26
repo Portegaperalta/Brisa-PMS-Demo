@@ -1,10 +1,11 @@
 ﻿using BrisaPMS.Domain.Discount;
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Domain.Discounts;
 
-public class Discount
+public class Discount : BaseEntity
 {
     public Guid Id { get; init; }
     public Guid HotelId { get; init; }

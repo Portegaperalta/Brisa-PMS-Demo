@@ -1,13 +1,11 @@
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Rooms.Queries.GetRoomById;
-using BrisaPMS.Domain.Billing;
-using BrisaPMS.Domain.RoomTypes;
+using BrisaPMS.Application.UseCases.Rooms.Shared;
 using BrisaPMS.Domain.Rooms;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ReturnsExtensions;
-using BrisaPMS.Application.UseCases.Rooms.Shared;
 
 namespace BrisaPMS.UnitTests.Core.Application.UseCases.Rooms.Queries.GetRoomById;
 
@@ -28,7 +26,7 @@ public class GetRoomByIdUseCaseTests
     // Arrange
     var roomId = Guid.NewGuid();
     var room = CreateRoom(roomId);
-    var query = new GetRoomByIdQuery() { RoomId = roomId };
+    var query = new GetRoomByIdQuery { RoomId = roomId };
 
     _repositoryMock.GetById(roomId).Returns(room);
 
@@ -39,15 +37,10 @@ public class GetRoomByIdUseCaseTests
     result.Should().NotBeNull();
     result.Should().BeOfType<RoomDto>();
     result.Id.Should().Be(room.Id);
+    result.RoomTypeId.Should().Be(room.RoomTypeId);
     result.HotelId.Should().Be(room.HotelId);
     result.Number.Should().Be(room.Number);
     result.Floor.Should().Be(room.Floor);
-    result.Type.Should().Be(room.RoomType.Name);
-    result.TotalBeds.Should().Be(room.RoomType.Beds.NumberOfBeds);
-    result.BedType.Should().Be(room.RoomType.Beds.BedType.ToString());
-    result.MaxOccupancyAdults.Should().Be(room.RoomType.OccupancyPolicy.MaxOccupancyAdults);
-    result.MaxOccupancyChildren.Should().Be(room.RoomType.OccupancyPolicy.MaxOccupancyChildren);
-    result.BaseRate.Should().Be(room.RoomType.BaseRate.Rate);
     result.AvailabilityStatus.Should().Be(room.AvailabilityStatus.ToString());
     result.HygieneStatus.Should().Be(room.HygieneStatus.ToString());
     result.LastCleanedAt.Should().Be(room.LastCleanedAt);
@@ -60,28 +53,28 @@ public class GetRoomByIdUseCaseTests
   {
     // Arrange
     var roomId = Guid.NewGuid();
-    var query = new GetRoomByIdQuery() { RoomId = roomId };
+    var query = new GetRoomByIdQuery { RoomId = roomId };
 
     _repositoryMock.GetById(roomId).ReturnsNull();
 
     // Act
     var act = async () => await _useCase.Handle(query);
 
-    // Asset
+    // Assert
     await act.Should().ThrowAsync<NotFoundException>();
-
   }
 
-  // Helper methods
   private static Room CreateRoom(Guid? roomId = null)
   {
-    var room = new Room(
+    var room = new Room
+    (
+        Guid.NewGuid(),
         Guid.NewGuid(),
         "201",
         2,
         RoomAvailabilityStatus.Available,
-        RoomHygieneStatus.Clean,
-        CreateRoomType());
+        RoomHygieneStatus.Clean
+      );
 
     if (roomId.HasValue)
     {
@@ -89,17 +82,5 @@ public class GetRoomByIdUseCaseTests
     }
 
     return room;
-  }
-
-  private static RoomType CreateRoomType(string name = "Deluxe Suite")
-  {
-    return new RoomType
-      (
-        name,
-        new RoomBaseRate(0.25m),
-        new RoomBed(BedType.Double, 1),
-        new OccupancyPolicy(2, 1),
-        "Spacious suite with ocean view"
-      );
   }
 }

@@ -3,6 +3,7 @@ using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.HouseKeeping.Commands.CreateHouseKeepingTask;
 using BrisaPMS.Domain.HouseKeeping;
+using BrisaPMS.Domain.Rooms;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
@@ -35,12 +36,12 @@ public class CreateHouseKeepingTaskUseCaseTests
     public async Task Handle_CreatesTaskAndReturnsTaskId()
     {
         // Arrange
-        var roomId = Guid.NewGuid();
+        var room = HouseKeepingCommandTestData.CreateRoom();
         var assignedTo = Guid.NewGuid();
         var assignedBy = Guid.NewGuid();
         var command = new CreateHouseKeepingTaskCommand
         {
-            RoomId = roomId,
+            RoomId = room.Id,
             AssignedTo = assignedTo,
             AssignedBy = assignedBy,
             HouseKeepingTaskType = nameof(HouseKeepingTaskType.Cleaning),
@@ -51,7 +52,7 @@ public class CreateHouseKeepingTaskUseCaseTests
         };
 
         _usersRepositoryMock.Exists(assignedTo).Returns(true);
-        _roomsRepositoryMock.Exists(roomId).Returns(true);
+        _roomsRepositoryMock.GetById(command.RoomId).Returns(room);
         _houseKeepingTasksRepositoryMock.Create(Arg.Any<HouseKeepingTask>())
             .Returns(callInfo => callInfo.Arg<HouseKeepingTask>());
 
@@ -61,7 +62,8 @@ public class CreateHouseKeepingTaskUseCaseTests
         // Assert
         result.Should().NotBe(Guid.Empty);
         await _houseKeepingTasksRepositoryMock.Received(1).Create(Arg.Is<HouseKeepingTask>(task =>
-            task.RoomId == roomId &&
+            task.HotelId == room.HotelId &&
+            task.RoomId == room.Id &&
             task.AssignedTo == assignedTo &&
             task.AssignedBy == assignedBy &&
             task.Type == HouseKeepingTaskType.Cleaning &&
@@ -84,7 +86,7 @@ public class CreateHouseKeepingTaskUseCaseTests
 
         // Assert
         await act.Should().ThrowAsync<NotFoundException>();
-        await _roomsRepositoryMock.DidNotReceive().Exists(Arg.Any<Guid>());
+        await _roomsRepositoryMock.DidNotReceive().GetById(Arg.Any<Guid>());
         await _houseKeepingTasksRepositoryMock.DidNotReceive().Create(Arg.Any<HouseKeepingTask>());
         await _unitOfWorkMock.DidNotReceive().Persist();
     }
@@ -96,7 +98,7 @@ public class CreateHouseKeepingTaskUseCaseTests
         var command = CreateCommand();
 
         _usersRepositoryMock.Exists(command.AssignedTo).Returns(true);
-        _roomsRepositoryMock.Exists(command.RoomId).Returns(false);
+        _roomsRepositoryMock.GetById(command.RoomId).Returns((Room?)null);
 
         // Act
         var act = async () => await _useCase.Handle(command);
@@ -112,9 +114,10 @@ public class CreateHouseKeepingTaskUseCaseTests
     {
         // Arrange
         var command = CreateCommand();
+        var room = HouseKeepingCommandTestData.CreateRoom(roomId: command.RoomId);
 
         _usersRepositoryMock.Exists(command.AssignedTo).Returns(true);
-        _roomsRepositoryMock.Exists(command.RoomId).Returns(true);
+        _roomsRepositoryMock.GetById(command.RoomId).Returns(room);
         _houseKeepingTasksRepositoryMock.Create(Arg.Any<HouseKeepingTask>()).Throws<InvalidOperationException>();
 
         // Act

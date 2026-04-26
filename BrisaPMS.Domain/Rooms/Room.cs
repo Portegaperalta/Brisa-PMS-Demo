@@ -1,11 +1,13 @@
 using BrisaPMS.Domain.RoomTypes;
+using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Shared.Exceptions;
 
 namespace BrisaPMS.Domain.Rooms;
 
-public class Room
+public class Room : BaseEntity
 {
     public Guid Id { get; init; }
+    public Guid RoomTypeId { get; private set; }
     public Guid HotelId { get; init ; }
     public string Number { get; private set ; }
     public int Floor { get; init ; }
@@ -15,20 +17,21 @@ public class Room
     public Guid? LastCleanedBy { get; private set ; }
     public bool NeedsRestocking { get; private set ; }
     
-    public RoomType RoomType { get; private set ; }
-    
     public Room
     (
+        Guid roomTypeId,
         Guid hotelId,
         string number,
         int floor,
         RoomAvailabilityStatus availabilityStatus,
-        RoomHygieneStatus hygieneStatus,
-        RoomType roomType
+        RoomHygieneStatus hygieneStatus
     )
     {
         if (hotelId == Guid.Empty)
             throw new EmptyRequiredFieldException("HotelId");
+        
+        if (roomTypeId == Guid.Empty)
+            throw new EmptyRequiredFieldException("RoomTypeId");
         
         if(string.IsNullOrWhiteSpace(number))
             throw new EmptyRequiredFieldException("Room number");
@@ -40,6 +43,7 @@ public class Room
             throw new BusinessRuleException("Invalid hygiene status");
 
         Id = Guid.CreateVersion7();
+        RoomTypeId = roomTypeId;
         HotelId = hotelId;
         Number = number;
         Floor = floor;
@@ -48,15 +52,17 @@ public class Room
         LastCleanedAt = null;
         LastCleanedBy = null;
         NeedsRestocking = false;
-        RoomType = roomType;
     }
 
-    public void ChangeRoomType(RoomType newRoomType)
+    public void ChangeRoomType(Guid newRoomTypeId)
     {
+        if (newRoomTypeId == Guid.Empty)
+            throw new EmptyRequiredFieldException("Room TypeId");
+        
         if (AvailabilityStatus == RoomAvailabilityStatus.Occupied)
             throw new BusinessRuleException("Room is currently occupied. room type can't be changed");
         
-        RoomType = newRoomType;
+        RoomTypeId = newRoomTypeId;
     }
 
     public void UpdateNumber(string newRoomNumber)

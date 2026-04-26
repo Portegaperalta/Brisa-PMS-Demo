@@ -13,10 +13,16 @@ public static class StayTestData
 {
     public static Stay CreateStay(
         Guid? stayId = null,
+        Guid? hotelId = null,
+        Guid? roomId = null,
         Guid? guestId = null,
         Guid? bookingId = null)
     {
-        var stay = new Stay(guestId ?? Guid.NewGuid(), bookingId ?? Guid.NewGuid())
+        var stay = new Stay(
+            hotelId ?? Guid.NewGuid(),
+            roomId ?? Guid.NewGuid(),
+            guestId ?? Guid.NewGuid(),
+            bookingId ?? Guid.NewGuid())
         {
             Id = stayId ?? Guid.NewGuid()
         };
@@ -52,12 +58,12 @@ public static class StayTestData
         RoomHygieneStatus hygieneStatus = RoomHygieneStatus.Clean)
     {
         return new Room(
+            Guid.NewGuid(),
             hotelId ?? Guid.NewGuid(),
             "101",
             1,
             availabilityStatus,
-            hygieneStatus,
-            CreateRoomType())
+            hygieneStatus)
         {
             Id = roomId ?? Guid.NewGuid()
         };
