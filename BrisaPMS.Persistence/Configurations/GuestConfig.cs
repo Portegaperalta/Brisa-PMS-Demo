@@ -1,4 +1,5 @@
 ﻿using BrisaPMS.Domain.Guests;
+using BrisaPMS.Domain.Hotels;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,8 +15,10 @@ public class GuestConfig : BaseEntityConfig<Guest>
         builder.Property(g => g.Id)
                .IsRequired();
 
-        builder.Property(g => g.HotelId)
-               .IsRequired();
+        builder.HasOne<Hotel>()
+               .WithMany()
+               .HasForeignKey(g => g.HotelId)
+               .OnDelete(DeleteBehavior.Restrict);
         
         builder.Property(g => g.DocumentType)
                .IsRequired()
