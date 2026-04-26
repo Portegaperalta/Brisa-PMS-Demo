@@ -20,6 +20,8 @@ namespace BrisaPMS.Persistence
             
             services.AddScoped<IGuestsRepository, GuestsRepository>();
             
+            services.AddScoped<IHotelsRepository, HotelsRepository>();
+            
             return services;
         }
     }
