@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BrisaPMS.Persistence
@@ -10,6 +12,8 @@ namespace BrisaPMS.Persistence
             services.AddDbContext<BrisaPmsDbContext>(options =>
                 options.UseSqlServer());
 
+            services.AddScoped<IAmenitiesRepository, AmenitiesRepository>();
+            
             return services;
         }
     }
