@@ -6,6 +6,7 @@ namespace BrisaPMS.Domain.HouseKeeping;
 public class HouseKeepingTask : BaseEntity
 {
     public Guid Id { get; init; }
+    public Guid HotelId { get; init; }
     public Guid RoomId { get; init; }
     public Guid AssignedBy { get; init; }
     public Guid AssignedTo { get; private set; }
@@ -20,6 +21,7 @@ public class HouseKeepingTask : BaseEntity
 
     public HouseKeepingTask
     (
+        Guid hotelId,
         Guid roomId,
         Guid assignedTo,
         Guid assignedBy,
@@ -29,6 +31,9 @@ public class HouseKeepingTask : BaseEntity
         string? notes = null
     )
     {
+        if (hotelId == Guid.Empty)
+            throw new EmptyRequiredFieldException("Hotel Id");
+        
         if (roomId == Guid.Empty)
             throw new EmptyRequiredFieldException("Room Id");
         
@@ -45,6 +50,7 @@ public class HouseKeepingTask : BaseEntity
             throw new  BusinessRuleException("Invalid task priority");
 
         Id = Guid.CreateVersion7();
+        HotelId = hotelId;
         RoomId = roomId;
         AssignedBy = assignedBy;
         AssignedTo = assignedTo;
