@@ -7,6 +7,9 @@ public class CreateHouseKeepingTaskCommandValidator : AbstractValidator<CreateHo
 {
     public CreateHouseKeepingTaskCommandValidator()
     {
+        RuleFor(x => x.HotelId)
+            .NotEmpty().WithMessage("The field HotelId is required.");
+        
         RuleFor(x => x.RoomId)
             .NotEmpty().WithMessage("The field RoomId is required.");
         
