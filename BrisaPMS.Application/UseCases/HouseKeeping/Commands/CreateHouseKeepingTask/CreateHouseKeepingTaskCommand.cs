@@ -4,7 +4,6 @@ namespace BrisaPMS.Application.UseCases.HouseKeeping.Commands.CreateHouseKeeping
 
 public class CreateHouseKeepingTaskCommand : IRequest<Guid>
 {
-    public Guid HotelId { get; set; }
     public required Guid RoomId { get; set; }
     public required Guid AssignedTo { get; set; }
     public required Guid AssignedBy { get; set; }
