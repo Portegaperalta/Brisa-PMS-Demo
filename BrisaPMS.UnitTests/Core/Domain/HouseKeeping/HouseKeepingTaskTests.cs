@@ -10,6 +10,7 @@ public class HouseKeepingTaskTests
     public void Constructor_ShouldCreateHouseKeepingTask_WhenValuesAreValid()
     {
         // Arrange
+        var hotelId = Guid.NewGuid();
         var roomId = Guid.NewGuid();
         var assignedTo = Guid.NewGuid();
         var assignedBy = Guid.NewGuid();
@@ -18,6 +19,7 @@ public class HouseKeepingTaskTests
 
         // Act
         var result = new HouseKeepingTask(
+            hotelId,
             roomId,
             assignedTo,
             assignedBy,
@@ -28,6 +30,7 @@ public class HouseKeepingTaskTests
 
         // Assert
         result.Id.Should().NotBe(Guid.Empty);
+        result.HotelId.Should().Be(hotelId);
         result.RoomId.Should().Be(roomId);
         result.AssignedTo.Should().Be(assignedTo);
         result.AssignedBy.Should().Be(assignedBy);
@@ -52,12 +55,33 @@ public class HouseKeepingTaskTests
             Guid.NewGuid(),
             Guid.NewGuid(),
             Guid.NewGuid(),
+            Guid.NewGuid(),
             HouseKeepingTaskType.Restocking,
             TaskPriority.Medium,
             deadline);
 
         // Assert
         result.Notes.Should().BeNull();
+    }
+
+    [Fact]
+    public void Constructor_ShouldThrowEmptyRequiredFieldException_WhenHotelIdIsEmpty()
+    {
+        // Arrange
+        var hotelId = Guid.Empty;
+
+        // Act
+        Action act = () => _ = new HouseKeepingTask(
+            hotelId,
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            HouseKeepingTaskType.Cleaning,
+            TaskPriority.High,
+            CreateTaskDeadline());
+
+        // Assert
+        act.Should().Throw<EmptyRequiredFieldException>();
     }
 
     [Fact]
@@ -68,6 +92,7 @@ public class HouseKeepingTaskTests
 
         // Act
         Action act = () => _ = new HouseKeepingTask(
+            Guid.NewGuid(),
             roomId,
             Guid.NewGuid(),
             Guid.NewGuid(),
@@ -88,6 +113,7 @@ public class HouseKeepingTaskTests
         // Act
         Action act = () => _ = new HouseKeepingTask(
             Guid.NewGuid(),
+            Guid.NewGuid(),
             assignedTo,
             Guid.NewGuid(),
             HouseKeepingTaskType.Cleaning,
@@ -106,6 +132,7 @@ public class HouseKeepingTaskTests
 
         // Act
         Action act = () => _ = new HouseKeepingTask(
+            Guid.NewGuid(),
             Guid.NewGuid(),
             Guid.NewGuid(),
             assignedBy,
@@ -128,6 +155,7 @@ public class HouseKeepingTaskTests
             Guid.NewGuid(),
             Guid.NewGuid(),
             Guid.NewGuid(),
+            Guid.NewGuid(),
             invalidType,
             TaskPriority.High,
             CreateTaskDeadline());
@@ -144,6 +172,7 @@ public class HouseKeepingTaskTests
 
         // Act
         Action act = () => _ = new HouseKeepingTask(
+            Guid.NewGuid(),
             Guid.NewGuid(),
             Guid.NewGuid(),
             Guid.NewGuid(),
@@ -533,6 +562,7 @@ public class HouseKeepingTaskTests
     private static HouseKeepingTask CreateHouseKeepingTask()
     {
         return new HouseKeepingTask(
+            Guid.NewGuid(),
             Guid.NewGuid(),
             Guid.NewGuid(),
             Guid.NewGuid(),
