@@ -9,15 +9,10 @@ public static class MapperExtension
         return new RoomDto
         {
             Id = room.Id,
+            RoomTypeId = room.RoomTypeId,
             HotelId = room.HotelId,
             Number = room.Number,
             Floor = room.Floor,
-            Type = room.RoomType.Name,
-            TotalBeds = room.RoomType.Beds.NumberOfBeds,
-            BedType = room.RoomType.Beds.BedType.ToString(),
-            MaxOccupancyAdults = room.RoomType.OccupancyPolicy.MaxOccupancyAdults,
-            MaxOccupancyChildren = room.RoomType.OccupancyPolicy.MaxOccupancyChildren,
-            BaseRate = room.RoomType.BaseRate.Rate,
             AvailabilityStatus = room.AvailabilityStatus.ToString(),
             HygieneStatus =  room.HygieneStatus.ToString(),
             LastCleanedAt = room.LastCleanedAt,
