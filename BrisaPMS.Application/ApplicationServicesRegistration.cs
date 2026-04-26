@@ -36,7 +36,6 @@ using BrisaPMS.Application.UseCases.Guests.Commands.UpdateGuestGeneralInfo;
 using BrisaPMS.Application.UseCases.Guests.Commands.UpdateGuestRnc;
 using BrisaPMS.Application.UseCases.Guests.Commands.WhitelistGuest;
 using BrisaPMS.Application.UseCases.Guests.Queries.GetAllGuestsByHotelId;
-using BrisaPMS.Application.UseCases.Guests.Queries.GetGuestByHotelId;
 using BrisaPMS.Application.UseCases.Guests.Queries.GetGuestById;
 using BrisaPMS.Application.UseCases.Guests.Shared;
 using BrisaPMS.Application.UseCases.Hotels.Commands.ActivateHotel;
@@ -225,9 +224,6 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<GetGuestByIdQuery, GuestDto>,
                                     GetGuestByIdUseCase>();
-
-        services.AddScoped<IRequestHandler<GetGuestByHotelIdQuery, GuestDto?>,
-                                    GetGuestByHotelIdUseCase>();
 
         services.AddScoped<IRequestHandler<GetAllGuestsByHotelIdQuery, List<GuestDto>>,
                                     GetAllGuestsByHotelIdUseCase>();
