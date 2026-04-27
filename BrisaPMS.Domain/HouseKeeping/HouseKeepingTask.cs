@@ -19,6 +19,8 @@ public class HouseKeepingTask : BaseEntity
     public bool IncidentReported { get; private set; }
     public string? IncidentDescription { get; private set; }
 
+    private HouseKeepingTask() { }
+
     public HouseKeepingTask
     (
         Guid hotelId,

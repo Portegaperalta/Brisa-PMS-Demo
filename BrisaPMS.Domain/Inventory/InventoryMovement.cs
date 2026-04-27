@@ -15,6 +15,8 @@ public class InventoryMovement : BaseEntity
     public string Reason { get; init; }
     public string? Notes { get; private set; }
 
+    private InventoryMovement() { }
+
     public InventoryMovement
     (
         Guid inventoryItemId,

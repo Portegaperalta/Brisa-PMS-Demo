@@ -7,6 +7,8 @@ public record StayTimeInterval
     public DateTime ActualCheckIn { get; }
     public DateTime? ActualCheckOut { get; }
 
+    private StayTimeInterval() { }
+
     public StayTimeInterval(DateTime actualCheckIn, DateTime? actualCheckOut = null)
     {
         if (actualCheckIn > actualCheckOut)

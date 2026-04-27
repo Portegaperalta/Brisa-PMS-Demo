@@ -47,7 +47,7 @@ public class BookingConfig : BaseEntityConfig<Booking>
                       .HasMaxLength(10);
         });
 
-        builder.OwnsOne(p => p.CheckInOutTimes, checkInOutTimes =>
+        builder.OwnsOne(b => b.CheckInOutTimes, checkInOutTimes =>
         {
                checkInOutTimes.Property(c => c.CheckInTime)
                       .IsRequired();
@@ -66,9 +66,12 @@ public class BookingConfig : BaseEntityConfig<Booking>
         builder.Property(b => b.CancellationReason)
                .HasMaxLength(255);
         
-        builder.Property(b => b.TotalPrice)
-               .IsRequired()
-               .HasColumnType("decimal(10,2)");
+        builder.OwnsOne(b => b.TotalPrice, totalPrice =>
+        {
+            totalPrice.Property(tp => tp.Amount)
+                      .IsRequired()
+                      .HasColumnType("decimal(10,2)");
+        });
 
         builder.Property(b => b.DiscountId);
     }

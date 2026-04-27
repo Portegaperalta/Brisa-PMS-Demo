@@ -12,6 +12,8 @@ namespace BrisaPMS.Domain.Shared.ValueObjects
         private const int BusinessRncLength = 9;
         private const int PersonRncLength = 11;
 
+        private Rnc() { }
+
         public Rnc(string rawRnc)
         {
             if (string.IsNullOrWhiteSpace(rawRnc) is true)

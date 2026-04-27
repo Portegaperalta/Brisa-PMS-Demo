@@ -14,6 +14,8 @@ public class Stay : BaseEntity
     public int NightCount { get; private set; }
     public StayStatus Status { get; private set; }
 
+    private Stay() { }
+
     public Stay(Guid hotelId, Guid roomId, Guid guestId, Guid bookingId)
     {
         if (hotelId == Guid.Empty)

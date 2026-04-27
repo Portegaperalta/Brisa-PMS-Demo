@@ -7,6 +7,8 @@ public record CheckInOutTimes
     public DateTime CheckInTime { get; }
     public DateTime CheckOutTime { get; }
 
+    private CheckInOutTimes() { }
+
     public CheckInOutTimes(DateTime checkInTime, DateTime checkOutTime)
     {
         if (checkInTime >  checkOutTime)

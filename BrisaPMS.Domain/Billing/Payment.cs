@@ -16,6 +16,8 @@ public class Payment : BaseEntity
     public string? ReferenceNumber { get; init; }
     public string? Notes { get;  private set; }
 
+    private Payment() { }
+
     public Payment
     (
         Guid hotelId,

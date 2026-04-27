@@ -3,16 +3,18 @@ using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Persistence.Repositories;
 using BrisaPMS.Persistence.UnitsOfWork;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BrisaPMS.Persistence
 {
     public static class PersistenceServicesRegistration
     {
-        public static IServiceCollection AddPersistenceServices(this IServiceCollection services)
+        public static IServiceCollection AddPersistenceServices(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddDbContext<BrisaPmsDbContext>(options =>
-                options.UseSqlServer());
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUnitOfWork, UnitOfWorkEfCore>();
 
@@ -29,8 +31,12 @@ namespace BrisaPMS.Persistence
             services.AddScoped<IHouseKeepingTasksRepository, HouseKeepingTasksRepository>();
             
             services.AddScoped<IRoomsRepository, RoomsRepository>();
+
+            services.AddScoped<IRoomTypesRepository, RoomTypesRepository>();
             
             services.AddScoped<IStaysRepository, StaysRepository>();
+            
+            services.AddScoped<IUsersRepository, UsersRepository>();
             
             return services;
         }

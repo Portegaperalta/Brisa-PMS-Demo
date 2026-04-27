@@ -9,6 +9,8 @@ public record Ncf
     
     private static readonly Regex Format = new(@"^(B0[1-9]|B[1-9]\d)-\d{11}$",  RegexOptions.Compiled);
 
+    private Ncf() { }
+
     public Ncf(string value)
     {
         

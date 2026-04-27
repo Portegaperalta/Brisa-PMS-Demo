@@ -4,6 +4,8 @@ public record ServiceChargeRate
 {
     public decimal Rate { get; }
 
+    private ServiceChargeRate() { }
+
     public ServiceChargeRate(decimal rate)
     {
         if (rate is < 0 or > 100)

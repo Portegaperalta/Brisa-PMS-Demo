@@ -7,6 +7,8 @@ public record OccupancyPolicy
     public int MaxOccupancyAdults { get; }
     public int MaxOccupancyChildren { get; }
 
+    private OccupancyPolicy() { }
+
     public OccupancyPolicy(int maxOccupancyAdults, int maxOccupancyChildren)
     {
         if (maxOccupancyAdults is <= 0 or > 16)

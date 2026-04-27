@@ -17,6 +17,8 @@ public class Room : BaseEntity
     public Guid? LastCleanedBy { get; private set ; }
     public bool NeedsRestocking { get; private set ; }
     
+    private Room() { }
+
     public Room
     (
         Guid roomTypeId,

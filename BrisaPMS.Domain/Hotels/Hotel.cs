@@ -22,7 +22,8 @@ namespace BrisaPMS.Domain.Hotels
         public ServiceChargeRate ServiceChargeRate  { get; private set; }
         public bool IsActive { get;  private set; }
         
-        // Constructor
+        private Hotel() { }
+
         public Hotel
         (
             string legalName,

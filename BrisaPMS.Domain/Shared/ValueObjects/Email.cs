@@ -8,6 +8,8 @@ namespace BrisaPMS.Domain.Shared.ValueObjects
         public string Value { get; }
         private const int MaxCharacterLimit = 254;
 
+        private Email() { }
+
         public Email(string email)
         {
             if (string.IsNullOrWhiteSpace(email) is true)
