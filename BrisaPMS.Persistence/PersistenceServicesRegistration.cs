@@ -32,6 +32,8 @@ namespace BrisaPMS.Persistence
             
             services.AddScoped<IStaysRepository, StaysRepository>();
             
+            services.AddScoped<IUsersRepository, UsersRepository>();
+            
             return services;
         }
     }
