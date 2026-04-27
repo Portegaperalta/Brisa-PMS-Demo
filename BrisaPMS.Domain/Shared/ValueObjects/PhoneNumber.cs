@@ -7,17 +7,12 @@ namespace BrisaPMS.Domain.Shared.ValueObjects
     {
         public string Value { get; }
 
-        private const int MaxCharacterLimit = 25;
-
         private PhoneNumber() { }
 
         public PhoneNumber(string phoneNumber)
         {
             if (string.IsNullOrWhiteSpace(phoneNumber) is true)
                 throw new EmptyRequiredFieldException("Phone Number");
-
-            if (phoneNumber.Length > MaxCharacterLimit)
-                throw new MaxCharacterLimitException(MaxCharacterLimit, "Phone number");
 
             Value = phoneNumber;
         }
