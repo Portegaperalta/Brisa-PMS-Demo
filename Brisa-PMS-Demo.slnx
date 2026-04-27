@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/API/">
+    <Project Path="BrisaPMS.API/BrisaPMS.API.csproj" Id="b6eb9d25-4d2e-4e14-9cde-5160b16be358" />
+  </Folder>
   <Folder Name="/Core/">
     <Project Path="BrisaPMS.Application/BrisaPMS.Application.csproj" />
     <Project Path="BrisaPMS.Domain/BrisaPMS.Domain.csproj" />
