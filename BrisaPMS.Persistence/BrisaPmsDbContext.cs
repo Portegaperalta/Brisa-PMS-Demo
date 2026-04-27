@@ -10,6 +10,7 @@ using BrisaPMS.Domain.RoomTypes;
 using BrisaPMS.Domain.Shared.Abstractions;
 using BrisaPMS.Domain.Stays;
 using BrisaPMS.Domain.Users;
+using BrisaPMS.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BrisaPMS.Persistence
@@ -67,5 +68,7 @@ namespace BrisaPMS.Persistence
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<Stay> Stays { get; set; }
         public DbSet<User> Users { get; set; }
+
+        public DbSet<AmenityRoomType> AmenitiesRoomTypes { get; set; }
     }
 }
