@@ -1,4 +1,5 @@
 ﻿using BrisaPMS.Domain.Shared.Abstractions;
+using BrisaPMS.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,14 +10,18 @@ public abstract class BaseEntityConfig<T> : IEntityTypeConfiguration<T>
 {
     public virtual void Configure(EntityTypeBuilder<T> builder)
     {
-        builder.Property(p => p.CreatedBy)
-               .IsRequired();
+        builder.HasOne<User>()
+               .WithMany()
+               .HasForeignKey(x => x.CreatedBy)
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(p => p.CreatedAt)
                .IsRequired();
 
-        builder.Property(p => p.UpdatedBy)
-               .HasDefaultValue(null);
+        builder.HasOne<User>()
+               .WithMany()
+               .HasForeignKey(x => x.UpdatedBy)
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(p => p.UpdatedAt)
             .HasDefaultValue(null);
