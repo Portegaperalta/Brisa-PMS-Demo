@@ -4,6 +4,8 @@ public record ItbisRate
 {
     public decimal Rate { get; }
 
+    private ItbisRate() { }
+
     public ItbisRate(decimal rate)
     {
         if (rate < 0)

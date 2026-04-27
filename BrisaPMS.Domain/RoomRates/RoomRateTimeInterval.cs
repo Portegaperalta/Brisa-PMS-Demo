@@ -7,6 +7,8 @@ public record RoomRateTimeInterval
     public DateTime ValidFrom { get; }
     public DateTime ValidTo { get; }
 
+    private RoomRateTimeInterval() { }
+
     public RoomRateTimeInterval(DateTime validFrom, DateTime validTo)
     {
         if (validFrom > validTo)

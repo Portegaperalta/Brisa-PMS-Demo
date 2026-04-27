@@ -8,6 +8,8 @@ public record Money
     public decimal Amount { get; }
     public CurrencyCode CurrencyCode { get; }
 
+    private Money() { }
+
     public Money(decimal amount, CurrencyCode currencyCode = CurrencyCode.DOP)
     {
         if (amount < 0m)

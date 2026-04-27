@@ -17,6 +17,8 @@ namespace BrisaPMS.Domain.Shared.ValueObjects
         private const int MaxProvinceCharacterLimit = 100;
         private const int MaxZipcodeCharacterLimit = 11;
 
+        private Address() { }
+
         public Address(string address1, string? address2, string city, string province, string zipcode)
         {
             if (string.IsNullOrWhiteSpace(address1) is true)

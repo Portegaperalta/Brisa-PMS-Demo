@@ -7,6 +7,8 @@ public record DiscountTimeInterval
     public DateTime ValidFrom { get; }
     public DateTime ValidTo { get; }
 
+    private DiscountTimeInterval() { }
+
     public DiscountTimeInterval(DateTime validFrom, DateTime validTo)
     {
         if (validFrom > validTo)

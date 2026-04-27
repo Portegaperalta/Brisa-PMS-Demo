@@ -17,6 +17,8 @@ namespace BrisaPMS.Domain.Users
         private readonly HashAlgorithmName Algorithm = HashAlgorithmName.SHA256;
         private readonly Regex SpecialCharRegex = new(@"[!@#$%^&*()\-_+=\[\]{}|\\;:'"",.<>/?`~]", RegexOptions.Compiled);
 
+        private Password() { }
+
         public Password(string password)
         {
             if (string.IsNullOrWhiteSpace(password) is true)

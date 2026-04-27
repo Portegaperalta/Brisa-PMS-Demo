@@ -7,6 +7,8 @@ public record StockThreshold
     public decimal MinStockThreshold { get; }
     public decimal MaxStockThreshold { get; }
 
+    private StockThreshold() { }
+
     public StockThreshold(decimal minStockThreshold, decimal maxStockThreshold)
     {
         if (minStockThreshold < 0m)

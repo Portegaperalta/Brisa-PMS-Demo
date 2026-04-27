@@ -6,6 +6,8 @@ public record RoomBaseRate
 {
     public decimal Rate { get; }
     
+    private RoomBaseRate() { }
+
     public RoomBaseRate(decimal rate)
     {
         if (rate is < 0 or > 100)

@@ -7,6 +7,8 @@ public record CheckOutPolicy
     public TimeOnly CheckInTime { get; }
     public TimeOnly CheckOutTime { get; }
 
+    private CheckOutPolicy() { }
+
     public CheckOutPolicy(TimeOnly checkInTime, TimeOnly checkOutTime)
     {
         CheckInTime = checkInTime;

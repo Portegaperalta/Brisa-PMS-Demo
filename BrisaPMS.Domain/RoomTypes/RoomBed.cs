@@ -7,6 +7,8 @@ public record RoomBed
     public BedType BedType { get; }
     public int NumberOfBeds { get; }
 
+    private RoomBed() { }
+
     public RoomBed(BedType bedType, int numberOfBeds)
     { 
         if (Enum.IsDefined<BedType>(bedType) is not true) 

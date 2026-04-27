@@ -9,6 +9,8 @@ namespace BrisaPMS.Domain.Shared.ValueObjects
 
         private const int MaxCharacterLimit = 25;
 
+        private PhoneNumber() { }
+
         public PhoneNumber(string phoneNumber)
         {
             if (string.IsNullOrWhiteSpace(phoneNumber) is true)

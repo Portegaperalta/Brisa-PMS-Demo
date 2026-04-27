@@ -8,6 +8,8 @@ public record TaskDeadline
     public DateTime ExpectedStartAt { get; }
     public DateTime ExpectedEndAt { get; }
 
+    public TaskDeadline() { }
+
     public TaskDeadline(DateTime expectedStartAt, DateTime expectedEndAt)
     {
         if (expectedStartAt > expectedEndAt)

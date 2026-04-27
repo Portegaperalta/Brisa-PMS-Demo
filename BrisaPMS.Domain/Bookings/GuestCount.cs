@@ -7,6 +7,8 @@ public record GuestCount
     public int NumberOfAdults { get; }
     public int NumberOfChildren { get; }
 
+    private GuestCount() { }
+
     public GuestCount(int numberOfAdults, int numberOfChildren)
     {
         NumberOfAdults = numberOfAdults switch

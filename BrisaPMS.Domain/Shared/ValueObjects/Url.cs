@@ -7,6 +7,8 @@ namespace BrisaPMS.Domain.Shared.ValueObjects
     {
         public string Value { get; }
 
+        private Url() { }
+
         public Url(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
