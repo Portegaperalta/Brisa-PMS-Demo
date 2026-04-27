@@ -19,7 +19,7 @@ namespace BrisaPMS.API
 
             builder.Services.AddApplicationServices();
 
-            builder.Services.AddPersistenceServices();
+            builder.Services.AddPersistenceServices(builder.Configuration);
 
             builder.Services.AddHttpContextAccessor();
 
