@@ -19,6 +19,14 @@ public class GuestConfig : BaseEntityConfig<Guest>
                .WithMany()
                .HasForeignKey(g => g.HotelId)
                .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(g => g.FirstName)
+               .IsRequired()
+               .HasMaxLength(250);
+
+        builder.Property(g => g.LastName)
+               .IsRequired()
+               .HasMaxLength(250);
         
         builder.Property(g => g.DocumentType)
                .IsRequired()
