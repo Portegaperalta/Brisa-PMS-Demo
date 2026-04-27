@@ -20,6 +20,8 @@ public class Booking : BaseEntity
     public Money TotalPrice { get; private set; }
     public Guid? DiscountId { get; private set; }
 
+    private Booking() { }
+
     public Booking
     (
         Guid hotelId,

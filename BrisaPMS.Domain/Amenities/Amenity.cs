@@ -10,6 +10,8 @@ public class Amenity : BaseEntity
     public string Description { get; private set; }
     public bool IsActive { get; private set; }
 
+    private Amenity() { }
+
     public Amenity(string name, string description, bool isActive = true)
     {
         if (string.IsNullOrWhiteSpace(name))

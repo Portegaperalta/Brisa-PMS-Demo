@@ -13,6 +13,8 @@ public class RoomRate : BaseEntity
     public Money PricePerNight { get;  private set; }
     public RoomRateTimeInterval  TimeInterval { get; private set; }
 
+    private RoomRate() { }
+
     public RoomRate
     (
         Guid roomTypeId,

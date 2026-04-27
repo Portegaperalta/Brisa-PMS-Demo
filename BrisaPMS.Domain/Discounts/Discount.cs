@@ -15,6 +15,8 @@ public class Discount : BaseEntity
     public DiscountTimeInterval TimeInterval { get; private set; }
     public bool IsActive { get; private set; }
 
+    private Discount() { }
+
     public Discount
     (
         Guid hotelId,

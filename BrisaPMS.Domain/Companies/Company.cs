@@ -6,7 +6,6 @@ namespace BrisaPMS.Domain.Companies;
 
 public class Company : BaseEntity
 {
-    // Attributes
     public Guid Id { get; init; }
     public string LegalName {get; private set;}
     public string CommercialName {get; private set;}
@@ -16,7 +15,8 @@ public class Company : BaseEntity
     public Url? LogoUrl  { get; private set; }
     public Address Address { get; private set; }
 
-    // Constructor
+    private Company() { }
+
     public Company
         (
             string legalName,

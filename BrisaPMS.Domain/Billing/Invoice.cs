@@ -27,6 +27,8 @@ public class Invoice : BaseEntity
     public InvoiceStatus Status { get; init; }
     public DateTime IssuedAt { get; init; }
 
+    private Invoice() { }
+
     public Invoice
     (
         Guid hotelId,

@@ -21,6 +21,8 @@ public class InventoryItem : BaseEntity
     public Email SupplierEmail { get; private set; }
     public bool IsActive { get; private set; }
 
+    private InventoryItem() { }
+
     public InventoryItem
     (
         Guid hotelId,

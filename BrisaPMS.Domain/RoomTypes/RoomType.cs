@@ -13,6 +13,8 @@ public class RoomType : BaseEntity
     public RoomBed Beds {get; private set;}
     public OccupancyPolicy OccupancyPolicy { get; private set; }
 
+    private RoomType() { }
+
     public RoomType
     (
         string name,
