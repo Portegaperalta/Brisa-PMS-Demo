@@ -11,12 +11,6 @@ namespace BrisaPMS.Domain.Shared.ValueObjects
         public string Province { get; }
         public string ZipCode { get; }
 
-        private const int MaxAddress1CharacterLimit = 200;
-        private const int MaxAddress2CharacterLimit = 200;
-        private const int MaxCityCharacterLimit = 100;
-        private const int MaxProvinceCharacterLimit = 100;
-        private const int MaxZipcodeCharacterLimit = 11;
-
         private Address() { }
 
         public Address(string address1, string? address2, string city, string province, string zipcode)
@@ -32,24 +26,6 @@ namespace BrisaPMS.Domain.Shared.ValueObjects
 
             if (string.IsNullOrWhiteSpace(zipcode) is true)
                 throw new EmptyRequiredFieldException("Zip Code");
-
-            if (address1.Length > MaxAddress1CharacterLimit)
-                throw new MaxCharacterLimitException(MaxAddress1CharacterLimit, "Address 1");
-
-            if (address2 is not null)
-            {
-                if (address2!.Length > MaxAddress2CharacterLimit)
-                    throw new MaxCharacterLimitException(MaxAddress2CharacterLimit, "Address 2");
-            }
-
-            if (city.Length > MaxCityCharacterLimit)
-                throw new MaxCharacterLimitException(MaxCityCharacterLimit, "City");
-
-            if (province.Length > MaxProvinceCharacterLimit)
-                throw new MaxCharacterLimitException(MaxProvinceCharacterLimit, "Province");
-
-            if (zipcode.Length > MaxZipcodeCharacterLimit)
-                throw new MaxCharacterLimitException(MaxZipcodeCharacterLimit, "Zip Code");
 
             if (zipcode.All(char.IsDigit) is not true)
                 throw new BusinessRuleException("Zip Code can only contain numeric values");
