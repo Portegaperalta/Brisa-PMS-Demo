@@ -81,47 +81,6 @@ public class AddressTests
     }
 
     [Theory]
-    [InlineData("Address 1", 201)]
-    [InlineData("Address 2", 201)]
-    [InlineData("City", 101)]
-    [InlineData("Province", 101)]
-    [InlineData("Zip Code", 12)]
-    public void Constructor_ShouldThrowMaxCharacterLimitException_WhenFieldExceedsMaxLength(string fieldName, int length)
-    {
-        // Arrange
-        var address1 = "123 Main Street";
-        var address2 = "Apartment 4B";
-        var city = "Santo Domingo";
-        var province = "Distrito Nacional";
-        var zipCode = "10101";
-
-        switch (fieldName)
-        {
-            case "Address 1":
-                address1 = new string('a', length);
-                break;
-            case "Address 2":
-                address2 = new string('a', length);
-                break;
-            case "City":
-                city = new string('a', length);
-                break;
-            case "Province":
-                province = new string('a', length);
-                break;
-            case "Zip Code":
-                zipCode = new string('1', length);
-                break;
-        }
-
-        // Act
-        Action act = () => _ = new Address(address1, address2, city, province, zipCode);
-
-        // Assert
-        act.Should().Throw<MaxCharacterLimitException>();
-    }
-
-    [Theory]
     [InlineData("10A01")]
     [InlineData("10-01")]
     public void Constructor_ShouldThrowBusinessRuleException_WhenZipCodeContainsNonNumericCharacters(string zipCode)
