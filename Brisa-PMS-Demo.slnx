@@ -1,5 +1,4 @@
 <Solution>
-  <Folder Name="/API/" />
   <Folder Name="/Core/">
     <Project Path="BrisaPMS.Application/BrisaPMS.Application.csproj" />
     <Project Path="BrisaPMS.Domain/BrisaPMS.Domain.csproj" />
