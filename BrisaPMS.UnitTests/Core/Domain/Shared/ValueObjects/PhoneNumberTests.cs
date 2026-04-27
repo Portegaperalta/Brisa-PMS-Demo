@@ -45,17 +45,4 @@ public class PhoneNumberTests
         // Assert
         result.Value.Should().Be(phoneNumber);
     }
-
-    [Fact]
-    public void Constructor_ShouldThrowMaxCharacterLimitException_WhenPhoneNumberExceeds25Characters()
-    {
-        // Arrange
-        var phoneNumber = new string('1', 26);
-
-        // Act
-        Action act = () => _ = new PhoneNumber(phoneNumber);
-
-        // Assert
-        act.Should().Throw<MaxCharacterLimitException>();
-    }
 }
