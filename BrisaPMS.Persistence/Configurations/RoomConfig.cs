@@ -1,6 +1,7 @@
 ﻿using BrisaPMS.Domain.Hotels;
 using BrisaPMS.Domain.Rooms;
 using BrisaPMS.Domain.RoomTypes;
+using BrisaPMS.Domain.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -45,7 +46,9 @@ public class RoomConfig : BaseEntityConfig<Room>
 
         builder.Property(r => r.LastCleanedAt);
 
-        builder.Property(r => r.LastCleanedBy);
+        builder.HasOne<User>()
+               .WithMany()
+               .HasForeignKey(r => r.LastCleanedBy);
 
         builder.Property(r => r.NeedsRestocking);
     }
