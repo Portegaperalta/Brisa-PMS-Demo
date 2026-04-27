@@ -1,5 +1,7 @@
 
+using BrisaPMS.API.Services;
 using BrisaPMS.Application;
+using BrisaPMS.Application.Contracts.Services;
 using BrisaPMS.Persistence;
 
 namespace BrisaPMS.API
@@ -18,6 +20,10 @@ namespace BrisaPMS.API
             builder.Services.AddApplicationServices();
 
             builder.Services.AddPersistenceServices();
+
+            builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             var app = builder.Build();
 
