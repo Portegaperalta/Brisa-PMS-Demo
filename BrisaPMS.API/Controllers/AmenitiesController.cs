@@ -39,7 +39,7 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CreateAmenityDTO createAmenityDTO)
+        public async Task<IActionResult> Create([FromBody] CreateAmenityDTO createAmenityDTO)
         {
             var command = new CreateAmenityCommand
             {
@@ -53,7 +53,7 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] UpdateAmenityDetailsDTO updateAmenityDetailsDTO)
+        public async Task<IActionResult> UpdateDetails([FromRoute] Guid id, [FromBody] UpdateAmenityDetailsDTO updateAmenityDetailsDTO)
         {
             var command = new UpdateAmenityDetailsCommand
             {
