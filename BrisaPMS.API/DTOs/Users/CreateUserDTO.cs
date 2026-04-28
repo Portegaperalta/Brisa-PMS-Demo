@@ -8,6 +8,8 @@ namespace BrisaPMS.API.DTOs.Users
         [StringLength(25)]
         public required string Role { get; set; }
 
+        public Guid? HotelId { get; set; }
+
         [Required]
         [StringLength(250)]
         public required string FirstName { get; set; }
