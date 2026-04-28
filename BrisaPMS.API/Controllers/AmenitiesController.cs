@@ -49,7 +49,7 @@ namespace BrisaPMS.API.Controllers
             };
 
             await _mediator.Send(command);
-            return Ok();
+            return Created();
         }
 
         [HttpPut]
@@ -63,7 +63,7 @@ namespace BrisaPMS.API.Controllers
             };
 
             await _mediator.Send(command);
-            return Ok();
+            return NoContent();
         }
 
         [HttpPut("{id:guid}/deactivate")]
@@ -71,7 +71,7 @@ namespace BrisaPMS.API.Controllers
         {
             var command = new DeactivateAmenityCommand { AmenityId = id };
             await _mediator.Send(command);
-            return Ok();
+            return NoContent();
         }
 
         [HttpPut("{id:guid}/activate")]
@@ -79,7 +79,7 @@ namespace BrisaPMS.API.Controllers
         {
             var command = new ActivateAmenityCommand { AmenityId = id };
             await _mediator.Send(command);
-            return Ok();
+            return NoContent();
         }
     }
 }
