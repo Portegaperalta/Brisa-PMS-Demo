@@ -37,7 +37,6 @@ public class User : BaseEntity
             string firstName,
             string lastName,
             Email email,
-            Password passwordHash,
             UserPreferredLanguage preferredLanguage
         )
         {
