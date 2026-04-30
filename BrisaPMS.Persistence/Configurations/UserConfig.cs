@@ -33,11 +33,6 @@ public class UserConfig : BaseEntityConfig<User>
                .HasConversion(v => v.Value, v => new Email(v))
                .HasMaxLength(254);
 
-        builder.Property(u => u.PasswordHash)
-               .IsRequired()
-               .HasConversion(v => v.Value, v => new Password(v))
-               .HasMaxLength(512);
-
         builder.Property(u => u.PhoneNumber)
                .HasConversion(
                       v => v != null ? v.Value : null,
@@ -52,19 +47,5 @@ public class UserConfig : BaseEntityConfig<User>
 
         builder.Property(u => u.IsActive)
                .IsRequired();
-        
-        builder.Property(u => u.IsEmailConfirmed)
-               .IsRequired();
-        
-        builder.Property(u => u.FailedLoginAttempts)
-               .IsRequired();
-
-        builder.Property(u => u.LockOutDuration);
-
-        builder.Property(u => u.LockOutEnd);
-
-        builder.Property(u => u.LastLoginAt);
-
-        builder.Property(u => u.PasswordChangedAt);
     }
 }
