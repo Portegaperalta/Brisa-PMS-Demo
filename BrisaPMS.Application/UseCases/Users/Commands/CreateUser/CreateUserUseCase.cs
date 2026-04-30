@@ -33,7 +33,6 @@ public class CreateUserUseCase : IRequestHandler<CreateUserCommand, Guid>
         
         var role = Enum.Parse<UserRole>(command.Role);
         var email = new Email(command.Email);
-        var passwordHash = new Password(command.Password);
         var preferredLanguage = Enum.Parse<UserPreferredLanguage>(command.PreferredLanguage);
 
         var userBuilder = new User.Builder
@@ -42,7 +41,6 @@ public class CreateUserUseCase : IRequestHandler<CreateUserCommand, Guid>
             command.FirstName,
             command.LastName,
             email,
-            passwordHash,
             preferredLanguage
         );
         
