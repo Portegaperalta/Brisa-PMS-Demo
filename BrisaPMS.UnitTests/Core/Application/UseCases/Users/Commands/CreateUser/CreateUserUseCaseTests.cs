@@ -1,5 +1,6 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Application.Contracts.Services;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Users.Commands.CreateUser;
 using BrisaPMS.Domain.Users;
@@ -13,6 +14,7 @@ public class CreateUserUseCaseTests
 {
   private readonly IUsersRepository _usersRepositoryMock;
   private readonly IHotelsRepository _hotelsRepositoryMock;
+  private readonly IIdentityService _identityServiceMock;
   private readonly IUnitOfWork _unitOfWorkMock;
   private readonly CreateUserUseCase _useCase;
 
@@ -20,8 +22,9 @@ public class CreateUserUseCaseTests
   {
     _usersRepositoryMock = Substitute.For<IUsersRepository>();
     _hotelsRepositoryMock = Substitute.For<IHotelsRepository>();
+    _identityServiceMock = Substitute.For<IIdentityService>();
     _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-    _useCase = new CreateUserUseCase(_usersRepositoryMock, _hotelsRepositoryMock, _unitOfWorkMock);
+    _useCase = new CreateUserUseCase(_usersRepositoryMock, _hotelsRepositoryMock, _identityServiceMock, _unitOfWorkMock);
   }
 
   [Fact]
@@ -48,6 +51,11 @@ public class CreateUserUseCaseTests
         user.PreferredLanguage == Enum.Parse<UserPreferredLanguage>(command.PreferredLanguage)));
 
     await _unitOfWorkMock.Received(1).Persist();
+    await _identityServiceMock.Received(1).CreateUserAsync(
+        command.Email,
+        command.Password,
+        Enum.Parse<UserRole>(command.Role),
+        result);
     await _unitOfWorkMock.DidNotReceive().Revert();
     result.Should().NotBe(Guid.Empty);
   }
@@ -76,6 +84,11 @@ public class CreateUserUseCaseTests
         user.HotelId == null &&
         user.PhoneNumber == null));
 
+    await _identityServiceMock.Received(1).CreateUserAsync(
+        command.Email,
+        command.Password,
+        UserRole.Admin,
+        result);
     await _unitOfWorkMock.Received(1).Persist();
   }
 
@@ -110,6 +123,7 @@ public class CreateUserUseCaseTests
     // Assert
     await act.Should().ThrowAsync<NotFoundException>();
     await _usersRepositoryMock.DidNotReceive().Create(Arg.Any<User>());
+    await _identityServiceMock.DidNotReceive().CreateUserAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<UserRole>(), Arg.Any<Guid>());
     await _unitOfWorkMock.DidNotReceive().Persist();
     await _unitOfWorkMock.DidNotReceive().Revert();
   }
@@ -135,6 +149,10 @@ public class CreateUserUseCaseTests
 
     // Assert
     await act.Should().ThrowAsync<NotFoundException>();
+    await _usersRepositoryMock.DidNotReceive().Create(Arg.Any<User>());
+    await _identityServiceMock.DidNotReceive().CreateUserAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<UserRole>(), Arg.Any<Guid>());
+    await _unitOfWorkMock.DidNotReceive().Persist();
+    await _unitOfWorkMock.DidNotReceive().Revert();
   }
 
   [Fact]
@@ -152,12 +170,13 @@ public class CreateUserUseCaseTests
 
     // Assert
     await act.Should().ThrowAsync<InvalidOperationException>();
+    await _identityServiceMock.DidNotReceive().CreateUserAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<UserRole>(), Arg.Any<Guid>());
     await _unitOfWorkMock.Received(1).Revert();
     await _unitOfWorkMock.DidNotReceive().Persist();
   }
 
   [Fact]
-  public async Task Handle_ThrowsException_WhenPasswordIsInvalid()
+  public async Task Handle_RevertsUnitOfWork_WhenIdentityUserCreationFails()
   {
     // Arrange
     var command = CreateCommand(
@@ -166,17 +185,25 @@ public class CreateUserUseCaseTests
         "John",
         "Doe",
         "test@example.com",
-        "weak",
+        "Test@1234",
         "+18095551234",
         "En");
 
     _hotelsRepositoryMock.Exists(command.HotelId!.Value).Returns(true);
+    _identityServiceMock.CreateUserAsync(
+        command.Email,
+        command.Password,
+        UserRole.Admin,
+        Arg.Any<Guid>()).Throws<InvalidOperationException>();
 
     // Act
     var act = async () => await _useCase.Handle(command);
 
     // Assert
-    await act.Should().ThrowAsync<Exception>();
+    await act.Should().ThrowAsync<InvalidOperationException>();
+    await _usersRepositoryMock.Received(1).Create(Arg.Any<User>());
+    await _unitOfWorkMock.Received(1).Revert();
+    await _unitOfWorkMock.DidNotReceive().Persist();
   }
 
   private static CreateUserCommand CreateValidCommand(Guid hotelId)
