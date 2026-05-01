@@ -1,5 +1,4 @@
-﻿using BrisaPMS.Application.Contracts.Persistence;
-using BrisaPMS.Application.Contracts.Repositories;
+﻿using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Contracts.Services;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.Utilities.Mediator;
