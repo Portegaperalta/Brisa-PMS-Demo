@@ -19,7 +19,8 @@ public class ChangePasswordCommandValidatorTests
     var command = new ChangePasswordCommand
     {
       UserId = Guid.Empty,
-      Password = "Valid@123"
+      CurrentPassword = "Current@123",
+      NewPassword = "Valid@123"
     };
 
     // Act
@@ -30,105 +31,129 @@ public class ChangePasswordCommandValidatorTests
   }
 
   [Fact]
-  public void Validator_HasErrors_WhenPasswordIsEmpty()
+  public void Validator_HasErrors_WhenCurrentPasswordIsEmpty()
   {
     // Arrange
     var command = new ChangePasswordCommand
     {
       UserId = Guid.NewGuid(),
-      Password = string.Empty
+      CurrentPassword = string.Empty,
+      NewPassword = "Valid@123"
     };
 
     // Act
     var result = _validator.TestValidate(command);
 
     // Assert
-    result.ShouldHaveValidationErrorFor(x => x.Password);
+    result.ShouldHaveValidationErrorFor(x => x.CurrentPassword);
   }
 
   [Fact]
-  public void Validator_HasErrors_WhenPasswordExceedsMaxLength()
+  public void Validator_HasErrors_WhenNewPasswordIsEmpty()
   {
     // Arrange
     var command = new ChangePasswordCommand
     {
       UserId = Guid.NewGuid(),
-      Password = new string('P', 513)
+      CurrentPassword = "Current@123",
+      NewPassword = string.Empty
     };
 
     // Act
     var result = _validator.TestValidate(command);
 
     // Assert
-    result.ShouldHaveValidationErrorFor(x => x.Password);
+    result.ShouldHaveValidationErrorFor(x => x.NewPassword);
   }
 
   [Fact]
-  public void Validator_HasErrors_WhenPasswordIsTooShort()
+  public void Validator_HasErrors_WhenNewPasswordExceedsMaxLength()
   {
     // Arrange
     var command = new ChangePasswordCommand
     {
       UserId = Guid.NewGuid(),
-      Password = "Abc@12"
+      CurrentPassword = "Current@123",
+      NewPassword = new string('P', 513)
     };
 
     // Act
     var result = _validator.TestValidate(command);
 
     // Assert
-    result.ShouldHaveValidationErrorFor(x => x.Password);
+    result.ShouldHaveValidationErrorFor(x => x.NewPassword);
   }
 
   [Fact]
-  public void Validator_HasErrors_WhenPasswordLacksUppercase()
+  public void Validator_HasErrors_WhenNewPasswordIsTooShort()
   {
     // Arrange
     var command = new ChangePasswordCommand
     {
       UserId = Guid.NewGuid(),
-      Password = "password@123"
+      CurrentPassword = "Current@123",
+      NewPassword = "Abc@12"
     };
 
     // Act
     var result = _validator.TestValidate(command);
 
     // Assert
-    result.ShouldHaveValidationErrorFor(x => x.Password);
+    result.ShouldHaveValidationErrorFor(x => x.NewPassword);
   }
 
   [Fact]
-  public void Validator_HasErrors_WhenPasswordLacksNumber()
+  public void Validator_HasErrors_WhenNewPasswordLacksUppercase()
   {
     // Arrange
     var command = new ChangePasswordCommand
     {
       UserId = Guid.NewGuid(),
-      Password = "Password@"
+      CurrentPassword = "Current@123",
+      NewPassword = "password@123"
     };
 
     // Act
     var result = _validator.TestValidate(command);
 
     // Assert
-    result.ShouldHaveValidationErrorFor(x => x.Password);
+    result.ShouldHaveValidationErrorFor(x => x.NewPassword);
   }
 
   [Fact]
-  public void Validator_HasErrors_WhenPasswordLacksSpecialCharacter()
+  public void Validator_HasErrors_WhenNewPasswordLacksNumber()
   {
     // Arrange
     var command = new ChangePasswordCommand
     {
       UserId = Guid.NewGuid(),
-      Password = "Password123"
+      CurrentPassword = "Current@123",
+      NewPassword = "Password@"
     };
 
     // Act
     var result = _validator.TestValidate(command);
 
     // Assert
-    result.ShouldHaveValidationErrorFor(x => x.Password);
+    result.ShouldHaveValidationErrorFor(x => x.NewPassword);
+  }
+
+  [Fact]
+  public void Validator_HasErrors_WhenNewPasswordLacksSpecialCharacter()
+  {
+    // Arrange
+    var command = new ChangePasswordCommand
+    {
+      UserId = Guid.NewGuid(),
+      CurrentPassword = "Current@123",
+      NewPassword = "Password123"
+    };
+
+    // Act
+    var result = _validator.TestValidate(command);
+
+    // Assert
+    result.ShouldHaveValidationErrorFor(x => x.NewPassword);
   }
 
   [Fact]
@@ -138,7 +163,8 @@ public class ChangePasswordCommandValidatorTests
     var command = new ChangePasswordCommand
     {
       UserId = Guid.NewGuid(),
-      Password = "Valid@123"
+      CurrentPassword = "Current@123",
+      NewPassword = "Valid@123"
     };
 
     // Act

@@ -93,7 +93,6 @@ public class ChangePreferredLanguageUseCaseTests
         "John",
         "Doe",
         new Email("test@example.com"),
-        new Password("Test@1234"),
         UserPreferredLanguage.En)
     .WithHotelId(Guid.NewGuid())
     .Build();

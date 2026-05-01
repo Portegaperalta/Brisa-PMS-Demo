@@ -8,8 +8,11 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
     {
         RuleFor(x => x.UserId)
             .NotEmpty().WithMessage("The field UserId is required.");
-        
-        RuleFor(x => x.Password)
+
+        RuleFor(x => x.CurrentPassword)
+            .NotEmpty().WithMessage("The field Password is required.");
+
+        RuleFor(x => x.NewPassword)
             .NotEmpty().WithMessage("The field Password is required.")
             .MaximumLength(512).WithMessage("The field Password can't exceed 512 characters.")
             .MinimumLength(8).WithMessage("Password must contain at least 8 characters.")

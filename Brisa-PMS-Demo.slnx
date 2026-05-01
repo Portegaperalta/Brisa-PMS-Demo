@@ -7,6 +7,7 @@
     <Project Path="BrisaPMS.Domain/BrisaPMS.Domain.csproj" />
   </Folder>
   <Folder Name="/Infrastructure/">
+    <Project Path="BrisaPMS.Identity/BrisaPMS.Identity.csproj" Id="5a72b895-b27e-46ee-85a9-28718f1f2f89" />
     <Project Path="BrisaPMS.Persistence/BrisaPMS.Persistence.csproj" />
   </Folder>
   <Folder Name="/Tests/">

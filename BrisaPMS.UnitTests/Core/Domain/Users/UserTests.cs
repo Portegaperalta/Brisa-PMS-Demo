@@ -14,7 +14,6 @@ public class UserTests
         var role = UserRole.Admin;
         var hotelId = Guid.NewGuid();
         var email = CreateEmail();
-        var password = CreatePassword();
         var phoneNumber = CreatePhoneNumber();
 
         // Act
@@ -24,7 +23,6 @@ public class UserTests
             "John",
             "Doe",
             email,
-            password,
             UserPreferredLanguage.En
         )
         .WithHotelId(hotelId)
@@ -38,16 +36,9 @@ public class UserTests
         result.FirstName.Should().Be("John");
         result.LastName.Should().Be("Doe");
         result.Email.Should().Be(email);
-        result.PasswordHash.Should().Be(password);
         result.PhoneNumber.Should().Be(phoneNumber);
         result.PreferredLanguage.Should().Be(UserPreferredLanguage.En);
         result.IsActive.Should().BeFalse();
-        result.IsEmailConfirmed.Should().BeFalse();
-        result.FailedLoginAttempts.Should().Be(0);
-        result.LockOutDuration.Should().BeNull();
-        result.LockOutEnd.Should().BeNull();
-        result.LastLoginAt.Should().BeNull();
-        result.PasswordChangedAt.Should().BeNull();
     }
 
     [Fact]
@@ -64,7 +55,6 @@ public class UserTests
             "John",
             "Doe",
             CreateEmail(),
-            CreatePassword(),
             UserPreferredLanguage.En
         )
         .WithHotelId(hotelId)
@@ -86,7 +76,6 @@ public class UserTests
             "John",
             "Doe",
             CreateEmail(),
-            CreatePassword(),
             UserPreferredLanguage.En
         )
         .Build();
@@ -107,7 +96,6 @@ public class UserTests
             firstName!,
             "Doe",
             CreateEmail(),
-            CreatePassword(),
             UserPreferredLanguage.En
         );
 
@@ -127,7 +115,6 @@ public class UserTests
             "John",
             lastName!,
             CreateEmail(),
-            CreatePassword(),
             UserPreferredLanguage.En
         );
 
@@ -148,7 +135,6 @@ public class UserTests
             "John",
             "Doe",
             CreateEmail(),
-            CreatePassword(),
             invalidLanguage
         );
 
@@ -250,20 +236,6 @@ public class UserTests
     }
 
     [Fact]
-    public void ChangePassword_ShouldUpdatePasswordHash_WhenPasswordIsValid()
-    {
-        // Arrange
-        var user = CreateUser();
-        var newPassword = new Password("NewPassword123!");
-
-        // Act
-        user.ChangePassword(newPassword);
-
-        // Assert
-        user.PasswordHash.Should().Be(newPassword);
-    }
-
-    [Fact]
     public void ChangePhoneNumber_ShouldUpdatePhoneNumber_WhenPhoneNumberIsValid()
     {
         // Arrange
@@ -304,90 +276,6 @@ public class UserTests
         act.Should().Throw<LanguageNotSupportedException>();
     }
 
-    [Fact]
-    public void SetEmailAsConfirmed_ShouldMarkEmailAsConfirmed()
-    {
-        // Arrange
-        var user = CreateUser();
-
-        // Act
-        user.SetEmailAsConfirmed();
-
-        // Assert
-        user.IsEmailConfirmed.Should().BeTrue();
-    }
-
-    [Fact]
-    public void IncreaseFailedLoginAttempts_ShouldIncrementFailedLoginAttempts()
-    {
-        // Arrange
-        var user = CreateUser();
-
-        // Act
-        user.IncreaseFailedLoginAttempts();
-        user.IncreaseFailedLoginAttempts();
-
-        // Assert
-        user.FailedLoginAttempts.Should().Be(2);
-    }
-
-    [Fact]
-    public void SetLockoutDuration_ShouldUpdateLockoutDuration()
-    {
-        // Arrange
-        var user = CreateUser();
-        var lockoutDuration = TimeSpan.FromMinutes(15);
-
-        // Act
-        user.SetLockoutDuration(lockoutDuration);
-
-        // Assert
-        user.LockOutDuration.Should().Be(lockoutDuration);
-    }
-
-    [Fact]
-    public void SetLockoutEnd_ShouldUpdateLockoutEnd_WhenDateIsInTheFuture()
-    {
-        // Arrange
-        var user = CreateUser();
-        var lockoutEnd = DateTimeOffset.UtcNow.AddMinutes(10);
-
-        // Act
-        user.SetLockoutEnd(lockoutEnd);
-
-        // Assert
-        user.LockOutEnd.Should().Be(lockoutEnd);
-    }
-
-    [Fact]
-    public void SetLockoutEnd_ShouldThrowExpiredLockOutEndDateException_WhenDateIsInThePast()
-    {
-        // Arrange
-        var user = CreateUser();
-        var expiredLockoutEnd = DateTimeOffset.UtcNow.AddMinutes(-1);
-
-        // Act
-        Action act = () => user.SetLockoutEnd(expiredLockoutEnd);
-
-        // Assert
-        act.Should().Throw<ExpiredLockOutEndDateException>();
-    }
-
-    [Fact]
-    public void TimestampUpdateMethods_ShouldSetAuditDates()
-    {
-        // Arrange
-        var user = CreateUser();
-
-        // Act
-        user.UpdateLastLoginTime();
-        user.UpdatedLastPasswordChangeTime();
-
-        // Assert
-        user.LastLoginAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
-        user.PasswordChangedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
-    }
-
     private static User CreateUser(UserRole role = UserRole.Receptionist)
     {
         return new User.Builder
@@ -396,7 +284,6 @@ public class UserTests
             "John",
             "Doe",
             CreateEmail(),
-            CreatePassword(),
             UserPreferredLanguage.En
         )
         .WithHotelId(Guid.NewGuid())
@@ -407,11 +294,6 @@ public class UserTests
     private static Email CreateEmail()
     {
         return new Email("john.doe@example.com");
-    }
-
-    private static Password CreatePassword()
-    {
-        return new Password("Password123!");
     }
 
     private static PhoneNumber CreatePhoneNumber()
