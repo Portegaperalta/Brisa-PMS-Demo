@@ -102,7 +102,6 @@ public class GetAllUsersByHotelIdUseCaseTests
       firstName,
       lastName,
       new Email($"{firstName.ToLower()}.{lastName.ToLower()}@example.com"),
-      new Password("Hashed#password1"),
       UserPreferredLanguage.En)
       .WithHotelId(hotelId)
       .WithPhoneNumber(new PhoneNumber("+18095551234"))

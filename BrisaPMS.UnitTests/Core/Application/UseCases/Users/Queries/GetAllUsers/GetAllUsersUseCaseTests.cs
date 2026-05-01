@@ -47,7 +47,7 @@ public class GetAllUsersUseCaseTests
                 PreferredLanguage = user.PreferredLanguage.ToString(),
                 Role = user.Role.ToString()
             }));
-        
+
         await _repositoryMock.Received(1).GetAll();
     }
 
@@ -74,7 +74,6 @@ public class GetAllUsersUseCaseTests
                 firstName,
                 lastName,
                 new Email($"{firstName.ToLower()}.{lastName.ToLower()}@example.com"),
-                new Password("Hashed#password1"),
                 UserPreferredLanguage.En)
             .WithHotelId(Guid.NewGuid())
             .WithPhoneNumber(new PhoneNumber("+18095551234"))
