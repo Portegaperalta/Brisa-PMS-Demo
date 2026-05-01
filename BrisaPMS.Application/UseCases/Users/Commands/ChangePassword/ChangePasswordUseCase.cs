@@ -24,7 +24,12 @@ public class ChangePasswordUseCase : IRequestHandler<ChangePasswordCommand, bool
         if (userExists is false)
             throw new NotFoundException("User", command.UserId);
 
-        await _identityService.UpdatePasswordAsync(command.UserId, command.Password);
+        var isCurrentPasswordValid = await _identityService.CheckPasswordAsync(command.UserId, command.CurrentPassword);
+
+        if (isCurrentPasswordValid is not true)
+            throw new IncorrectPasswordException();
+
+        await _identityService.UpdatePasswordAsync(command.UserId, command.NewPassword);
 
         return true;
     }
