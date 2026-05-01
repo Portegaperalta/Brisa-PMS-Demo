@@ -43,8 +43,8 @@ public class UpdateUserNameUseCaseTests
 
         // Assert
         await _usersRepositoryMock.Received(1).GetById(userId);
-        await _usersRepositoryMock.Received(1).Update(Arg.Is<User>(u => 
-            u.FirstName == "Jane" && 
+        await _usersRepositoryMock.Received(1).Update(Arg.Is<User>(u =>
+            u.FirstName == "Jane" &&
             u.LastName == "Smith"));
         await _unitOfWorkMock.Received(1).Persist();
         await _unitOfWorkMock.DidNotReceive().Revert();
@@ -107,7 +107,6 @@ public class UpdateUserNameUseCaseTests
             "John",
             "Doe",
             new Email("test@example.com"),
-            new Password("Test@1234"),
             UserPreferredLanguage.En)
         .WithHotelId(Guid.NewGuid())
         .WithPhoneNumber(new PhoneNumber("+18095551234"))
