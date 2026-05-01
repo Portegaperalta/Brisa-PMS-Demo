@@ -50,7 +50,7 @@ namespace BrisaPMS.Identity
                           .FirstOrDefaultAsync(u => u.DomainUserId == domainUserId);
 
             if (appUser is null)
-                throw new UserNotFoundException();
+                throw new NotFoundException("User", domainUserId);
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(appUser);
             var result = await _userManager.ResetPasswordAsync(appUser, token, newPassword);
@@ -98,7 +98,7 @@ namespace BrisaPMS.Identity
             var appUser = await _userManager.Users.FirstOrDefaultAsync(u => u.DomainUserId == domainUserId);
 
             if (appUser is null)
-                throw new UserNotFoundException();
+                throw new NotFoundException("User", domainUserId);
 
             var currentRoles = await _userManager.GetRolesAsync(appUser);
 
