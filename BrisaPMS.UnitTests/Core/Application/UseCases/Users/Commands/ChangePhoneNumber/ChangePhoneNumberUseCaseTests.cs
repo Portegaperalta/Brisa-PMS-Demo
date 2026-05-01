@@ -1,5 +1,6 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Application.Contracts.Services;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Users.Commands.ChangePhoneNumber;
 using BrisaPMS.Domain.Users;
@@ -13,14 +14,16 @@ namespace BrisaPMS.UnitTests.Core.Application.UseCases.Users.Commands.ChangePhon
 public class ChangePhoneNumberUseCaseTests
 {
   private readonly IUsersRepository _usersRepositoryMock;
+  private readonly IIdentityService _identityServiceMock;
   private readonly IUnitOfWork _unitOfWorkMock;
   private readonly ChangePhoneNumberUseCase _useCase;
 
   public ChangePhoneNumberUseCaseTests()
   {
     _usersRepositoryMock = Substitute.For<IUsersRepository>();
+    _identityServiceMock = Substitute.For<IIdentityService>();
     _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-    _useCase = new ChangePhoneNumberUseCase(_usersRepositoryMock, _unitOfWorkMock);
+    _useCase = new ChangePhoneNumberUseCase(_usersRepositoryMock, _identityServiceMock, _unitOfWorkMock);
   }
 
   [Fact]
@@ -43,6 +46,7 @@ public class ChangePhoneNumberUseCaseTests
     // Assert
     await _usersRepositoryMock.Received(1).GetById(userId);
     await _usersRepositoryMock.Received(1).Update(user);
+    await _identityServiceMock.Received(1).UpdatePhoneNumberAsync(command.UserId, command.PhoneNumber);
     await _unitOfWorkMock.Received(1).Persist();
     await _unitOfWorkMock.DidNotReceive().Revert();
     result.Should().BeTrue();
@@ -66,6 +70,7 @@ public class ChangePhoneNumberUseCaseTests
 
     // Assert
     await act.Should().ThrowAsync<NotFoundException>();
+    await _identityServiceMock.DidNotReceive().UpdatePhoneNumberAsync(Arg.Any<Guid>(), Arg.Any<string>());
     await _usersRepositoryMock.DidNotReceive().Update(Arg.Any<User>());
     await _unitOfWorkMock.DidNotReceive().Persist();
     await _unitOfWorkMock.DidNotReceive().Revert();
@@ -91,6 +96,7 @@ public class ChangePhoneNumberUseCaseTests
 
     // Assert
     await act.Should().ThrowAsync<InvalidOperationException>();
+    await _identityServiceMock.DidNotReceive().UpdatePhoneNumberAsync(Arg.Any<Guid>(), Arg.Any<string>());
     await _unitOfWorkMock.Received(1).Revert();
     await _unitOfWorkMock.DidNotReceive().Persist();
   }
@@ -102,7 +108,6 @@ public class ChangePhoneNumberUseCaseTests
         "John",
         "Doe",
         new Email("test@example.com"),
-        new Password("Test@1234"),
         UserPreferredLanguage.En)
     .WithHotelId(Guid.NewGuid())
     .WithPhoneNumber(new PhoneNumber("+18095551234"))
