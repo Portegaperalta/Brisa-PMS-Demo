@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BrisaPMS.Application.UseCases.Users.Commands.ChangePassword
+﻿namespace BrisaPMS.Application.UseCases.Users.Commands.ChangePassword
 {
     public class IncorrectPasswordException : Exception
     {
