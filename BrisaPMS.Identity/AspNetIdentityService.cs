@@ -1,4 +1,5 @@
 ﻿using BrisaPMS.Application.Contracts.Services;
+using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Domain.Users;
 using BrisaPMS.Identity.Exceptions;
 using Microsoft.AspNetCore.Identity;
@@ -53,6 +54,21 @@ namespace BrisaPMS.Identity
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(appUser);
             var result = await _userManager.ResetPasswordAsync(appUser, token, newPassword);
+
+            if (result.Succeeded is not true)
+                throw new IdentityException(result.Errors.Select(e => e.Description));
+        }
+
+        public async Task UpdateEmailAsync(Guid domainUserId, string newEmail)
+        {
+            var appUser = await _userManager.Users
+                          .FirstOrDefaultAsync(u => u.DomainUserId == domainUserId);
+
+            if (appUser is null)
+                throw new NotFoundException("User", domainUserId);
+
+            var token = await _userManager.GenerateChangeEmailTokenAsync(appUser, newEmail);
+            var result = await _userManager.ChangeEmailAsync(appUser, newEmail, token);
 
             if (result.Succeeded is not true)
                 throw new IdentityException(result.Errors.Select(e => e.Description));
