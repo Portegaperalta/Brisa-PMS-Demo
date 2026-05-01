@@ -1,15 +1,14 @@
 ﻿using BrisaPMS.Domain.Shared.ValueObjects;
 using BrisaPMS.Domain.Users;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BrisaPMS.Persistence.Configurations;
 
-public class UserConfig : BaseEntityConfig<User>
+public class UserConfig : IEntityTypeConfiguration<User>
 {
-    public override void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<User> builder)
     {
-        base.Configure(builder);
-
         builder.Property(u => u.Id)
                .IsRequired();
         
