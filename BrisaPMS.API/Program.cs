@@ -2,13 +2,14 @@
 using BrisaPMS.API.Services;
 using BrisaPMS.Application;
 using BrisaPMS.Application.Contracts.Services;
+using BrisaPMS.Identity;
 using BrisaPMS.Persistence;
 
 namespace BrisaPMS.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ namespace BrisaPMS.API
             builder.Services.AddApplicationServices();
 
             builder.Services.AddPersistenceServices(builder.Configuration);
+
+            builder.Services.AddIdentityServices(builder.Configuration);
 
             builder.Services.AddHttpContextAccessor();
 
@@ -36,8 +39,9 @@ namespace BrisaPMS.API
 
             app.UseAuthorization();
 
-
             app.MapControllers();
+
+            await app.Services.SeedRolesAsync();
 
             app.Run();
         }
