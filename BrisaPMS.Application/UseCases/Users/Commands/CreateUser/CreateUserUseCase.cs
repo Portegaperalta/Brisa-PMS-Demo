@@ -1,5 +1,6 @@
 ﻿using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Application.Contracts.Services;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Shared.ValueObjects;
@@ -11,13 +12,15 @@ public class CreateUserUseCase : IRequestHandler<CreateUserCommand, Guid>
 {
     private readonly IUsersRepository _usersRepository;
     private readonly IHotelsRepository _hotelsRepository;
+    private readonly IIdentityService _identityService;
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateUserUseCase(IUsersRepository usersRepository, IHotelsRepository hotelsRepository,
-        IUnitOfWork unitOfWork)
+        IIdentityService identityService,IUnitOfWork unitOfWork)
     {
         _usersRepository = usersRepository;
         _hotelsRepository = hotelsRepository;
+        _identityService = identityService;
         _unitOfWork = unitOfWork;
     }
 
@@ -58,6 +61,7 @@ public class CreateUserUseCase : IRequestHandler<CreateUserCommand, Guid>
         try
         {
             await _usersRepository.Create(user);
+            await _identityService.CreateUserAsync(command.Email, command.Password, role, user.Id);
             await _unitOfWork.Persist();
             return user.Id;
         }
