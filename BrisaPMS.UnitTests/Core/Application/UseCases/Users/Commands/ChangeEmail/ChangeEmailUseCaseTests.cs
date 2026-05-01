@@ -1,7 +1,9 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Application.Contracts.Services;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Users.Commands.ChangeEmail;
+using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Users;
 using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
@@ -13,14 +15,16 @@ namespace BrisaPMS.UnitTests.Core.Application.UseCases.Users.Commands.ChangeEmai
 public class ChangeEmailUseCaseTests
 {
     private readonly IUsersRepository _usersRepositoryMock;
+    private readonly IIdentityService _identityServiceMock;
     private readonly IUnitOfWork _unitOfWorkMock;
     private readonly ChangeEmailUseCase _useCase;
 
     public ChangeEmailUseCaseTests()
     {
         _usersRepositoryMock = Substitute.For<IUsersRepository>();
+        _identityServiceMock = Substitute.For<IIdentityService>();
         _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-        _useCase = new ChangeEmailUseCase(_usersRepositoryMock, _unitOfWorkMock);
+        _useCase = new ChangeEmailUseCase(_usersRepositoryMock, _unitOfWorkMock, _identityServiceMock);
     }
 
     [Fact]
@@ -36,14 +40,16 @@ public class ChangeEmailUseCaseTests
         };
 
         _usersRepositoryMock.GetById(userId).Returns(user);
+        _identityServiceMock.IsEmailUniqueAsync(command.Email).Returns(true);
 
         // Act
         var result = await _useCase.Handle(command);
 
         // Assert
         await _usersRepositoryMock.Received(1).GetById(userId);
-        await _usersRepositoryMock.Received(1).Update(Arg.Is<User>(u => 
-            u.Email.Value == "newemail@example.com"));
+        await _identityServiceMock.Received(1).IsEmailUniqueAsync(command.Email);
+        await _usersRepositoryMock.Received(1).Update(Arg.Is<User>(u => u.Email.Value == "newemail@example.com"));
+        await _identityServiceMock.Received(1).UpdateEmailAsync(command.UserId, command.Email);
         await _unitOfWorkMock.Received(1).Persist();
         await _unitOfWorkMock.DidNotReceive().Revert();
         result.Should().BeTrue();
@@ -67,13 +73,43 @@ public class ChangeEmailUseCaseTests
 
         // Assert
         await act.Should().ThrowAsync<NotFoundException>();
+        await _identityServiceMock.DidNotReceive().IsEmailUniqueAsync(Arg.Any<string>());
+        await _identityServiceMock.DidNotReceive().UpdateEmailAsync(Arg.Any<Guid>(), Arg.Any<string>());
         await _usersRepositoryMock.DidNotReceive().Update(Arg.Any<User>());
         await _unitOfWorkMock.DidNotReceive().Persist();
         await _unitOfWorkMock.DidNotReceive().Revert();
     }
 
     [Fact]
-    public async Task Handle_ThrowsException_WhenEmailIsInvalid()
+    public async Task Handle_ThrowsInvalidOperationException_WhenEmailIsAlreadyInUse()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var user = CreateUser(userId, UserRole.Receptionist);
+        var command = new ChangeEmailCommand
+        {
+            UserId = userId,
+            Email = "newemail@example.com"
+        };
+
+        _usersRepositoryMock.GetById(userId).Returns(user);
+        _identityServiceMock.IsEmailUniqueAsync(command.Email).Returns(false);
+
+        // Act
+        var act = async () => await _useCase.Handle(command);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidOperationException>()
+            .WithMessage("Email already in use");
+        await _identityServiceMock.Received(1).IsEmailUniqueAsync(command.Email);
+        await _usersRepositoryMock.DidNotReceive().Update(Arg.Any<User>());
+        await _identityServiceMock.DidNotReceive().UpdateEmailAsync(Arg.Any<Guid>(), Arg.Any<string>());
+        await _unitOfWorkMock.DidNotReceive().Persist();
+        await _unitOfWorkMock.DidNotReceive().Revert();
+    }
+
+    [Fact]
+    public async Task Handle_ThrowsInvalidFieldException_WhenEmailIsInvalid()
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -85,12 +121,18 @@ public class ChangeEmailUseCaseTests
         };
 
         _usersRepositoryMock.GetById(userId).Returns(user);
+        _identityServiceMock.IsEmailUniqueAsync(command.Email).Returns(true);
 
         // Act
         var act = async () => await _useCase.Handle(command);
 
         // Assert
-        await act.Should().ThrowAsync<Exception>();
+        await act.Should().ThrowAsync<InvalidFieldException>();
+        await _identityServiceMock.Received(1).IsEmailUniqueAsync(command.Email);
+        await _usersRepositoryMock.DidNotReceive().Update(Arg.Any<User>());
+        await _identityServiceMock.DidNotReceive().UpdateEmailAsync(Arg.Any<Guid>(), Arg.Any<string>());
+        await _unitOfWorkMock.DidNotReceive().Persist();
+        await _unitOfWorkMock.DidNotReceive().Revert();
     }
 
     [Fact]
@@ -106,6 +148,7 @@ public class ChangeEmailUseCaseTests
         };
 
         _usersRepositoryMock.GetById(userId).Returns(user);
+        _identityServiceMock.IsEmailUniqueAsync(command.Email).Returns(true);
         _usersRepositoryMock.Update(Arg.Any<User>()).Throws<InvalidOperationException>();
 
         // Act
@@ -113,6 +156,8 @@ public class ChangeEmailUseCaseTests
 
         // Assert
         await act.Should().ThrowAsync<InvalidOperationException>();
+        await _identityServiceMock.Received(1).IsEmailUniqueAsync(command.Email);
+        await _identityServiceMock.DidNotReceive().UpdateEmailAsync(Arg.Any<Guid>(), Arg.Any<string>());
         await _unitOfWorkMock.Received(1).Revert();
         await _unitOfWorkMock.DidNotReceive().Persist();
     }
@@ -124,7 +169,6 @@ public class ChangeEmailUseCaseTests
             "John",
             "Doe",
             new Email("test@example.com"),
-            new Password("Test@1234"),
             UserPreferredLanguage.En)
         .WithHotelId(Guid.NewGuid())
         .WithPhoneNumber(new PhoneNumber("+18095551234"))
