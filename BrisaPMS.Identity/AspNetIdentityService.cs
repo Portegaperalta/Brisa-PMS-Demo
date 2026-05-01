@@ -74,10 +74,22 @@ namespace BrisaPMS.Identity
                 throw new IdentityException(result.Errors.Select(e => e.Description));
         }
 
-        public async Task<bool> IsEmailUniqueAsync(string email)
+        public async Task UpdatePhoneNumberAsync(Guid domainUserId, string newPhoneNumber)
         {
-            return await _userManager.Users.AnyAsync(u => u.Email == email);
+            var appUser = await _userManager.Users
+                          .FirstOrDefaultAsync(u => u.DomainUserId == domainUserId);
+
+            if (appUser is null)
+                throw new NotFoundException("User", domainUserId);
+
+            var token = await _userManager.GenerateChangePhoneNumberTokenAsync(appUser, newPhoneNumber);
+            var result = await _userManager.ChangePhoneNumberAsync(appUser, newPhoneNumber, token);
+
+            if (result.Succeeded is not true)
+                throw new IdentityException(result.Errors.Select(e => e.Description));
         }
+
+        public async Task<bool> IsEmailUniqueAsync(string email) => await _userManager.Users.AnyAsync(u => u.Email == email);
 
         public async Task AssignRoleAsync(Guid domainUserId, UserRole role)
         {
