@@ -70,6 +70,8 @@ namespace BrisaPMS.Identity
             var token = await _userManager.GenerateChangeEmailTokenAsync(appUser, newEmail);
             var result = await _userManager.ChangeEmailAsync(appUser, newEmail, token);
 
+            await _userManager.SetUserNameAsync(appUser, newEmail);
+
             if (result.Succeeded is not true)
                 throw new IdentityException(result.Errors.Select(e => e.Description));
         }
