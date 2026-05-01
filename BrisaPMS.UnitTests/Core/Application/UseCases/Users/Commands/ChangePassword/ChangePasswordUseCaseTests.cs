@@ -1,26 +1,23 @@
-using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Application.Contracts.Services;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Users.Commands.ChangePassword;
-using BrisaPMS.Domain.Users;
-using BrisaPMS.Domain.Shared.ValueObjects;
 using FluentAssertions;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 
 namespace BrisaPMS.UnitTests.Core.Application.UseCases.Users.Commands.ChangePassword;
 
 public class ChangePasswordUseCaseTests
 {
   private readonly IUsersRepository _usersRepositoryMock;
-  private readonly IUnitOfWork _unitOfWorkMock;
+  private readonly IIdentityService _identityServiceMock;
   private readonly ChangePasswordUseCase _useCase;
 
   public ChangePasswordUseCaseTests()
   {
     _usersRepositoryMock = Substitute.For<IUsersRepository>();
-    _unitOfWorkMock = Substitute.For<IUnitOfWork>();
-    _useCase = new ChangePasswordUseCase(_usersRepositoryMock, _unitOfWorkMock);
+    _identityServiceMock = Substitute.For<IIdentityService>();
+    _useCase = new ChangePasswordUseCase(_usersRepositoryMock, _identityServiceMock);
   }
 
   [Fact]
@@ -28,23 +25,23 @@ public class ChangePasswordUseCaseTests
   {
     // Arrange
     var userId = Guid.NewGuid();
-    var user = CreateUser(userId, UserRole.Receptionist);
     var command = new ChangePasswordCommand
     {
       UserId = userId,
-      Password = "NewPassword@123"
+      CurrentPassword = "CurrentPassword@123",
+      NewPassword = "NewPassword@123"
     };
 
-    _usersRepositoryMock.GetById(userId).Returns(user);
+    _usersRepositoryMock.Exists(userId).Returns(true);
+    _identityServiceMock.CheckPasswordAsync(command.UserId, command.CurrentPassword).Returns(true);
 
     // Act
     var result = await _useCase.Handle(command);
 
     // Assert
-    await _usersRepositoryMock.Received(1).GetById(userId);
-    await _usersRepositoryMock.Received(1).Update(user);
-    await _unitOfWorkMock.Received(1).Persist();
-    await _unitOfWorkMock.DidNotReceive().Revert();
+    await _usersRepositoryMock.Received(1).Exists(userId);
+    await _identityServiceMock.Received(1).CheckPasswordAsync(command.UserId, command.CurrentPassword);
+    await _identityServiceMock.Received(1).UpdatePasswordAsync(command.UserId, command.NewPassword);
     result.Should().BeTrue();
   }
 
@@ -56,56 +53,42 @@ public class ChangePasswordUseCaseTests
     var command = new ChangePasswordCommand
     {
       UserId = userId,
-      Password = "NewPassword@123"
+      CurrentPassword = "CurrentPassword@123",
+      NewPassword = "NewPassword@123"
     };
 
-    _usersRepositoryMock.GetById(userId).Returns((User?)null);
+    _usersRepositoryMock.Exists(userId).Returns(false);
 
     // Act
     var act = async () => await _useCase.Handle(command);
 
     // Assert
     await act.Should().ThrowAsync<NotFoundException>();
-    await _usersRepositoryMock.DidNotReceive().Update(Arg.Any<User>());
-    await _unitOfWorkMock.DidNotReceive().Persist();
-    await _unitOfWorkMock.DidNotReceive().Revert();
+    await _identityServiceMock.DidNotReceive().CheckPasswordAsync(Arg.Any<Guid>(), Arg.Any<string>());
+    await _identityServiceMock.DidNotReceive().UpdatePasswordAsync(Arg.Any<Guid>(), Arg.Any<string>());
   }
 
   [Fact]
-  public async Task Handle_RevertsUnitOfWork_WhenRepositoryUpdateFails()
+  public async Task Handle_ThrowsIncorrectPasswordException_WhenCurrentPasswordIsInvalid()
   {
     // Arrange
     var userId = Guid.NewGuid();
-    var user = CreateUser(userId, UserRole.Receptionist);
     var command = new ChangePasswordCommand
     {
       UserId = userId,
-      Password = "NewPassword@123"
+      CurrentPassword = "WrongPassword@123",
+      NewPassword = "NewPassword@123"
     };
 
-    _usersRepositoryMock.GetById(userId).Returns(user);
-    _usersRepositoryMock.Update(Arg.Any<User>()).Throws<InvalidOperationException>();
+    _usersRepositoryMock.Exists(userId).Returns(true);
+    _identityServiceMock.CheckPasswordAsync(command.UserId, command.CurrentPassword).Returns(false);
 
     // Act
     var act = async () => await _useCase.Handle(command);
 
     // Assert
-    await act.Should().ThrowAsync<InvalidOperationException>();
-    await _unitOfWorkMock.Received(1).Revert();
-    await _unitOfWorkMock.DidNotReceive().Persist();
-  }
-
-  private static User CreateUser(Guid userId, UserRole role)
-  {
-    return new User.Builder(
-        role,
-        "John",
-        "Doe",
-        new Email("test@example.com"),
-        new Password("Test@1234"),
-        UserPreferredLanguage.En)
-    .WithHotelId(Guid.NewGuid())
-    .WithPhoneNumber(new PhoneNumber("+18095551234"))
-    .Build();
+    await act.Should().ThrowAsync<IncorrectPasswordException>();
+    await _identityServiceMock.Received(1).CheckPasswordAsync(command.UserId, command.CurrentPassword);
+    await _identityServiceMock.DidNotReceive().UpdatePasswordAsync(Arg.Any<Guid>(), Arg.Any<string>());
   }
 }
