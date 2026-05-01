@@ -8,6 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BrisaPMS.Application\BrisaPMS.Application.csproj" />
+    <ProjectReference Include="..\BrisaPMS.Domain\BrisaPMS.Domain.csproj" />
   </ItemGroup>
 
 </Project>
