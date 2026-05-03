@@ -23,7 +23,22 @@ namespace BrisaPMS.Identity
             _configuration = configuration;
         }
 
-        public async Task CreateUserAsync(string email, string password, UserRole role, Guid domainUserId)
+        public async Task<string> LoginAsync(string email, string password)
+        {
+            var appUser = await _userManager.FindByEmailAsync(email);
+
+            if (appUser is null)
+                throw new IdentityException($"User with email: {email} not found");
+
+            var isPasswordValid = await _userManager.CheckPasswordAsync(appUser, password);
+
+            if (isPasswordValid is not true)
+                throw new InvalidOperationException("Invalid Credentials");
+
+            return await CreateToken(appUser.DomainUserId, email);
+        }
+
+        public async Task<string> CreateUserAsync(string email, string password, UserRole role, Guid domainUserId)
         {
             var appUser = new AppUser
             {
@@ -118,19 +133,20 @@ namespace BrisaPMS.Identity
                 throw new IdentityException(result.Errors.Select(e => e.Description));
         }
 
-        public async Task<string> CreateToken(Guid userId,string email, UserRole role)
+        private async Task<string> CreateToken(Guid userId,string email)
         {
-            var user = await _userManager.FindByEmailAsync(email) ??
-                       throw new NotFoundException("User", userId);
+            var appUser = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException("User", userId);
+
+            var userRoles = await _userManager.GetRolesAsync(appUser);
 
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, role.ToString())
+                new Claim(ClaimTypes.Role, userRoles.FirstOrDefault() ?? string.Empty)
             };
 
-            var claimsDb = await _userManager.GetClaimsAsync(user);
+            var claimsDb = await _userManager.GetClaimsAsync(appUser);
 
             claims.AddRange(claimsDb);
 
