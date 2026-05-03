@@ -4,16 +4,23 @@ using BrisaPMS.Domain.Users;
 using BrisaPMS.Identity.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace BrisaPMS.Identity
 {
     public class AspNetIdentityService : IIdentityService
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IConfiguration _configuration;
 
-        public AspNetIdentityService(UserManager<AppUser> userManager)
+        public AspNetIdentityService(UserManager<AppUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         public async Task CreateUserAsync(string email, string password, UserRole role, Guid domainUserId)
@@ -109,6 +116,34 @@ namespace BrisaPMS.Identity
 
             if (result.Succeeded is not true)
                 throw new IdentityException(result.Errors.Select(e => e.Description));
+        }
+
+        public async Task<string> CreateToken(Guid userId,string email, UserRole role)
+        {
+            var user = await _userManager.FindByEmailAsync(email) ??
+                       throw new NotFoundException("User", userId);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, role.ToString())
+            };
+
+            var claimsDb = await _userManager.GetClaimsAsync(user);
+
+            claims.AddRange(claimsDb);
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwtKey"]!));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expiration = DateTime.UtcNow.AddHours(1);
+
+            var securityToken = new JwtSecurityToken(issuer: null, audience: null,
+                                claims: claims, expires: expiration, signingCredentials: credentials);
+
+            var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
+
+            return token;
         }
     }
 }
