@@ -53,6 +53,8 @@ namespace BrisaPMS.Identity
                 throw new IdentityException(result.Errors.Select(e => e.Description));
 
             await _userManager.AddToRoleAsync(appUser, role.ToString());
+
+            return await CreateToken(domainUserId, email);
         }
 
         public async Task<bool> CheckPasswordAsync(Guid domainUserId, string password)
