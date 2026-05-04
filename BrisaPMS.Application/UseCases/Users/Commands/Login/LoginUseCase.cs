@@ -1,6 +1,4 @@
-﻿using BrisaPMS.Application.Contracts.Repositories;
-using BrisaPMS.Application.Contracts.Services;
-using BrisaPMS.Application.Exceptions;
+﻿using BrisaPMS.Application.Contracts.Services;
 using BrisaPMS.Application.Utilities.Mediator;
 
 namespace BrisaPMS.Application.UseCases.Users.Commands.Login
