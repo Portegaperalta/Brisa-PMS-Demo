@@ -22,10 +22,15 @@ public class CreateAmenityUseCaseTests
     }
 
     [Fact]
-    public async Task Handle_CreatesAmenityAndReturnsAmenityId()
+    public async Task Handle_CreatesAmenityAndReturnsAmenityDto()
     {
         // Arrange
         var command = CreateCommand("Pool Access", "Access to the swimming pool", true);
+        Amenity? createdAmenity = null;
+
+        _repositoryMock
+            .Create(Arg.Do<Amenity>(amenity => createdAmenity = amenity))
+            .Returns(callInfo => callInfo.Arg<Amenity>());
 
         // Act
         var result = await _useCase.Handle(command);
@@ -37,7 +42,11 @@ public class CreateAmenityUseCaseTests
             amenity.IsActive == command.IsActive));
         await _unitOfWorkMock.Received(1).Persist();
         await _unitOfWorkMock.DidNotReceive().Revert();
-        result.Should().NotBe(Guid.Empty);
+
+        result.Id.Should().Be(createdAmenity!.Id);
+        result.Name.Should().Be(command.Name);
+        result.Description.Should().Be(command.Description);
+        result.IsActive.Should().Be(command.IsActive);
     }
 
     [Fact]
