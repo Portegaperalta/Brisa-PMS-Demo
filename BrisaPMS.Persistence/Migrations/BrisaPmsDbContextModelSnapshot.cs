@@ -42,6 +42,11 @@ namespace BrisaPMS.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -86,6 +91,11 @@ namespace BrisaPMS.Persistence.Migrations
 
                     b.Property<Guid>("HotelId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<Guid>("RoomId")
                         .HasColumnType("uniqueidentifier");
@@ -150,6 +160,11 @@ namespace BrisaPMS.Persistence.Migrations
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("LegalName")
                         .IsRequired()
@@ -225,6 +240,11 @@ namespace BrisaPMS.Persistence.Migrations
 
                     b.Property<bool>("IsBlackListed")
                         .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<bool>("IsVip")
                         .HasColumnType("bit");
@@ -307,6 +327,11 @@ namespace BrisaPMS.Persistence.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<decimal>("ItbisRate")
                         .HasColumnType("decimal(10,2)");
 
@@ -370,6 +395,11 @@ namespace BrisaPMS.Persistence.Migrations
                     b.Property<bool>("IncidentReported")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Notes")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
@@ -432,6 +462,11 @@ namespace BrisaPMS.Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -480,6 +515,11 @@ namespace BrisaPMS.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("LastCleanedAt")
                         .HasColumnType("datetime2");
@@ -539,6 +579,11 @@ namespace BrisaPMS.Persistence.Migrations
 
                     b.Property<Guid>("HotelId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<int>("NightCount")
                         .HasColumnType("int");

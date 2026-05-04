@@ -2,11 +2,13 @@
 using BrisaPMS.Application.UseCases.Amenities.Commands.ActivateAmenity;
 using BrisaPMS.Application.UseCases.Amenities.Commands.CreateAmenity;
 using BrisaPMS.Application.UseCases.Amenities.Commands.DeactivateAmenity;
+using BrisaPMS.Application.UseCases.Amenities.Commands.DeleteAmenity;
 using BrisaPMS.Application.UseCases.Amenities.Commands.UpdateAmenityDetails;
 using BrisaPMS.Application.UseCases.Amenities.Queries.GetAllAmenities;
 using BrisaPMS.Application.UseCases.Amenities.Queries.GetAmenityById;
 using BrisaPMS.Application.UseCases.Amenities.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrisaPMS.API.Controllers
@@ -23,6 +25,7 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<AmenityDto>>> GetAll()
         {
             var query = new GetAllAmenitiesQuery { };
@@ -30,7 +33,8 @@ namespace BrisaPMS.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:guid}", Name = "GetAmenityById")]
+        [Authorize]
         public async Task<ActionResult<AmenityDto>> GetById([FromRoute] Guid id)
         {
             var query = new GetAmenityByIdQuery { AmenityId = id };
@@ -39,20 +43,16 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateAmenityDTO createAmenityDTO)
+        [Authorize(Policy = "isAdminOrManager")]
+        public async Task<IActionResult> Create([FromBody] CreateAmenityCommand command)
         {
-            var command = new CreateAmenityCommand
-            {
-                Name = createAmenityDTO.Name,
-                Description = createAmenityDTO.Description,
-                IsActive = createAmenityDTO.IsActive
-            };
+            var amenityDto = await _mediator.Send(command);
 
-            await _mediator.Send(command);
-            return Created();
+            return CreatedAtRoute("GetAmenityById", new {id = amenityDto.Id}, amenityDto);
         }
 
-        [HttpPut]
+        [HttpPut("{id:guid}/update-details")]
+        [Authorize(Policy = "isAdminOrManager")]
         public async Task<IActionResult> UpdateDetails([FromRoute] Guid id, [FromBody] UpdateAmenityDetailsDTO updateAmenityDetailsDTO)
         {
             var command = new UpdateAmenityDetailsCommand
@@ -67,6 +67,7 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPut("{id:guid}/deactivate")]
+        [Authorize(Policy = "isAdminOrManager")]
         public async Task<IActionResult> Deactivate([FromRoute] Guid id)
         {
             var command = new DeactivateAmenityCommand { AmenityId = id };
@@ -75,9 +76,19 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPut("{id:guid}/activate")]
+        [Authorize(Policy = "isAdminOrManager")]
         public async Task<IActionResult> Activate([FromRoute] Guid id)
         {
             var command = new ActivateAmenityCommand { AmenityId = id };
+            await _mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpDelete("{id:guid}")]
+        [Authorize(Policy = "isAdminOrManager")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var command = new DeleteAmenityCommand { Id =  id };
             await _mediator.Send(command);
             return NoContent();
         }

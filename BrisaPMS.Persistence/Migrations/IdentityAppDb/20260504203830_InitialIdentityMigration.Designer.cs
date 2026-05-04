@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BrisaPMS.Persistence.Migrations.IdentityAppDb
 {
     [DbContext(typeof(IdentityAppDbContext))]
-    [Migration("20260502000838_InitialIdentityMigration")]
+    [Migration("20260504203830_InitialIdentityMigration")]
     partial class InitialIdentityMigration
     {
         /// <inheritdoc />

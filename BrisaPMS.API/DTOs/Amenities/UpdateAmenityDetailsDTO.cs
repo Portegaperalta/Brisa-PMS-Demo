@@ -5,9 +5,6 @@ namespace BrisaPMS.API.DTOs.Amenities
     public class UpdateAmenityDetailsDTO
     {
         [Required]
-        public required Guid AmenityId { get; set; }
-
-        [Required]
         [StringLength(100)]
         public required string Name { get; set; }
 
