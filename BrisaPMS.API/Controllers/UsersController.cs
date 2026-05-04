@@ -26,10 +26,11 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
+        public async Task<ActionResult<AuthenticationResponseDTO>> CreateUser([FromBody] CreateUserCommand command)
         {
-            await _mediator.Send(command);
-            return Ok();
+            var result = await _mediator.Send(command);
+            var authResponseDto = new AuthenticationResponseDTO { Token = result };
+            return Ok(authResponseDto);
         }
     }
 }
