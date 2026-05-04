@@ -8,7 +8,7 @@ using BrisaPMS.Domain.Users;
 
 namespace BrisaPMS.Application.UseCases.Users.Commands.CreateUser;
 
-public class CreateUserUseCase : IRequestHandler<CreateUserCommand, Guid>
+public class CreateUserUseCase : IRequestHandler<CreateUserCommand, string>
 {
     private readonly IUsersRepository _usersRepository;
     private readonly IHotelsRepository _hotelsRepository;
@@ -24,7 +24,7 @@ public class CreateUserUseCase : IRequestHandler<CreateUserCommand, Guid>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Handle(CreateUserCommand command)
+    public async Task<string> Handle(CreateUserCommand command)
     {
         if (command.HotelId is not null)
         {
@@ -60,10 +60,10 @@ public class CreateUserUseCase : IRequestHandler<CreateUserCommand, Guid>
 
         try
         {
+            var token = await _identityService.CreateUserAsync(command.Email, command.Password, role, user.Id);
             await _usersRepository.Create(user);
-            await _identityService.CreateUserAsync(command.Email, command.Password, role, user.Id);
             await _unitOfWork.Persist();
-            return user.Id;
+            return token;
         }
         catch (Exception)
         {

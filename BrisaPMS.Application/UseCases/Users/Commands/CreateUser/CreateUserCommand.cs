@@ -2,7 +2,7 @@
 
 namespace BrisaPMS.Application.UseCases.Users.Commands.CreateUser;
 
-public class CreateUserCommand : IRequest<Guid>
+public class CreateUserCommand : IRequest<string>
 {
     public required string Role { get; set; }
     public Guid? HotelId { get; set; }
