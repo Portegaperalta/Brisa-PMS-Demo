@@ -1,6 +1,4 @@
-﻿using BrisaPMS.API.DTOs.Users;
-using BrisaPMS.Application.UseCases.Users.Commands.CreateUser;
-using BrisaPMS.Application.UseCases.Users.Commands.Login;
+﻿using BrisaPMS.Application.UseCases.Users.Commands.CreateUser;
 using BrisaPMS.Application.Utilities.Mediator;
 using Microsoft.AspNetCore.Mvc;
 

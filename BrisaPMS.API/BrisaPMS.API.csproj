@@ -22,4 +22,8 @@
     <ProjectReference Include="..\BrisaPMS.Persistence\BrisaPMS.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Users\" />
+  </ItemGroup>
+
 </Project>
