@@ -24,7 +24,6 @@ public abstract class BaseEntityConfig<T> : IEntityTypeConfiguration<T>
                .OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(p => p.UpdatedAt)
-               .IsRequired()
                .HasDefaultValue(null);
 
         builder.Property(p => p.IsDeleted)
