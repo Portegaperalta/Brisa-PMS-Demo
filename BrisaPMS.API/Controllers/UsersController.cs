@@ -1,5 +1,6 @@
-﻿using BrisaPMS.API.DTOs.Users;
+﻿using BrisaPMS.API.DTOs.Auth;
 using BrisaPMS.Application.UseCases.Users.Commands.CreateUser;
+using BrisaPMS.Application.UseCases.Users.Commands.Login;
 using BrisaPMS.Application.Utilities.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,23 +17,20 @@ namespace BrisaPMS.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO createUserDTO)
+        [HttpPost("login")]
+        public async Task<ActionResult<AuthenticationResponseDTO>> Login([FromBody] LoginCommand command)
         {
-            var command = new CreateUserCommand
-            {
-                Role = createUserDTO.Role,
-                HotelId = createUserDTO.HotelId,
-                FirstName = createUserDTO.FirstName,
-                LastName = createUserDTO.LastName,
-                Email = createUserDTO.Email,
-                Password = createUserDTO.Password,
-                PhoneNumber = createUserDTO.PhoneNumber,
-                PreferredLanguage = createUserDTO.PreferredLanguage
-            };
+            var result = await _mediator.Send(command);
+            var authResponseDto = new AuthenticationResponseDTO { Token = result };
+            return Ok(authResponseDto);
+        }
 
-            await _mediator.Send(command);
-            return Ok();
+        [HttpPost("register")]
+        public async Task<ActionResult<AuthenticationResponseDTO>> CreateUser([FromBody] CreateUserCommand command)
+        {
+            var result = await _mediator.Send(command);
+            var authResponseDto = new AuthenticationResponseDTO { Token = result };
+            return Ok(authResponseDto);
         }
     }
 }

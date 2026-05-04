@@ -4,6 +4,8 @@ using BrisaPMS.Application;
 using BrisaPMS.Application.Contracts.Services;
 using BrisaPMS.Identity;
 using BrisaPMS.Persistence;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BrisaPMS.API
 {
@@ -27,6 +29,21 @@ namespace BrisaPMS.API
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+
+            builder.Services.AddAuthentication().AddJwtBearer(options =>
+            {
+                options.MapInboundClaims = false;
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtKey"]!)),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
 
             var app = builder.Build();
 

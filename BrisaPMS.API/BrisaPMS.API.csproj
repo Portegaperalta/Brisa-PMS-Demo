@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7">
       <PrivateAssets>all</PrivateAssets>
@@ -19,6 +20,10 @@
     <ProjectReference Include="..\BrisaPMS.Application\BrisaPMS.Application.csproj" />
     <ProjectReference Include="..\BrisaPMS.Identity\BrisaPMS.Identity.csproj" />
     <ProjectReference Include="..\BrisaPMS.Persistence\BrisaPMS.Persistence.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs\Users\" />
   </ItemGroup>
 
 </Project>

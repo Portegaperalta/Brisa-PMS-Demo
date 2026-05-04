@@ -8,5 +8,7 @@
         {
             Errors = errors;
         }
+
+        public IdentityException(string errorMessage) : base(errorMessage) { }
     }
 }

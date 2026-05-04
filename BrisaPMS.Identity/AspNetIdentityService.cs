@@ -4,19 +4,41 @@ using BrisaPMS.Domain.Users;
 using BrisaPMS.Identity.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace BrisaPMS.Identity
 {
     public class AspNetIdentityService : IIdentityService
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IConfiguration _configuration;
 
-        public AspNetIdentityService(UserManager<AppUser> userManager)
+        public AspNetIdentityService(UserManager<AppUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
+            _configuration = configuration;
         }
 
-        public async Task CreateUserAsync(string email, string password, UserRole role, Guid domainUserId)
+        public async Task<string> LoginAsync(string email, string password)
+        {
+            var appUser = await _userManager.FindByEmailAsync(email);
+
+            if (appUser is null)
+                throw new IdentityException($"User with email: {email} not found");
+
+            var isPasswordValid = await _userManager.CheckPasswordAsync(appUser, password);
+
+            if (isPasswordValid is not true)
+                throw new InvalidOperationException("Invalid Credentials");
+
+            return await CreateToken(appUser.DomainUserId, email);
+        }
+
+        public async Task<string> CreateUserAsync(string email, string password, UserRole role, Guid domainUserId)
         {
             var appUser = new AppUser
             {
@@ -31,6 +53,8 @@ namespace BrisaPMS.Identity
                 throw new IdentityException(result.Errors.Select(e => e.Description));
 
             await _userManager.AddToRoleAsync(appUser, role.ToString());
+
+            return await CreateToken(domainUserId, email);
         }
 
         public async Task<bool> CheckPasswordAsync(Guid domainUserId, string password)
@@ -109,6 +133,35 @@ namespace BrisaPMS.Identity
 
             if (result.Succeeded is not true)
                 throw new IdentityException(result.Errors.Select(e => e.Description));
+        }
+
+        private async Task<string> CreateToken(Guid userId,string email)
+        {
+            var appUser = await _userManager.FindByEmailAsync(email) ?? throw new NotFoundException("User", userId);
+
+            var userRoles = await _userManager.GetRolesAsync(appUser);
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, userRoles.FirstOrDefault() ?? string.Empty)
+            };
+
+            var claimsDb = await _userManager.GetClaimsAsync(appUser);
+
+            claims.AddRange(claimsDb);
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwtKey"]!));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var expiration = DateTime.UtcNow.AddHours(1);
+
+            var securityToken = new JwtSecurityToken(issuer: null, audience: null,
+                                claims: claims, expires: expiration, signingCredentials: credentials);
+
+            var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
+
+            return token;
         }
     }
 }

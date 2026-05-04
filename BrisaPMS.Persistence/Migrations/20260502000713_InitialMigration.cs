@@ -21,38 +21,13 @@ namespace BrisaPMS.Persistence.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(254)", maxLength: 254, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
                     PreferredLanguage = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    IsEmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    FailedLoginAttempts = table.Column<int>(type: "int", nullable: false),
-                    LockOutDuration = table.Column<TimeSpan>(type: "time", nullable: true),
-                    LockOutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LastLoginAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PasswordChangedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-
-                    table.ForeignKey(
-                        name: "FK_Users_Users_CreatedBy",
-                        column: x => x.CreatedBy,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-
-                    table.ForeignKey(
-                        name: "FK_Users_Users_UpdatedBy",
-                        column: x => x.UpdatedBy,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -71,14 +46,12 @@ namespace BrisaPMS.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Amenities", x => x.Id);
-
                     table.ForeignKey(
                         name: "FK_Amenities_Users_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Amenities_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
@@ -111,14 +84,12 @@ namespace BrisaPMS.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Companies", x => x.Id);
-
                     table.ForeignKey(
                         name: "FK_Companies_Users_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Companies_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
@@ -157,14 +128,12 @@ namespace BrisaPMS.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Hotels", x => x.Id);
-
                     table.ForeignKey(
                         name: "FK_Hotels_Users_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Hotels_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
@@ -193,14 +162,12 @@ namespace BrisaPMS.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RoomTypes", x => x.Id);
-
                     table.ForeignKey(
                         name: "FK_RoomTypes_Users_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_RoomTypes_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
@@ -237,21 +204,18 @@ namespace BrisaPMS.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Guests", x => x.Id);
-
                     table.ForeignKey(
                         name: "FK_Guests_Hotels_HotelId",
                         column: x => x.HotelId,
                         principalTable: "Hotels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Guests_Users_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Guests_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
@@ -270,14 +234,12 @@ namespace BrisaPMS.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AmenityRoomType", x => new { x.AmenityId, x.RoomTypeId });
-
                     table.ForeignKey(
                         name: "FK_AmenityRoomType_Amenities_AmenityId",
                         column: x => x.AmenityId,
                         principalTable: "Amenities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_AmenityRoomType_RoomTypes_RoomTypeId",
                         column: x => x.RoomTypeId,
@@ -308,34 +270,29 @@ namespace BrisaPMS.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rooms", x => x.Id);
-
                     table.ForeignKey(
                         name: "FK_Rooms_Hotels_HotelId",
                         column: x => x.HotelId,
                         principalTable: "Hotels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Rooms_RoomTypes_RoomTypeId",
                         column: x => x.RoomTypeId,
                         principalTable: "RoomTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Rooms_Users_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Rooms_Users_LastCleanedBy",
                         column: x => x.LastCleanedBy,
                         principalTable: "Users",
                         principalColumn: "Id");
-
                     table.ForeignKey(
                         name: "FK_Rooms_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
@@ -370,35 +327,30 @@ namespace BrisaPMS.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bookings", x => x.Id);
-
                     table.ForeignKey(
                         name: "FK_Bookings_Guests_GuestId",
                         column: x => x.GuestId,
                         principalTable: "Guests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Bookings_Hotels_HotelId",
                         column: x => x.HotelId,
                         principalTable: "Hotels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Bookings_Rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Rooms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Bookings_Users_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Bookings_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
@@ -434,35 +386,30 @@ namespace BrisaPMS.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HouseKeepingTasks", x => x.Id);
-
                     table.ForeignKey(
                         name: "FK_HouseKeepingTasks_Rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Rooms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_HouseKeepingTasks_Users_AssignedBy",
                         column: x => x.AssignedBy,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_HouseKeepingTasks_Users_AssignedTo",
                         column: x => x.AssignedTo,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_HouseKeepingTasks_Users_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_HouseKeepingTasks_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
@@ -492,28 +439,24 @@ namespace BrisaPMS.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Stays", x => x.Id);
-
                     table.ForeignKey(
                         name: "FK_Stays_Bookings_BookingId",
                         column: x => x.BookingId,
                         principalTable: "Bookings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Stays_Guests_GuestId",
                         column: x => x.GuestId,
                         principalTable: "Guests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Stays_Users_CreatedBy",
                         column: x => x.CreatedBy,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-
                     table.ForeignKey(
                         name: "FK_Stays_Users_UpdatedBy",
                         column: x => x.UpdatedBy,
@@ -675,16 +618,6 @@ namespace BrisaPMS.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Stays_UpdatedBy",
                 table: "Stays",
-                column: "UpdatedBy");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_CreatedBy",
-                table: "Users",
-                column: "CreatedBy");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_UpdatedBy",
-                table: "Users",
                 column: "UpdatedBy");
         }
 

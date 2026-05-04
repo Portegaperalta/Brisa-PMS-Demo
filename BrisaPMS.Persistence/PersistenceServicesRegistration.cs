@@ -14,7 +14,8 @@ namespace BrisaPMS.Persistence
             IConfiguration configuration)
         {
             services.AddDbContext<BrisaPmsDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
+                b => b.MigrationsAssembly("BrisaPMS.Persistence")));
 
             services.AddScoped<IUnitOfWork, UnitOfWorkEfCore>();
 
