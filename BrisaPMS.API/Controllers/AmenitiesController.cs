@@ -32,7 +32,7 @@ namespace BrisaPMS.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:guid}", Name = "GetAmenityById")]
         [Authorize]
         public async Task<ActionResult<AmenityDto>> GetById([FromRoute] Guid id)
         {
@@ -52,8 +52,9 @@ namespace BrisaPMS.API.Controllers
                 IsActive = createAmenityDTO.IsActive
             };
 
-            await _mediator.Send(command);
-            return Created();
+            var amenityDto = await _mediator.Send(command);
+
+            return CreatedAtRoute("GetAmenityById", new {id = amenityDto.Id}, amenityDto);
         }
 
         [HttpPut]
