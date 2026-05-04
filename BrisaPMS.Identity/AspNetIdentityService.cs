@@ -143,9 +143,9 @@ namespace BrisaPMS.Identity
 
             var claims = new List<Claim>
             {
-                new Claim("Id", userId.ToString()),
-                new Claim("Email", email),
-                new Claim("Role", userRoles.FirstOrDefault() ?? string.Empty)
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Email, email),
+                new Claim(ClaimTypes.Role, userRoles.FirstOrDefault() ?? string.Empty)
             };
 
             var claimsDb = await _userManager.GetClaimsAsync(appUser);
