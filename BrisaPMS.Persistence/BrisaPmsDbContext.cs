@@ -61,14 +61,14 @@ namespace BrisaPMS.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Amenity>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Booking>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Guest>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Hotel>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<HouseKeepingTask>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Room>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<RoomType>().HasQueryFilter(e => e.IsDeleted);
-            modelBuilder.Entity<Stay>().HasQueryFilter(e => e.IsDeleted);
+            modelBuilder.Entity<Amenity>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<Booking>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<Guest>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<Hotel>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<HouseKeepingTask>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<Room>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<RoomType>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<Stay>().HasQueryFilter(e => !e.IsDeleted);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(BrisaPmsDbContext).Assembly);
         }
