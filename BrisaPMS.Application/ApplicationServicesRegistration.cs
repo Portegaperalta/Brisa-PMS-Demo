@@ -99,6 +99,7 @@ using BrisaPMS.Application.UseCases.Users.Commands.ChangePhoneNumber;
 using BrisaPMS.Application.UseCases.Users.Commands.ChangePreferredLanguage;
 using BrisaPMS.Application.UseCases.Users.Commands.ChangeRole;
 using BrisaPMS.Application.UseCases.Users.Commands.CreateUser;
+using BrisaPMS.Application.UseCases.Users.Commands.Login;
 using BrisaPMS.Application.UseCases.Users.Commands.UpdateUserName;
 using BrisaPMS.Application.UseCases.Users.Queries.GetAllUsers;
 using BrisaPMS.Application.UseCases.Users.Queries.GetAllUsersByHotelId;
@@ -383,7 +384,10 @@ public static class ApplicationServicesRegistration
             GetStayByIdUseCase>();
 
         // Users services
-        services.AddScoped<IRequestHandler<CreateUserCommand, Guid>,
+        services.AddScoped<IRequestHandler<LoginCommand, string>,
+                                    LoginUseCase>();
+        
+        services.AddScoped<IRequestHandler<CreateUserCommand, string>,
                                     CreateUserUseCase>();
 
         services.AddScoped<IRequestHandler<ChangeEmailCommand, bool>,
