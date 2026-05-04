@@ -1,4 +1,5 @@
 
+using BrisaPMS.API.Middlewares;
 using BrisaPMS.API.Services;
 using BrisaPMS.Application;
 using BrisaPMS.Application.Contracts.Services;
@@ -64,6 +65,8 @@ namespace BrisaPMS.API
             }
 
             // Middlewares
+            app.UseExceptionHandlerMiddleware();
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
