@@ -15,7 +15,7 @@ namespace BrisaPMS.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Services Area
+            // Services
             builder.Services.AddControllers();
 
             builder.Services.AddOpenApi();
@@ -45,6 +45,16 @@ namespace BrisaPMS.API
                 };
             });
 
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("isAdmin", policy => policy.RequireRole("Admin"));
+                options.AddPolicy("isManager", policy => policy.RequireRole("Manager"));
+                options.AddPolicy("isAccountant", policy => policy.RequireRole("Accountant"));
+                options.AddPolicy("isReceptionist", policy => policy.RequireRole("Receptionist"));
+                options.AddPolicy("isHouseKeeper", policy => policy.RequireRole("Housekeeper"));
+                options.AddPolicy("isCleaningStaff", policy => policy.RequireRole("CleaningStaff"));
+            });
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -52,6 +62,7 @@ namespace BrisaPMS.API
                 app.MapOpenApi();
             }
 
+            // Middlewares
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
