@@ -15,7 +15,7 @@ namespace BrisaPMS.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
         {
             await _mediator.Send(command);
