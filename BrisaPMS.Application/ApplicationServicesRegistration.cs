@@ -121,7 +121,7 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<ActivateAmenityCommand, bool>,
                                     ActivateAmenityUseCase>();
 
-        services.AddScoped<IRequestHandler<CreateAmenityCommand, Guid>,
+        services.AddScoped<IRequestHandler<CreateAmenityCommand, AmenityDto>,
                                     CreateAmenityUseCase>();
 
         services.AddScoped<IRequestHandler<DeactivateAmenityCommand, bool>,
