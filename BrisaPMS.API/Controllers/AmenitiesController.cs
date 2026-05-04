@@ -2,6 +2,7 @@
 using BrisaPMS.Application.UseCases.Amenities.Commands.ActivateAmenity;
 using BrisaPMS.Application.UseCases.Amenities.Commands.CreateAmenity;
 using BrisaPMS.Application.UseCases.Amenities.Commands.DeactivateAmenity;
+using BrisaPMS.Application.UseCases.Amenities.Commands.DeleteAmenity;
 using BrisaPMS.Application.UseCases.Amenities.Commands.UpdateAmenityDetails;
 using BrisaPMS.Application.UseCases.Amenities.Queries.GetAllAmenities;
 using BrisaPMS.Application.UseCases.Amenities.Queries.GetAmenityById;
@@ -86,6 +87,15 @@ namespace BrisaPMS.API.Controllers
         public async Task<IActionResult> Activate([FromRoute] Guid id)
         {
             var command = new ActivateAmenityCommand { AmenityId = id };
+            await _mediator.Send(command);
+            return NoContent();
+        }
+
+        [HttpDelete("{id:guid}")]
+        [Authorize(Policy = "isAdminOrManager")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var command = new DeleteAmenityCommand { Id =  id };
             await _mediator.Send(command);
             return NoContent();
         }
