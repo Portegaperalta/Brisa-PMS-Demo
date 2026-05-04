@@ -46,6 +46,12 @@ namespace BrisaPMS.Persistence
                     entry.Entity.UpdatedBy = _currentUser.UserId;
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
                 }
+
+                if (entry.State == EntityState.Deleted)
+                {
+                    entry.State = EntityState.Modified;
+                    entry.Property("IsDeleted").CurrentValue = true;
+                }
             }
             
             return base.SaveChangesAsync(cancellationToken);
@@ -54,6 +60,15 @@ namespace BrisaPMS.Persistence
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Amenity>().HasQueryFilter(e => e.IsDeleted);
+            modelBuilder.Entity<Booking>().HasQueryFilter(e => e.IsDeleted);
+            modelBuilder.Entity<Guest>().HasQueryFilter(e => e.IsDeleted);
+            modelBuilder.Entity<Hotel>().HasQueryFilter(e => e.IsDeleted);
+            modelBuilder.Entity<HouseKeepingTask>().HasQueryFilter(e => e.IsDeleted);
+            modelBuilder.Entity<Room>().HasQueryFilter(e => e.IsDeleted);
+            modelBuilder.Entity<RoomType>().HasQueryFilter(e => e.IsDeleted);
+            modelBuilder.Entity<Stay>().HasQueryFilter(e => e.IsDeleted);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(BrisaPmsDbContext).Assembly);
         }
