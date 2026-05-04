@@ -1,5 +1,6 @@
 ﻿using BrisaPMS.API.DTOs.Users;
 using BrisaPMS.Application.UseCases.Users.Commands.CreateUser;
+using BrisaPMS.Application.UseCases.Users.Commands.Login;
 using BrisaPMS.Application.Utilities.Mediator;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,20 +18,8 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserDTO createUserDTO)
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
         {
-            var command = new CreateUserCommand
-            {
-                Role = createUserDTO.Role,
-                HotelId = createUserDTO.HotelId,
-                FirstName = createUserDTO.FirstName,
-                LastName = createUserDTO.LastName,
-                Email = createUserDTO.Email,
-                Password = createUserDTO.Password,
-                PhoneNumber = createUserDTO.PhoneNumber,
-                PreferredLanguage = createUserDTO.PreferredLanguage
-            };
-
             await _mediator.Send(command);
             return Ok();
         }
