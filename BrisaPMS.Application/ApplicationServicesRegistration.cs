@@ -1,6 +1,7 @@
 ﻿using BrisaPMS.Application.UseCases.Amenities.Commands.ActivateAmenity;
 using BrisaPMS.Application.UseCases.Amenities.Commands.CreateAmenity;
 using BrisaPMS.Application.UseCases.Amenities.Commands.DeactivateAmenity;
+using BrisaPMS.Application.UseCases.Amenities.Commands.DeleteAmenity;
 using BrisaPMS.Application.UseCases.Amenities.Commands.UpdateAmenityDetails;
 using BrisaPMS.Application.UseCases.Amenities.Queries.GetAllAmenities;
 using BrisaPMS.Application.UseCases.Amenities.Queries.GetAmenityById;
@@ -129,6 +130,9 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<UpdateAmenityDetailsCommand, bool>,
                                     UpdateAmenityDetailsUseCase>();
+
+        services.AddScoped<IRequestHandler<DeleteAmenityCommand, bool>,
+                                    DeleteAmenityUseCase>();
 
         services.AddScoped<IRequestHandler<GetAllAmenitiesQuery, List<AmenityDto>>,
                                     GetAllAmenitiesUseCase>();
