@@ -7,6 +7,7 @@ using BrisaPMS.Application.UseCases.Amenities.Queries.GetAllAmenities;
 using BrisaPMS.Application.UseCases.Amenities.Queries.GetAmenityById;
 using BrisaPMS.Application.UseCases.Amenities.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BrisaPMS.API.Controllers
@@ -23,6 +24,7 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<AmenityDto>>> GetAll()
         {
             var query = new GetAllAmenitiesQuery { };
@@ -31,6 +33,7 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpGet("{id:guid}")]
+        [Authorize]
         public async Task<ActionResult<AmenityDto>> GetById([FromRoute] Guid id)
         {
             var query = new GetAmenityByIdQuery { AmenityId = id };
@@ -39,6 +42,8 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "isAdmin")]
+        [Authorize(Policy = "isManager")]
         public async Task<IActionResult> Create([FromBody] CreateAmenityDTO createAmenityDTO)
         {
             var command = new CreateAmenityCommand
@@ -53,6 +58,8 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Policy = "isAdmin")]
+        [Authorize(Policy = "isManager")]
         public async Task<IActionResult> UpdateDetails([FromRoute] Guid id, [FromBody] UpdateAmenityDetailsDTO updateAmenityDetailsDTO)
         {
             var command = new UpdateAmenityDetailsCommand
@@ -67,6 +74,8 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPut("{id:guid}/deactivate")]
+        [Authorize(Policy = "isAdmin")]
+        [Authorize(Policy = "isManager")]
         public async Task<IActionResult> Deactivate([FromRoute] Guid id)
         {
             var command = new DeactivateAmenityCommand { AmenityId = id };
@@ -75,6 +84,8 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPut("{id:guid}/activate")]
+        [Authorize(Policy = "isAdmin")]
+        [Authorize(Policy = "isManager")]
         public async Task<IActionResult> Activate([FromRoute] Guid id)
         {
             var command = new ActivateAmenityCommand { AmenityId = id };
