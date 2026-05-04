@@ -11,6 +11,7 @@ using BrisaPMS.Application.UseCases.Bookings.Commands.ChangeAssignedRoom;
 using BrisaPMS.Application.UseCases.Bookings.Commands.ChangeBookingSource;
 using BrisaPMS.Application.UseCases.Bookings.Commands.ConfirmBooking;
 using BrisaPMS.Application.UseCases.Bookings.Commands.CreateBooking;
+using BrisaPMS.Application.UseCases.Bookings.Commands.DeleteBooking;
 using BrisaPMS.Application.UseCases.Bookings.Commands.MarkAsNoShow;
 using BrisaPMS.Application.UseCases.Bookings.Commands.UpdateCancellationReason;
 using BrisaPMS.Application.UseCases.Bookings.Commands.UpdateCheckInOutTimes;
@@ -29,6 +30,7 @@ using BrisaPMS.Application.UseCases.Companies.Commands.UpdateCompanyRnc;
 using BrisaPMS.Application.UseCases.Companies.Queries.GetCompanyInfo;
 using BrisaPMS.Application.UseCases.Guests.Commands.BlacklistGuest;
 using BrisaPMS.Application.UseCases.Guests.Commands.CreateGuest;
+using BrisaPMS.Application.UseCases.Guests.Commands.DeleteGuest;
 using BrisaPMS.Application.UseCases.Guests.Commands.MakeGuestVip;
 using BrisaPMS.Application.UseCases.Guests.Commands.RevokeGuestVip;
 using BrisaPMS.Application.UseCases.Guests.Commands.UpdateGuestContactInfo;
@@ -42,6 +44,7 @@ using BrisaPMS.Application.UseCases.Guests.Shared;
 using BrisaPMS.Application.UseCases.Hotels.Commands.ActivateHotel;
 using BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel;
 using BrisaPMS.Application.UseCases.Hotels.Commands.DeactivateHotel;
+using BrisaPMS.Application.UseCases.Hotels.Commands.DeleteHotel;
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelAddressInfo;
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelBrandInfo;
 using BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelCheckOutPolicy;
@@ -56,6 +59,7 @@ using BrisaPMS.Application.UseCases.HouseKeeping.Commands.ChangeHouseKeepingTask
 using BrisaPMS.Application.UseCases.HouseKeeping.Commands.ChangeTaskDeadline;
 using BrisaPMS.Application.UseCases.HouseKeeping.Commands.CompleteHouseKeepingTask;
 using BrisaPMS.Application.UseCases.HouseKeeping.Commands.CreateHouseKeepingTask;
+using BrisaPMS.Application.UseCases.HouseKeeping.Commands.DeleteHouseKeepingTask;
 using BrisaPMS.Application.UseCases.HouseKeeping.Commands.ReportIncident;
 using BrisaPMS.Application.UseCases.HouseKeeping.Commands.ReassignHouseKeepingTask;
 using BrisaPMS.Application.UseCases.HouseKeeping.Commands.StartHouseKeepingTask;
@@ -69,6 +73,7 @@ using BrisaPMS.Application.UseCases.HouseKeeping.Queries.GetHouseKeepingTaskById
 using BrisaPMS.Application.UseCases.HouseKeeping.Shared;
 using BrisaPMS.Application.UseCases.Rooms.Commands.ChangeRoomType;
 using BrisaPMS.Application.UseCases.Rooms.Commands.CreateRoom;
+using BrisaPMS.Application.UseCases.Rooms.Commands.DeleteRoom;
 using BrisaPMS.Application.UseCases.Rooms.Commands.SetAsPendingRestock;
 using BrisaPMS.Application.UseCases.Rooms.Commands.SetAsRestocked;
 using BrisaPMS.Application.UseCases.Rooms.Commands.UpdateAvailabilityStatus;
@@ -79,6 +84,7 @@ using BrisaPMS.Application.UseCases.Rooms.Queries.GetAllRoomsByHotelId;
 using BrisaPMS.Application.UseCases.Rooms.Queries.GetRoomById;
 using BrisaPMS.Application.UseCases.Rooms.Shared;
 using BrisaPMS.Application.UseCases.RoomTypes.Commands.CreateRoomType;
+using BrisaPMS.Application.UseCases.RoomTypes.Commands.DeleteRoomType;
 using BrisaPMS.Application.UseCases.RoomTypes.Commands.UpdateRoomTypeBaseRate;
 using BrisaPMS.Application.UseCases.RoomTypes.Commands.UpdateRoomTypeBedsInfo;
 using BrisaPMS.Application.UseCases.RoomTypes.Commands.UpdateRoomTypeGeneralInfo;
@@ -88,6 +94,7 @@ using BrisaPMS.Application.UseCases.RoomTypes.Queries.GetRoomTypeById;
 using BrisaPMS.Application.UseCases.RoomTypes.Shared;
 using BrisaPMS.Application.UseCases.Stays.Commands.CompleteStay;
 using BrisaPMS.Application.UseCases.Stays.Commands.CreateStay;
+using BrisaPMS.Application.UseCases.Stays.Commands.DeleteStay;
 using BrisaPMS.Application.UseCases.Stays.Commands.IncreaseNightCount;
 using BrisaPMS.Application.UseCases.Stays.Queries.GetAllStays;
 using BrisaPMS.Application.UseCases.Stays.Queries.GetAllStaysByGuestId;
@@ -174,6 +181,9 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<UpdateTotalPriceCommand, bool>,
                                     UpdateTotalPriceUseCase>();
 
+        services.AddScoped<IRequestHandler<DeleteBookingCommand, bool>,
+                                    DeleteBookingUseCase>();
+
         services.AddScoped<IRequestHandler<GetAllBookingsQuery, List<BookingDto>>,
                                     GetAllBookingsUseCase>();
 
@@ -226,6 +236,9 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<WhitelistGuestCommand, bool>,
                                     WhitelistGuestUseCase>();
+        
+        services.AddScoped<IRequestHandler<DeleteGuestCommand, bool>, 
+                                    DeleteGuestUseCase>();
 
         services.AddScoped<IRequestHandler<GetGuestByIdQuery, GuestDto>,
                                     GetGuestByIdUseCase>();
@@ -260,6 +273,9 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<UpdateHotelRatesCommand, bool>,
                                      UpdateHotelRatesUseCase>();
+        
+        services.AddScoped<IRequestHandler<DeleteHotelCommand, bool>, 
+                                    DeleteHotelUseCase>();
 
         services.AddScoped<IRequestHandler<GetHotelByIdQuery, HotelDto>, GetHotelByIdUseCase>();
 
@@ -299,6 +315,9 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<UpdateIncidentDescriptionCommand, bool>,
                                     UpdateIncidentDescriptionUseCase>();
+        
+        services.AddScoped<IRequestHandler<DeleteHouseKeepingTaskCommand, bool>,
+                                    DeleteHouseKeepingTaskUseCase>();
 
         services.AddScoped<IRequestHandler<GetAllHouseKeepingTasksQuery, List<HouseKeepingTaskDto>>,
                                     GetAllHouseKeepingTasksUseCase>();
@@ -333,6 +352,9 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<UpdateRoomNumberCommand, bool>,
                                     UpdateRoomNumberUseCase>();
+        
+        services.AddScoped<IRequestHandler<DeleteRoomCommand, bool>, 
+                                    DeleteRoomUseCase>();
 
         services.AddScoped<IRequestHandler<GetAllRoomsQuery, List<RoomDto>>,
                                     GetAllRoomsUseCase>();
@@ -358,6 +380,9 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<UpdateRoomTypeOccupancyPolicyCommand, bool>,
             UpdateRoomTypeOccupancyPolicyUseCase>();
+        
+        services.AddScoped<IRequestHandler<DeleteRoomTypeCommand, bool>,
+            DeleteRoomTypeUseCase>();
 
         services.AddScoped<IRequestHandler<GetAllRoomTypesQuery, List<RoomTypeDto>>,
             GetAllRoomTypesUseCase>();
@@ -374,6 +399,9 @@ public static class ApplicationServicesRegistration
 
         services.AddScoped<IRequestHandler<IncreaseNightCountCommand, bool>,
             IncreaseNightCountUseCase>();
+        
+        services.AddScoped<IRequestHandler<DeleteStayCommand, bool>, 
+            DeleteStayUseCase>();
 
         services.AddScoped<IRequestHandler<GetAllStaysQuery, List<StayDto>>,
             GetAllStaysUseCase>();
