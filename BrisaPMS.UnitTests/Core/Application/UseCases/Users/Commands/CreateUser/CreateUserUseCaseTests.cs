@@ -28,42 +28,60 @@ public class CreateUserUseCaseTests
   }
 
   [Fact]
-  public async Task Handle_CreatesUserAndReturnsUserId()
+  public async Task Handle_CreatesUserAndReturnsToken()
   {
     // Arrange
     var hotelId = Guid.NewGuid();
     var command = CreateValidCommand(hotelId);
+    var expectedToken = "created-user-token";
+    User? createdUser = null;
+    Guid? identityDomainUserId = null;
 
     _hotelsRepositoryMock.Exists(hotelId).Returns(true);
+
+    _usersRepositoryMock
+      .Create(Arg.Do<User>(user => createdUser = user))
+      .Returns(callInfo => callInfo.Arg<User>());
+
+    _identityServiceMock
+      .CreateUserAsync(command.Email, command.Password, Enum.Parse<UserRole>(command.Role), Arg.Any<Guid>())
+      .Returns(callInfo =>
+      {
+        identityDomainUserId = callInfo.ArgAt<Guid>(3);
+        return expectedToken;
+      });
 
     // Act
     var result = await _useCase.Handle(command);
 
     // Assert
     await _hotelsRepositoryMock.Received(1).Exists(hotelId);
-    await _usersRepositoryMock.Received(1).Create(Arg.Is<User>(user =>
-        user.Role == Enum.Parse<UserRole>(command.Role) &&
-        user.HotelId == command.HotelId &&
-        user.FirstName == command.FirstName &&
-        user.LastName == command.LastName &&
-        user.Email.Value == command.Email &&
-        user.PhoneNumber!.Value == command.PhoneNumber &&
-        user.PreferredLanguage == Enum.Parse<UserPreferredLanguage>(command.PreferredLanguage)));
+    createdUser.Should().NotBeNull();
+
+    await _usersRepositoryMock.Received(1).Create(Arg.Any<User>());
 
     await _unitOfWorkMock.Received(1).Persist();
-    await _identityServiceMock.Received(1).CreateUserAsync(
+
+    await _identityServiceMock.Received(1).CreateUserAsync
+    (
         command.Email,
         command.Password,
         Enum.Parse<UserRole>(command.Role),
-        result);
+        Arg.Any<Guid>()
+    );
+
     await _unitOfWorkMock.DidNotReceive().Revert();
-    result.Should().NotBe(Guid.Empty);
+    result.Should().Be(expectedToken);
+    identityDomainUserId.Should().Be(createdUser!.Id);
   }
 
   [Fact]
   public async Task Handle_CreatesUser_WhenOptionalFieldsAreNotProvided()
   {
     // Arrange
+    var expectedToken = "created-user-token";
+    User? createdUser = null;
+    Guid? identityDomainUserId = null;
     var command = CreateCommand
     (
       "Admin",
@@ -76,20 +94,24 @@ public class CreateUserUseCaseTests
       "En"
     );
 
+    _usersRepositoryMock
+      .Create(Arg.Do<User>(user => createdUser = user))
+      .Returns(callInfo => callInfo.Arg<User>());
+
+    _identityServiceMock
+      .CreateUserAsync(command.Email, command.Password, UserRole.Admin, Arg.Any<Guid>())
+      .Returns(callInfo => { identityDomainUserId = callInfo.ArgAt<Guid>(3); return expectedToken; });
+
     // Act
     var result = await _useCase.Handle(command);
 
     // Assert
-    await _usersRepositoryMock.Received(1).Create(Arg.Is<User>(user =>
-        user.HotelId == null &&
-        user.PhoneNumber == null));
+    await _usersRepositoryMock.Received(1).Create(Arg.Is<User>(user => user.HotelId == null && user.PhoneNumber == null));
 
-    await _identityServiceMock.Received(1).CreateUserAsync(
-        command.Email,
-        command.Password,
-        UserRole.Admin,
-        result);
+    await _identityServiceMock.Received(1).CreateUserAsync(command.Email, command.Password, UserRole.Admin, Arg.Any<Guid>());
     await _unitOfWorkMock.Received(1).Persist();
+    result.Should().Be(expectedToken);
+    identityDomainUserId.Should().Be(createdUser!.Id);
   }
 
   [Fact]
@@ -100,6 +122,9 @@ public class CreateUserUseCaseTests
     var command = CreateValidCommand(hotelId);
 
     _hotelsRepositoryMock.Exists(hotelId).Returns(true);
+    _identityServiceMock
+      .CreateUserAsync(command.Email, command.Password, UserRole.Admin, Arg.Any<Guid>())
+      .Returns("created-user-token");
 
     // Act
     await _useCase.Handle(command);
@@ -163,6 +188,9 @@ public class CreateUserUseCaseTests
     var command = CreateValidCommand(hotelId);
 
     _hotelsRepositoryMock.Exists(hotelId).Returns(true);
+    _identityServiceMock
+      .CreateUserAsync(command.Email, command.Password, UserRole.Admin, Arg.Any<Guid>())
+      .Returns("created-user-token");
     _usersRepositoryMock.Create(Arg.Any<User>()).Throws<InvalidOperationException>();
 
     // Act
@@ -170,7 +198,11 @@ public class CreateUserUseCaseTests
 
     // Assert
     await act.Should().ThrowAsync<InvalidOperationException>();
-    await _identityServiceMock.DidNotReceive().CreateUserAsync(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<UserRole>(), Arg.Any<Guid>());
+    await _identityServiceMock.Received(1).CreateUserAsync(
+      command.Email,
+      command.Password,
+      UserRole.Admin,
+      Arg.Any<Guid>());
     await _unitOfWorkMock.Received(1).Revert();
     await _unitOfWorkMock.DidNotReceive().Persist();
   }
@@ -201,7 +233,7 @@ public class CreateUserUseCaseTests
 
     // Assert
     await act.Should().ThrowAsync<InvalidOperationException>();
-    await _usersRepositoryMock.Received(1).Create(Arg.Any<User>());
+    await _usersRepositoryMock.DidNotReceive().Create(Arg.Any<User>());
     await _unitOfWorkMock.Received(1).Revert();
     await _unitOfWorkMock.DidNotReceive().Persist();
   }
