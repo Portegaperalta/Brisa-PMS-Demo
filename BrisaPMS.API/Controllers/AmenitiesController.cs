@@ -44,15 +44,8 @@ namespace BrisaPMS.API.Controllers
 
         [HttpPost]
         [Authorize(Policy = "isAdminOrManager")]
-        public async Task<IActionResult> Create([FromBody] CreateAmenityDTO createAmenityDTO)
+        public async Task<IActionResult> Create([FromBody] CreateAmenityCommand command)
         {
-            var command = new CreateAmenityCommand
-            {
-                Name = createAmenityDTO.Name,
-                Description = createAmenityDTO.Description,
-                IsActive = createAmenityDTO.IsActive
-            };
-
             var amenityDto = await _mediator.Send(command);
 
             return CreatedAtRoute("GetAmenityById", new {id = amenityDto.Id}, amenityDto);
