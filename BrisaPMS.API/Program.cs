@@ -53,6 +53,7 @@ namespace BrisaPMS.API
                 options.AddPolicy("isReceptionist", policy => policy.RequireRole("Receptionist"));
                 options.AddPolicy("isHouseKeeper", policy => policy.RequireRole("Housekeeper"));
                 options.AddPolicy("isCleaningStaff", policy => policy.RequireRole("CleaningStaff"));
+                options.AddPolicy("isAdminOrManager", policy => policy.RequireRole("Admin", "Manager"));
             });
 
             var app = builder.Build();
