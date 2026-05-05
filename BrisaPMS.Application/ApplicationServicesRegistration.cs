@@ -160,7 +160,7 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<ConfirmBookingCommand, bool>,
                                     ConfirmBookingUseCase>();
 
-        services.AddScoped<IRequestHandler<CreateBookingCommand, Guid>,
+        services.AddScoped<IRequestHandler<CreateBookingCommand, BookingDto>,
                                     CreateBookingUseCase>();
 
         services.AddScoped<IRequestHandler<MarkAsNoShowCommand, bool>,

@@ -1,8 +1,9 @@
-﻿using BrisaPMS.Application.Utilities.Mediator;
+﻿using BrisaPMS.Application.UseCases.Bookings.Queries.Shared;
+using BrisaPMS.Application.Utilities.Mediator;
 
 namespace BrisaPMS.Application.UseCases.Bookings.Commands.CreateBooking;
 
-public class CreateBookingCommand : IRequest<Guid>
+public class CreateBookingCommand : IRequest<BookingDto>
 {
     public required Guid HotelId { get; set; }
     public required Guid RoomId { get; set; }
