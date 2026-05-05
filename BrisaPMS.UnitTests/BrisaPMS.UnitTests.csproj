@@ -34,6 +34,7 @@
     <Folder Include="Core\Application\UseCases\Amenities\" />
     <Folder Include="Core\Application\UseCases\Amenities\Commands\" />
     <Folder Include="Core\Application\UseCases\Amenities\Commands\CreateAmenity\" />
+    <Folder Include="Core\Application\UseCases\Amenities\Commands\DeleteAmenity\" />
     <Folder Include="Core\Application\UseCases\Bookings\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\CancelBooking\" />
