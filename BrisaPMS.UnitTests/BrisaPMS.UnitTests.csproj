@@ -59,6 +59,7 @@
     <Folder Include="Core\Application\UseCases\Guests\Commands\" />
     <Folder Include="Core\Application\UseCases\Guests\Commands\DeleteGuest\" />
     <Folder Include="Core\Application\UseCases\Guests\Queries\" />
+    <Folder Include="Core\Application\UseCases\Hotels\Commands\DeleteHotel\" />
     <Folder Include="Core\Application\UseCases\Hotels\Queries\GetAllHotels\" />
     <Folder Include="Core\Application\UseCases\Hotels\Queries\GetHotelById\" />
     <Folder Include="Core\Application\UseCases\HouseKeeping\" />
