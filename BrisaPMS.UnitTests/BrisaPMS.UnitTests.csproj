@@ -41,6 +41,7 @@
     <Folder Include="Core\Application\UseCases\Bookings\Commands\ChangeAssignedRoom\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\ChangeBookingSource\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\ConfirmBooking\" />
+    <Folder Include="Core\Application\UseCases\Bookings\Commands\DeleteBooking\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\MarkAsNoShow\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\UpdateCancellationReason\" />
     <Folder Include="Core\Application\UseCases\Bookings\Commands\UpdateCheckInOutTimes\" />
