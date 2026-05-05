@@ -29,7 +29,7 @@ public class DeleteGuestUseCase : IRequestHandler<DeleteGuestCommand, bool>
         }
         catch (Exception)
         {
-            await _unitOfWork.Persist();
+            await _unitOfWork.Revert();
             throw;
         }
     }
