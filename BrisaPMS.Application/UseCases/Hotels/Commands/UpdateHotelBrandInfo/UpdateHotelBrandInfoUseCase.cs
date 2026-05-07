@@ -3,8 +3,6 @@ using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Shared.ValueObjects;
-using FluentValidation;
-using ValidationException = BrisaPMS.Application.Exceptions.ValidationException;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.UpdateHotelBrandInfo;
 
