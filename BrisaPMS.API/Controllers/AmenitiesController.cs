@@ -51,7 +51,7 @@ namespace BrisaPMS.API.Controllers
             return CreatedAtRoute("GetAmenityById", new {id = amenityDto.Id}, amenityDto);
         }
 
-        [HttpPut("{id:guid}/update-details")]
+        [HttpPut("{id:guid}/details")]
         [Authorize(Policy = "isAdminOrManager")]
         public async Task<IActionResult> UpdateDetails([FromRoute] Guid id, [FromBody] UpdateAmenityDetailsDTO updateAmenityDetailsDTO)
         {
