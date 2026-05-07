@@ -1,3 +1,4 @@
+using BrisaPMS.Application.UseCases.Hotels.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Shared.Enums;
@@ -5,7 +6,7 @@ using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel;
 
-public class CreateHotelCommand : IRequest<Guid>
+public class CreateHotelCommand : IRequest<HotelDto>
 {
     public required string LegalName { get; set; }
     public required string CommercialName { get; set; }
