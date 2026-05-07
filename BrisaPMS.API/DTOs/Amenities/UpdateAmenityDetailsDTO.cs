@@ -4,11 +4,11 @@ namespace BrisaPMS.API.DTOs.Amenities
 {
     public class UpdateAmenityDetailsDTO
     {
-        [Required]
+        [Required(ErrorMessage = "The field {0} is required")]
         [StringLength(100)]
         public required string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The field {0} is required")]
         [StringLength(500)]
         public required string Description { get; set; }
     }
