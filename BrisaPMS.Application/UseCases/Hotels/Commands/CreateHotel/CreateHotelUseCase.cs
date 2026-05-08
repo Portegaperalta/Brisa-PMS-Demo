@@ -25,13 +25,18 @@ public class CreateHotelUseCase : IRequestHandler<CreateHotelCommand, HotelDto>
         var businessEmail = new Email(command.BusinessEmail);
         var businessPhoneNumber = new PhoneNumber(command.BusinessPhoneNumber);
         var rnc = new Rnc(command.Rnc);
-        var logoUrl = new Url(command.LogoUrl!);
+        Url? logoUrl = null;
         var address = new Address(command.Address1, command.Address2, command.City, command.Province, command.ZipCode);
         var checkOutPolicy = new CheckOutPolicy(command.CheckInTime,  command.CheckOutTime);
         var defaultCurrencyCode = Enum.Parse<CurrencyCode>(command.DefaultCurrencyCode, ignoreCase: true);
         var itbisRate = new ItbisRate(command.ItbisRate);
         var serviceChargeRate = new ServiceChargeRate(command.ServiceChargeRate);
         
+        if (command.LogoUrl != null)
+        {
+            logoUrl = new Url(command.LogoUrl);
+        }
+
         var hotel = new Hotel
         (
             command.LegalName,
