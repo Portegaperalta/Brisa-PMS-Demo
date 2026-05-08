@@ -160,7 +160,7 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<ConfirmBookingCommand, bool>,
                                     ConfirmBookingUseCase>();
 
-        services.AddScoped<IRequestHandler<CreateBookingCommand, Guid>,
+        services.AddScoped<IRequestHandler<CreateBookingCommand, BookingDto>,
                                     CreateBookingUseCase>();
 
         services.AddScoped<IRequestHandler<MarkAsNoShowCommand, bool>,
@@ -250,7 +250,7 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<ActivateHotelCommand, bool>,
                                     ActivateHotelUseCase>();
 
-        services.AddScoped<IRequestHandler<CreateHotelCommand, Guid>,
+        services.AddScoped<IRequestHandler<CreateHotelCommand, HotelDto>,
                                     CreateHotelUseCase>();
 
         services.AddScoped<IRequestHandler<DeactivateHotelCommand, bool>,

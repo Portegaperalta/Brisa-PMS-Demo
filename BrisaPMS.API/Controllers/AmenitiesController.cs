@@ -43,7 +43,7 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Policy = "isAdminOrManager")]
+        [Authorize(Policy = "AdminManagerOnly")]
         public async Task<IActionResult> Create([FromBody] CreateAmenityCommand command)
         {
             var amenityDto = await _mediator.Send(command);
@@ -51,8 +51,8 @@ namespace BrisaPMS.API.Controllers
             return CreatedAtRoute("GetAmenityById", new {id = amenityDto.Id}, amenityDto);
         }
 
-        [HttpPut("{id:guid}/update-details")]
-        [Authorize(Policy = "isAdminOrManager")]
+        [HttpPut("{id:guid}/details")]
+        [Authorize(Policy = "AdminManagerOnly")]
         public async Task<IActionResult> UpdateDetails([FromRoute] Guid id, [FromBody] UpdateAmenityDetailsDTO updateAmenityDetailsDTO)
         {
             var command = new UpdateAmenityDetailsCommand
@@ -67,7 +67,7 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPut("{id:guid}/deactivate")]
-        [Authorize(Policy = "isAdminOrManager")]
+        [Authorize(Policy = "AdminManagerOnly")]
         public async Task<IActionResult> Deactivate([FromRoute] Guid id)
         {
             var command = new DeactivateAmenityCommand { AmenityId = id };
@@ -76,7 +76,7 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpPut("{id:guid}/activate")]
-        [Authorize(Policy = "isAdminOrManager")]
+        [Authorize(Policy = "AdminManagerOnly")]
         public async Task<IActionResult> Activate([FromRoute] Guid id)
         {
             var command = new ActivateAmenityCommand { AmenityId = id };
@@ -85,7 +85,7 @@ namespace BrisaPMS.API.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        [Authorize(Policy = "isAdminOrManager")]
+        [Authorize(Policy = "AdminManagerOnly")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var command = new DeleteAmenityCommand { Id =  id };

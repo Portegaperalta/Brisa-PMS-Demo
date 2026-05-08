@@ -22,7 +22,7 @@ public class CreateHotelUseCaseTests
     }
 
     [Fact]
-    public async Task Handle_CreatesHotelAndReturnsHotelId()
+    public async Task Handle_CreatesHotelAndReturnsHotelDto()
     {
         // Arrange
         var createHotelCommand = new CreateHotelCommand
@@ -54,7 +54,28 @@ public class CreateHotelUseCaseTests
         // Assert
         await _repositoryMock.Received(1).Create(Arg.Any<Hotel>());
         await _unitOfWorkMock.Received(1).Persist();
-        result.Should().NotBe(Guid.Empty);
+        result.Should().NotBeNull();
+        result.Id.Should().NotBe(Guid.Empty);
+        result.Should().BeEquivalentTo(new
+        {
+            createHotelCommand.LegalName,
+            createHotelCommand.CommercialName,
+            createHotelCommand.Rnc,
+            createHotelCommand.LogoUrl,
+            createHotelCommand.BusinessEmail,
+            createHotelCommand.BusinessPhoneNumber,
+            createHotelCommand.Address1,
+            createHotelCommand.Address2,
+            createHotelCommand.City,
+            createHotelCommand.Province,
+            createHotelCommand.ZipCode,
+            createHotelCommand.CheckInTime,
+            createHotelCommand.CheckOutTime,
+            createHotelCommand.DefaultCurrencyCode,
+            createHotelCommand.ItbisRate,
+            createHotelCommand.ServiceChargeRate,
+            createHotelCommand.IsActive
+        }, options => options.ExcludingMissingMembers());
     }
 
     [Fact]
@@ -79,7 +100,7 @@ public class CreateHotelUseCaseTests
         {
             LegalName = CreateLegalName(),
             CommercialName = CreateCommercialName(),
-            Rnc =  CreateRnc(),
+            Rnc = CreateRnc(),
             LogoUrl = CreateLogoUrl(),
             BusinessEmail = CreateBusinessEmail(),
             BusinessPhoneNumber = CreateBusinessPhoneNumber(),

@@ -1,5 +1,6 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
+using BrisaPMS.Application.UseCases.Hotels.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Billing;
 using BrisaPMS.Domain.Hotels;
@@ -8,7 +9,7 @@ using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Application.UseCases.Hotels.Commands.CreateHotel;
 
-public class CreateHotelUseCase : IRequestHandler<CreateHotelCommand, Guid>
+public class CreateHotelUseCase : IRequestHandler<CreateHotelCommand, HotelDto>
 {
     private readonly IHotelsRepository _repository;
     private readonly IUnitOfWork  _unitOfWork;
@@ -19,18 +20,23 @@ public class CreateHotelUseCase : IRequestHandler<CreateHotelCommand, Guid>
         _unitOfWork = unitOfWork;
     }
     
-    public async Task<Guid> Handle(CreateHotelCommand command)
+    public async Task<HotelDto> Handle(CreateHotelCommand command)
     {
         var businessEmail = new Email(command.BusinessEmail);
         var businessPhoneNumber = new PhoneNumber(command.BusinessPhoneNumber);
         var rnc = new Rnc(command.Rnc);
-        var logoUrl = new Url(command.LogoUrl!);
+        Url? logoUrl = null;
         var address = new Address(command.Address1, command.Address2, command.City, command.Province, command.ZipCode);
         var checkOutPolicy = new CheckOutPolicy(command.CheckInTime,  command.CheckOutTime);
         var defaultCurrencyCode = Enum.Parse<CurrencyCode>(command.DefaultCurrencyCode, ignoreCase: true);
         var itbisRate = new ItbisRate(command.ItbisRate);
         var serviceChargeRate = new ServiceChargeRate(command.ServiceChargeRate);
         
+        if (command.LogoUrl != null)
+        {
+            logoUrl = new Url(command.LogoUrl);
+        }
+
         var hotel = new Hotel
         (
             command.LegalName,
@@ -51,7 +57,7 @@ public class CreateHotelUseCase : IRequestHandler<CreateHotelCommand, Guid>
         {
             var response = await _repository.Create(hotel);
             await _unitOfWork.Persist();
-            return response.Id;
+            return hotel.ToDto();
         }
         catch (Exception)
         {

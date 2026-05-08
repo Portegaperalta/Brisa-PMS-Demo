@@ -4,6 +4,7 @@ using BrisaPMS.Domain.Shared.Exceptions;
 using BrisaPMS.Domain.Users;
 using BrisaPMS.Identity.Exceptions;
 using System.Net;
+using System.Text.Json;
 
 namespace BrisaPMS.API.Middlewares
 {
@@ -38,34 +39,66 @@ namespace BrisaPMS.API.Middlewares
             {
                 case NotFoundException:
                     httpStatusCode = HttpStatusCode.NotFound;
+                    result = JsonSerializer.Serialize(new
+                    {
+                        message = exception.Message
+                    });
                     break;
 
                 case EmptyRequiredFieldException:
                     httpStatusCode = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new
+                    {
+                        message = exception.Message
+                    });
                     break;
 
                 case InvalidFieldException:
                     httpStatusCode = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new
+                    {
+                        message = exception.Message
+                    });
                     break;
 
                 case MaxCharacterLimitException:
                     httpStatusCode = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new
+                    {
+                        message = exception.Message
+                    });
                     break;
 
                 case BusinessRuleException:
                     httpStatusCode = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new
+                    {
+                        message = exception.Message
+                    });
                     break;
 
                 case LanguageNotSupportedException:
                     httpStatusCode = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new
+                    {
+                        message = exception.Message
+                    });
                     break;
 
                 case InvalidItbisRateException:
                     httpStatusCode = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new
+                    {
+                        message = exception.Message
+                    });
                     break;
 
                 case InvalidServiceChargeRateException:
                     httpStatusCode = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new
+                    {
+                        message = exception.Message
+                    });
                     break;
 
                 case MediatorException:
@@ -74,10 +107,18 @@ namespace BrisaPMS.API.Middlewares
 
                 case ValidationException:
                     httpStatusCode = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new
+                    {
+                        message = exception.Message
+                    });
                     break;
 
                 case IdentityException:
                     httpStatusCode = HttpStatusCode.InternalServerError;
+                    result = JsonSerializer.Serialize(new
+                    {
+                        message = exception.Message
+                    });
                     break;
             }
 
