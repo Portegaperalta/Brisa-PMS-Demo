@@ -12,7 +12,7 @@ public static class MapperExtension
             LegalName =  hotel.LegalName,
             CommercialName = hotel.CommercialName,
             Rnc = hotel.Rnc.Value,
-            LogoUrl = hotel.LogoUrl!.Value,
+            LogoUrl = hotel.LogoUrl?.Value,
             BusinessEmail = hotel.BusinessEmail.Value,
             BusinessPhoneNumber = hotel.BusinessPhoneNumber.Value,
             Address1 = hotel.Address.Address1,
