@@ -2,6 +2,7 @@ using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
 using BrisaPMS.Application.UseCases.Guests.Commands.CreateGuest;
+using BrisaPMS.Application.UseCases.Guests.Shared;
 using BrisaPMS.Domain.Guest;
 using BrisaPMS.Domain.Guests;
 using BrisaPMS.Domain.Shared.Enums;
@@ -27,13 +28,15 @@ public class CreateGuestUseCaseTests
     }
 
     [Fact]
-    public async Task Handle_CreatesGuestAndReturnsGuestId()
+    public async Task Handle_CreatesGuestAndReturnsGuestDto()
     {
         // Arrange
         var hotelId = Guid.NewGuid();
         var command = CreateValidCommand(hotelId);
 
         _hotelsRepositoryMock.Exists(hotelId).Returns(true);
+        _guestsRepositoryMock.Create(Arg.Any<Guest>())
+            .Returns(callInfo => callInfo.Arg<Guest>());
 
         // Act
         var result = await _useCase.Handle(command);
@@ -56,11 +59,31 @@ public class CreateGuestUseCaseTests
             guest.Notes == command.Notes));
         await _unitOfWorkMock.Received(1).Persist();
         await _unitOfWorkMock.DidNotReceive().Revert();
-        result.Should().NotBe(Guid.Empty);
+        result.Should().NotBeNull();
+        result.Should().BeOfType<GuestDto>();
+        result.Id.Should().NotBe(Guid.Empty);
+        result.Should().BeEquivalentTo(new
+        {
+            command.HotelId,
+            command.FirstName,
+            command.LastName,
+            command.DocumentType,
+            command.DocumentNumber,
+            command.Country,
+            command.Rnc,
+            command.Email,
+            command.PhoneNumber,
+            command.PreferredCurrency,
+            command.PreferredLanguage,
+            command.IsVip,
+            IsBlackListed = false,
+            BlackListedReason = (string?)null,
+            command.Notes
+        }, options => options.ExcludingMissingMembers());
     }
 
     [Fact]
-    public async Task Handle_CreatesGuest_WhenOptionalFieldsAreNotProvided()
+    public async Task Handle_CreatesGuestAndReturnsGuestDto_WhenOptionalFieldsAreNotProvided()
     {
         // Arrange
         var hotelId = Guid.NewGuid();
@@ -82,9 +105,11 @@ public class CreateGuestUseCaseTests
         );
 
         _hotelsRepositoryMock.Exists(hotelId).Returns(true);
+        _guestsRepositoryMock.Create(Arg.Any<Guest>())
+            .Returns(callInfo => callInfo.Arg<Guest>());
 
         // Act
-        await _useCase.Handle(command);
+        var result = await _useCase.Handle(command);
 
         // Assert
         await _guestsRepositoryMock.Received(1).Create(Arg.Is<Guest>(guest =>
@@ -94,6 +119,11 @@ public class CreateGuestUseCaseTests
             guest.Notes == null));
 
         await _unitOfWorkMock.Received(1).Persist();
+        result.Should().NotBeNull();
+        result.Country.Should().BeNull();
+        result.Rnc.Should().BeNull();
+        result.PreferredLanguage.Should().BeNull();
+        result.Notes.Should().BeNull();
     }
 
     [Fact]
