@@ -1,8 +1,9 @@
+using BrisaPMS.Application.UseCases.Guests.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 
 namespace BrisaPMS.Application.UseCases.Guests.Commands.CreateGuest;
 
-public class CreateGuestCommand : IRequest<Guid>
+public class CreateGuestCommand : IRequest<GuestDto>
 {
     public required Guid HotelId { get; set; }
     public required string FirstName { get; set; }

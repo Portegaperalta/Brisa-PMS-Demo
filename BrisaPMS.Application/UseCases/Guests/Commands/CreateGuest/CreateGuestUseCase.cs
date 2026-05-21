@@ -1,6 +1,7 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.UseCases.Guests.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Guest;
 using BrisaPMS.Domain.Guests;
@@ -9,7 +10,7 @@ using BrisaPMS.Domain.Shared.ValueObjects;
 
 namespace BrisaPMS.Application.UseCases.Guests.Commands.CreateGuest;
 
-public class CreateGuestUseCase : IRequestHandler<CreateGuestCommand, Guid>
+public class CreateGuestUseCase : IRequestHandler<CreateGuestCommand, GuestDto>
 {
     private readonly IGuestsRepository _guestsRepository;
     private readonly IHotelsRepository _hotelsRepository;
@@ -23,7 +24,7 @@ public class CreateGuestUseCase : IRequestHandler<CreateGuestCommand, Guid>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Handle(CreateGuestCommand command)
+    public async Task<GuestDto> Handle(CreateGuestCommand command)
     {
         var hotelExists = await _hotelsRepository.Exists(command.HotelId);
 
@@ -69,7 +70,7 @@ public class CreateGuestUseCase : IRequestHandler<CreateGuestCommand, Guid>
         {
             await _guestsRepository.Create(guest);
             await _unitOfWork.Persist();
-            return guest.Id;
+            return guest.ToDto();
         }
         catch (Exception)
         {

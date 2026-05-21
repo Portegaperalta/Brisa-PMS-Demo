@@ -213,7 +213,7 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<BlacklistGuestCommand, bool>,
                                     BlacklistGuestUseCase>();
 
-        services.AddScoped<IRequestHandler<CreateGuestCommand, Guid>,
+        services.AddScoped<IRequestHandler<CreateGuestCommand, GuestDto>,
                                     CreateGuestUseCase>();
 
         services.AddScoped<IRequestHandler<UpdateGuestGeneralInfoCommand, bool>,
