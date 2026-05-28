@@ -1,6 +1,7 @@
 using BrisaPMS.API.DTOs.Guests;
 using BrisaPMS.Application.UseCases.Guests.Commands.BlacklistGuest;
 using BrisaPMS.Application.UseCases.Guests.Commands.CreateGuest;
+using BrisaPMS.Application.UseCases.Guests.Commands.DeleteGuest;
 using BrisaPMS.Application.UseCases.Guests.Commands.MakeGuestVip;
 using BrisaPMS.Application.UseCases.Guests.Commands.RevokeGuestVip;
 using BrisaPMS.Application.UseCases.Guests.Commands.UpdateGuestContactInfo;
@@ -113,7 +114,7 @@ public class GuestsController : ControllerBase
     }
 
     [HttpPut("{id:guid}/blacklist")]
-    public async Task<IActionResult> BlackList([FromRoute] Guid id, [FromBody] BlacklistGuestDTO BlacklistGuestDTO)
+    public async Task<IActionResult> Blacklist([FromRoute] Guid id, [FromBody] BlacklistGuestDTO BlacklistGuestDTO)
     {
         var command = new BlacklistGuestCommand
         {
@@ -145,6 +146,14 @@ public class GuestsController : ControllerBase
     public async Task<IActionResult> RevokeVip([FromRoute] Guid id)
     {
         var command = new RevokeGuestVipCommand {GuestId =  id};
+        await _mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete([FromRoute] Guid id)
+    {
+        var command = new DeleteGuestCommand { Id = id };
         await _mediator.Send(command);
         return NoContent();
     }
