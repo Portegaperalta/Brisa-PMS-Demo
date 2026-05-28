@@ -1,8 +1,9 @@
+using BrisaPMS.Application.UseCases.RoomTypes.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 
 namespace BrisaPMS.Application.UseCases.RoomTypes.Commands.CreateRoomType;
 
-public class CreateRoomTypeCommand : IRequest<Guid>
+public class CreateRoomTypeCommand : IRequest<RoomTypeDto>
 {
     public required string Name { get; set; }
     public string? Description { get; set; }

@@ -366,7 +366,7 @@ public static class ApplicationServicesRegistration
                                      GetRoomByIdUseCase>();
 
         // Room types services
-        services.AddScoped<IRequestHandler<CreateRoomTypeCommand, Guid>,
+        services.AddScoped<IRequestHandler<CreateRoomTypeCommand, RoomTypeDto>,
             CreateRoomTypeUseCase>();
 
         services.AddScoped<IRequestHandler<UpdateRoomTypeBaseRateCommand, bool>,
