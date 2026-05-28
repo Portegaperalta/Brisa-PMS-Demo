@@ -133,7 +133,7 @@ public class GuestsController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("{id:guid}/vip/add")]
+    [HttpPut("{id:guid}/vip")]
     public async Task<IActionResult> MakeVIp([FromRoute] Guid id)
     {
         var command = new MakeGuestVipCommand {GuestId = id};
@@ -141,7 +141,7 @@ public class GuestsController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("{id:guid}/vip/revoke")]
+    [HttpDelete("{id:guid}/vip")]
     public async Task<IActionResult> RevokeVip([FromRoute] Guid id)
     {
         var command = new RevokeGuestVipCommand {GuestId =  id};
