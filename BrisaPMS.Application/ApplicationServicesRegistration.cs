@@ -336,7 +336,7 @@ public static class ApplicationServicesRegistration
         services.AddScoped<IRequestHandler<ChangeRoomTypeCommand, bool>,
                                     ChangeRoomTypeUseCase>();
 
-        services.AddScoped<IRequestHandler<CreateRoomCommand, Guid>, CreateRoomUseCase>();
+        services.AddScoped<IRequestHandler<CreateRoomCommand, RoomDto>, CreateRoomUseCase>();
 
         services.AddScoped<IRequestHandler<SetAsPendingRestockCommand, bool>,
                                     SetAsPendingRestockUseCase>();

@@ -1,9 +1,10 @@
+using BrisaPMS.Application.UseCases.Rooms.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Rooms;
 
 namespace BrisaPMS.Application.UseCases.Rooms.Commands.CreateRoom;
 
-public class CreateRoomCommand : IRequest<Guid>
+public class CreateRoomCommand : IRequest<RoomDto>
 {
     public required Guid HotelId { get; set; }
     public required Guid RoomTypeId { get; set; }

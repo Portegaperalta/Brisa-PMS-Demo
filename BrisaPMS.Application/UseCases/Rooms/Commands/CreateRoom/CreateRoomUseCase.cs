@@ -1,12 +1,13 @@
 using BrisaPMS.Application.Contracts.Persistence;
 using BrisaPMS.Application.Contracts.Repositories;
 using BrisaPMS.Application.Exceptions;
+using BrisaPMS.Application.UseCases.Rooms.Shared;
 using BrisaPMS.Application.Utilities.Mediator;
 using BrisaPMS.Domain.Rooms;
 
 namespace BrisaPMS.Application.UseCases.Rooms.Commands.CreateRoom;
 
-public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
+public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, RoomDto>
 {
     private readonly IRoomsRepository _roomsRepository;
     private readonly IHotelsRepository _hotelsRepository;
@@ -22,7 +23,7 @@ public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Guid> Handle(CreateRoomCommand command)
+    public async Task<RoomDto> Handle(CreateRoomCommand command)
     {
         var hotelExists = await _hotelsRepository.Exists(command.HotelId);
 
@@ -51,7 +52,7 @@ public class CreateRoomUseCase : IRequestHandler<CreateRoomCommand, Guid>
         {
             var response = await _roomsRepository.Create(room);
             await _unitOfWork.Persist();
-            return response.Id;
+            return response.ToDto();
         }
         catch (Exception)
         {
