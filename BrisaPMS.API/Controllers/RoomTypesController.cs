@@ -16,7 +16,7 @@ namespace BrisaPMS.API.Controllers;
 
 [ApiController]
 [Route("api/room-types")]
-[Authorize()]
+[Authorize]
 public class RoomTypesController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -43,6 +43,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "AdminManagerOnly")]
     public async Task<ActionResult<RoomTypeDto>> Create([FromBody] CreateRoomTypeCommand command)
     {
         var roomTypeDto = await  _mediator.Send(command);
@@ -50,6 +51,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpPut("{id:guid}/general-info")]
+    [Authorize(Policy = "AdminManagerOnly")]
     public async Task<IActionResult> UpdateGeneralInfo([FromRoute] Guid id, 
         [FromBody] UpdateRoomTypeGeneralInfoDTO updateRoomTypeGeneralInfoDto)
     {
@@ -65,6 +67,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpPut("{id:guid}/base-rate")]
+    [Authorize(Policy = "AdminManagerOnly")]
     public async Task<IActionResult> UpdateBaseRate([FromRoute] Guid id,
         [FromBody] UpdateRoomTypeBaseRateDTO updateRoomTypeBaseRateDto)
     {
@@ -79,6 +82,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpPut("{id:guid}/beds")]
+    [Authorize(Policy = "AdminManagerOnly")]
     public async Task<IActionResult> UpdateBedsInfo([FromRoute] Guid id,
         [FromBody] UpdateRoomTypeBedsInfoDTO updateRoomTypeBedsInfoDto)
     {
@@ -94,6 +98,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpPut("{id:guid}/occupancy-policy")]
+    [Authorize(Policy = "AdminManagerOnly")]
     public async Task<IActionResult> UpdateOccupancyPolicy([FromRoute] Guid id,
         [FromBody] UpdateRoomTypeOccupancyPolicyDTO updateRoomTypeOccupancyPolicyDto)
     {
@@ -109,6 +114,7 @@ public class RoomTypesController : ControllerBase
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Policy = "AdminManagerOnly")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
         var command = new DeleteRoomTypeCommand { Id = id };
