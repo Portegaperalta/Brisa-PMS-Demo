@@ -107,6 +107,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPut("{id:guid}/hygiene-status")]
+    [Authorize(Policy = "AdminManagerHouseKeeperOnly")]
     public async Task<IActionResult> UpdateHygieneStatus([FromRoute] Guid id,
         [FromBody] UpdateHygieneStatusDTO updateHygieneStatusDTO)
     {
@@ -123,6 +124,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPut("{id:guid}/stock/pending")]
+    [Authorize(Policy = "AdminManagerHouseKeeperOnly")]
     public async Task<IActionResult> SetAsPendingRestock([FromRoute] Guid id)
     {
         var command = new SetAsPendingRestockCommand { RoomId = id };
@@ -131,6 +133,7 @@ public class RoomsController : ControllerBase
     }
 
     [HttpPut("{id:guid}/stock/restocked")]
+    [Authorize(Policy = "AdminManagerHouseKeeperOnly")]
     public async Task<IActionResult> SetAsRestocked([FromRoute] Guid id)
     {
         var command = new SetAsRestockedCommand { RoomId = id };
