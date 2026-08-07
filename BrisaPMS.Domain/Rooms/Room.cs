@@ -26,7 +26,8 @@ public class Room : BaseEntity
         string number,
         int floor,
         RoomAvailabilityStatus availabilityStatus,
-        RoomHygieneStatus hygieneStatus
+        RoomHygieneStatus hygieneStatus,
+        bool needsRestocking = false
     )
     {
         if (hotelId == Guid.Empty)
@@ -53,7 +54,7 @@ public class Room : BaseEntity
         HygieneStatus = hygieneStatus;
         LastCleanedAt = null;
         LastCleanedBy = null;
-        NeedsRestocking = false;
+        NeedsRestocking = needsRestocking;
     }
 
     public void ChangeRoomType(Guid newRoomTypeId)
